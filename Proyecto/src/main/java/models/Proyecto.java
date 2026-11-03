@@ -10,7 +10,7 @@ public class Proyecto {
 
     @Id
     @Column(name = "cod", nullable = false)
-    private int cod;
+    private String cod;
 
     @NotNull
     @Column(name = "nombre", nullable = false)
@@ -26,18 +26,18 @@ public class Proyecto {
     public Proyecto() {
     }
 
-    public Proyecto(int cod, String nombre, String ciudad, List<Suministro> suministros) {
+    public Proyecto(String cod, String nombre, String ciudad, List<Suministro> suministros) {
         this.cod = cod;
         this.nombre = nombre;
         this.ciudad = ciudad;
         this.suministros = suministros;
     }
 
-    public int getCod() {
+    public String getCod() {
         return cod;
     }
 
-    public void setCod(int cod) {
+    public void setCod(String cod) {
         this.cod = cod;
     }
 

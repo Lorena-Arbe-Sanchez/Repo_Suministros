@@ -10,7 +10,7 @@ public class Pieza {
 
     @Id
     @Column(name = "cod", nullable = false)
-    private int cod;
+    private String cod;
 
     @NotNull
     @Column(name = "nombre", nullable = false)
@@ -30,7 +30,7 @@ public class Pieza {
     public Pieza() {
     }
 
-    public Pieza(int cod, String nombre, Double precio, String descripcion, List<Suministro> suministros) {
+    public Pieza(String cod, String nombre, Double precio, String descripcion, List<Suministro> suministros) {
         this.cod = cod;
         this.nombre = nombre;
         this.precio = precio;
@@ -38,11 +38,11 @@ public class Pieza {
         this.suministros = suministros;
     }
 
-    public int getCod() {
+    public String getCod() {
         return cod;
     }
 
-    public void setCod(int cod) {
+    public void setCod(String cod) {
         this.cod = cod;
     }
 

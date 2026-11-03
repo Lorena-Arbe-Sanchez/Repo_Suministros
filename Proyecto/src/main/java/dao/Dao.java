@@ -29,7 +29,7 @@ public abstract class Dao<T, K> {
         }
     }
 
-    public abstract T find(K id);
+    public abstract T find(K cod);
 
     public T create(T t) {
         EntityTransaction transaction = em.getTransaction();

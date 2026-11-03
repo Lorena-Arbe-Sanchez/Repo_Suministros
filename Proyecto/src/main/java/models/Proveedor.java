@@ -10,7 +10,7 @@ public class Proveedor {
 
     @Id
     @Column(name = "cod", nullable = false)
-    private int cod;
+    private String cod;
 
     @NotNull
     @Column(name = "nombre", nullable = false)
@@ -34,7 +34,7 @@ public class Proveedor {
     public Proveedor() {
     }
 
-    public Proveedor(int cod, String nombre, String apellido1, String apellido2, String direccion,
+    public Proveedor(String cod, String nombre, String apellido1, String apellido2, String direccion,
                      List<Suministro> suministros) {
         this.cod = cod;
         this.nombre = nombre;
@@ -44,11 +44,11 @@ public class Proveedor {
         this.suministros = suministros;
     }
 
-    public int getCod() {
+    public String getCod() {
         return cod;
     }
 
-    public void setCod(int cod) {
+    public void setCod(String cod) {
         this.cod = cod;
     }
 
