@@ -1,29 +1,57 @@
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import dao.Dao;
+import jakarta.persistence.EntityManager;
+import models.Pieza;
+import models.Proveedor;
+import models.Proyecto;
+import models.Suministro;
+import org.junit.jupiter.api.Test;
 
-// TODO : Hacer
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Pruebas unitarias para comprobar el funcionamiento de la conexión
- * y de los DAO de la aplicación de gestión de la asociación de juegos.
+ * Pruebas unitarias para comprobar el funcionamiento de la conexión y de
+ * las entidades de la aplicación de gestión de proyectos y suministros.
  */
-public class AppTest extends TestCase {
+public class AppTest {
+
     /**
-     * Constructor de la clase de pruebas.
-     *
-     * @param testName nombre del test
+     * Comprueba la conexión con la base de datos.
      */
-    public AppTest(String testName) {
-        super(testName);
+    @Test
+    public void testConexion() throws Exception {
+
+        EntityManager em = Dao.crearEntityManager();
+
+        try {
+            // Comprobar que se puede ejecutar una consulta en la base de datos
+            Object resultado = em.createNativeQuery("SELECT 1").getSingleResult();
+
+            assertNotNull(resultado, "No se ha podido conectar con la base de datos");
+            assertTrue(em.isOpen(), "La conexión no está abierta");
+
+        } finally {
+            em.close();
+        }
     }
 
     /**
-     * Crea la suite con todos los métodos de prueba de esta clase.
-     *
-     * @return conjunto de pruebas
+     * Comprueba que las entidades están registradas correctamente en Hibernate.
      */
-    public static Test suite() {
-        return new TestSuite(AppTest.class);
+    @Test
+    public void testEntidades() throws Exception {
+
+        EntityManager em = Dao.crearEntityManager();
+
+        try {
+            assertNotNull(em.getMetamodel().entity(Proveedor.class));
+            assertNotNull(em.getMetamodel().entity(Pieza.class));
+            assertNotNull(em.getMetamodel().entity(Proyecto.class));
+            assertNotNull(em.getMetamodel().entity(Suministro.class));
+
+        } finally {
+            em.close();
+        }
     }
+
+    // TODO: Añadir pruebas para comprobar los métodos de los DAO
 }
