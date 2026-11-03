@@ -3,11 +3,11 @@ package utils;
 import dao.Dao;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
-import org.mariadb.jdbc.DatabaseMetaData;
 
 import java.io.FileWriter;
-import java.sql.DatabaseMetaData;
+import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.DatabaseMetaData;
 
 public class MetadatosBD {
 
@@ -75,6 +75,8 @@ public class MetadatosBD {
                             }
                         }
                     }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             });
 
