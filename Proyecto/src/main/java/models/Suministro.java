@@ -3,6 +3,7 @@ package models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+@Entity
 public class Suministro {
 
     @Id
