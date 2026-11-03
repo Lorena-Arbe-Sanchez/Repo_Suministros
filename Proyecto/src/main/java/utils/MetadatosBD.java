@@ -3,9 +3,9 @@ package utils;
 import dao.Dao;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
+import org.mariadb.jdbc.DatabaseMetaData;
 
 import java.io.FileWriter;
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 

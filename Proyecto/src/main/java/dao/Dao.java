@@ -7,7 +7,7 @@ import jakarta.persistence.Persistence;
 
 public abstract class Dao<T, K> {
 
-    // Una única fábrica para toda la aplicación
+    // Fábrica compartida por todos los DAO
     private static final EntityManagerFactory emf =
             Persistence.createEntityManagerFactory("default");
 
@@ -17,7 +17,7 @@ public abstract class Dao<T, K> {
         return this.em;
     }
 
-    // Permitir crear EntityManager desde otras clases
+    // Crear un EntityManager para otras clases
     public static EntityManager crearEntityManager() {
         return emf.createEntityManager();
     }
@@ -51,7 +51,6 @@ public abstract class Dao<T, K> {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
 
-        // remove necesita una entidad gestionada.
         em.remove(em.contains(t) ? t : em.merge(t));
 
         transaction.commit();
