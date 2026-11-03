@@ -2,7 +2,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-// TODO : Repasar
+// TODO : Hacer
 
 /**
  * Pruebas unitarias para comprobar el funcionamiento de la conexión
