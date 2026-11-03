@@ -1,9 +1,12 @@
 # Gestión de Proyectos y Suministros
 
 ## Descripción
-Aplicación desarrollada en Java para gestionar proyectos, proveedores, piezas y suministros mediante Hibernate y JPQL, utilizando una base de datos MariaDB.
+
+Aplicación desarrollada en Java para gestionar proyectos, proveedores, piezas y suministros mediante Hibernate y JPQL,
+utilizando una base de datos MariaDB.
 
 ## Funcionalidades
+
 - Gestión de proveedores (CRUD).
 - Gestión de piezas (CRUD).
 - Gestión de proyectos (CRUD).
@@ -15,6 +18,7 @@ Aplicación desarrollada en Java para gestionar proyectos, proveedores, piezas y
 - Pruebas automatizadas con JUnit.
 
 ## Tecnologías utilizadas
+
 - Java 19
 - Maven
 - Hibernate ORM 6
@@ -25,9 +29,11 @@ Aplicación desarrollada en Java para gestionar proyectos, proveedores, piezas y
 - Gson
 
 ## Base de datos
+
 El proyecto utiliza MariaDB. La configuración de conexión se encuentra en `persistence.xml`.
 
 ## Ejecución
+
 1. Clonar el repositorio.
 2. Abrir el proyecto con IntelliJ IDEA.
 3. Configurar la conexión a MariaDB.

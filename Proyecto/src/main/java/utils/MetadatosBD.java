@@ -4,88 +4,135 @@ import dao.Dao;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class MetadatosBD {
 
-    public static void exportarMetadatos() {
+    // Mostrar los metadatos por terminal
+    public static void mostrarMetadatos() throws SQLException {
+        System.out.println(obtenerMetadatos());
+    }
+
+    // Exportar los metadatos a un fichero TXT
+    public static void exportarMetadatos() throws SQLException, IOException {
+
+        String nombreArchivo = "datos/metadatos/metadatos_bbdd.txt";
+
+        // Crear la carpeta si todavía no existe
+        Files.createDirectories(Paths.get(nombreArchivo).getParent());
+
+        // Escribir los metadatos en el fichero
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            escritor.write(obtenerMetadatos());
+        }
+
+        System.out.println("Metadatos exportados en: " + nombreArchivo + "\n");
+    }
+
+    // Obtener todos los metadatos de la base de datos
+    private static String obtenerMetadatos() throws SQLException {
+
+        StringBuilder texto = new StringBuilder();
 
         EntityManager em = Dao.crearEntityManager();
 
         try {
             em.unwrap(Session.class).doWork(conexion -> {
 
-                DatabaseMetaData metadata = conexion.getMetaData();
+                try {
+                    DatabaseMetaData metadatos = conexion.getMetaData();
 
-                try (FileWriter fichero = new FileWriter(
-                        "datos/metadatos/metadatos_bbdd.txt")) {
+                    // Añadir información general de la base de datos
+                    texto.append("METADATOS DE LA BASE DE DATOS\n");
+                    texto.append("--------------------------------\n");
+                    texto.append("Nombre BBDD: ").append(conexion.getCatalog()).append("\n");
+                    texto.append("Driver: ").append(metadatos.getDriverName()).append("\n");
+                    texto.append("Versión del driver: ").append(metadatos.getDriverVersion()).append("\n");
+                    texto.append("URL: ").append(metadatos.getURL()).append("\n\n");
 
-                    fichero.write("INFORMACIÓN DE LA BASE DE DATOS\n");
-                    fichero.write("--------------------------------\n");
-
-                    fichero.write("Base de datos: "
-                            + metadata.getDatabaseProductName() + "\n");
-
-                    fichero.write("Versión: "
-                            + metadata.getDatabaseProductVersion() + "\n");
-
-                    fichero.write("Driver: "
-                            + metadata.getDriverName() + "\n");
-
-                    fichero.write("URL: "
-                            + metadata.getURL() + "\n");
-
-                    fichero.write("\nTABLAS\n");
-
-                    try (ResultSet tablas = metadata.getTables(
-                            conexion.getCatalog(), null, "%",
-                            new String[]{"TABLE"})) {
+                    // Recorrer las tablas de la BD
+                    try (ResultSet tablas = metadatos.getTables(conexion.getCatalog(), null,
+                            "%", new String[]{"TABLE"})) {
 
                         while (tablas.next()) {
 
-                            String tabla = tablas.getString("TABLE_NAME");
+                            String nombreTabla = tablas.getString("TABLE_NAME");
 
-                            fichero.write("\nTabla: " + tabla + "\n");
+                            texto.append("TABLA: ").append(nombreTabla).append("\n");
 
-                            // Claves primarias.
-                            try (ResultSet claves = metadata.getPrimaryKeys(
-                                    conexion.getCatalog(), null, tabla)) {
+                            // Obtener las claves primarias de la tabla
+                            texto.append("Claves primarias: ");
+
+                            boolean tieneClave = false;
+
+                            try (ResultSet claves = metadatos.getPrimaryKeys(
+                                    conexion.getCatalog(), null, nombreTabla)) {
 
                                 while (claves.next()) {
-                                    fichero.write("  PK: "
-                                            + claves.getString("COLUMN_NAME")
-                                            + "\n");
+                                    texto.append(claves.getString("COLUMN_NAME")).append(" ");
+                                    tieneClave = true;
                                 }
                             }
 
-                            // Columnas.
-                            try (ResultSet columnas = metadata.getColumns(
-                                    conexion.getCatalog(), null, tabla, "%")) {
+                            // Indicar si la tabla no tiene clave primaria
+                            if (!tieneClave) {
+                                texto.append("No tiene");
+                            }
+
+                            texto.append("\nColumnas:\n");
+
+                            // Obtener las columnas y sus características
+                            try (ResultSet columnas = metadatos.getColumns(conexion.getCatalog(), null,
+                                    nombreTabla, "%")) {
 
                                 while (columnas.next()) {
-                                    fichero.write("  Columna: "
-                                            + columnas.getString("COLUMN_NAME")
-                                            + " | Tipo: "
-                                            + columnas.getString("TYPE_NAME")
-                                            + "\n");
+
+                                    String nombreColumna = columnas.getString("COLUMN_NAME");
+
+                                    String tipo = columnas.getString("TYPE_NAME");
+
+                                    // Comprobar si permite valores nulos
+                                    boolean permiteNulos = columnas.getInt("NULLABLE") == DatabaseMetaData.columnNullable;
+
+                                    // Añadir la información de la columna
+                                    texto.append("- ").append(nombreColumna)
+                                            .append(" | Tipo: ").append(tipo)
+                                            .append(" | Permite nulos: ")
+                                            .append(permiteNulos ? "Sí" : "No")
+                                            .append("\n");
                                 }
                             }
+
+                            texto.append("\n");
                         }
                     }
-                } catch (IOException e) {
+
+                } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             });
 
-        } catch (Exception e) {
-            System.out.println("Error al exportar los metadatos: "
-                    + e.getMessage());
+        } catch (RuntimeException e) {
+
+            // Recuperar posibles errores SQL producidos dentro de doWork
+            if (e.getCause() instanceof SQLException) {
+                throw (SQLException) e.getCause();
+            }
+
+            throw e;
 
         } finally {
             em.close();
         }
+
+        // Devolver todos los metadatos como texto
+        return texto.toString();
     }
 }
