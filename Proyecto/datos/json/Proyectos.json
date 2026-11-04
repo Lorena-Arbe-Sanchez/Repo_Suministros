@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "cod": "PRY001",
+    "ciudad": "Vitoria-Gasteiz",
+    "nombre": "Construcción de nave industrial"
+  },
+  {
+    "cod": "PRY002",
+    "ciudad": "Bilbao",
+    "nombre": "Reforma de instalaciones eléctricas"
+  },
+  {
+    "cod": "PRY003",
+    "ciudad": "Donostia",
+    "nombre": "Ampliación de almacén"
+  },
+  {
+    "cod": "PRY004",
+    "ciudad": "Pamplona",
+    "nombre": "Fabricación de maquinaria"
+  },
+  {
+    "cod": "PRY005",
+    "ciudad": "Burgos",
+    "nombre": "Rehabilitación de edificio"
+  },
+  {
+    "cod": "PRY006",
+    "ciudad": "Logroño",
+    "nombre": "Instalación de sistema de climatización"
+  }
+]

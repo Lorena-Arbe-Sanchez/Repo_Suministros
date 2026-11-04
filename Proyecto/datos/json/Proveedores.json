@@ -1,1 +1,37 @@
-[]
+[
+  {
+    "cod": "PR001",
+    "apellido1": "García",
+    "apellido2": "López",
+    "direccion": "Calle Mayor 12, Vitoria-Gasteiz",
+    "nombre": "Comercial García"
+  },
+  {
+    "cod": "PR002",
+    "apellido1": "Martínez",
+    "apellido2": "Sánchez",
+    "direccion": "Avenida Gasteiz 25, Vitoria-Gasteiz",
+    "nombre": "Suministros Martínez"
+  },
+  {
+    "cod": "PR003",
+    "apellido1": "Fernández",
+    "apellido2": "Ruiz",
+    "direccion": "Calle Dato 8, Vitoria-Gasteiz",
+    "nombre": "Materiales Fernández"
+  },
+  {
+    "cod": "PR004",
+    "apellido1": "Pérez",
+    "apellido2": "Gómez",
+    "direccion": "Polígono Industrial 4, Bilbao",
+    "nombre": "Distribuciones Pérez"
+  },
+  {
+    "cod": "PR005",
+    "apellido1": "López",
+    "apellido2": "Díaz",
+    "direccion": "Calle Navarra 15, Donostia",
+    "nombre": "Componentes López"
+  }
+]

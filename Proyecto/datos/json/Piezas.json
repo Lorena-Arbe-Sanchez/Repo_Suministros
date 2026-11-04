@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "cod": "P001",
+    "descripcion": "Tornillo de acero inoxidable de 5 cm",
+    "nombre": "Tornillo M5",
+    "precio": 0.15
+  },
+  {
+    "cod": "P002",
+    "descripcion": "Tuerca hexagonal de acero galvanizado",
+    "nombre": "Tuerca M5",
+    "precio": 0.08
+  },
+  {
+    "cod": "P003",
+    "descripcion": "Arandela plana de acero",
+    "nombre": "Arandela M5",
+    "precio": 0.05
+  },
+  {
+    "cod": "P004",
+    "descripcion": "Barra de acero de 2 metros",
+    "nombre": "Barra de acero",
+    "precio": 12.5
+  },
+  {
+    "cod": "P005",
+    "descripcion": "Plancha de aluminio de 1 metro cuadrado",
+    "nombre": "Plancha aluminio",
+    "precio": 35.0
+  },
+  {
+    "cod": "P006",
+    "descripcion": "Cable eléctrico de cobre de 10 metros",
+    "nombre": "Cable eléctrico",
+    "precio": 8.75
+  },
+  {
+    "cod": "P007",
+    "descripcion": "Motor eléctrico de 500 W",
+    "nombre": "Motor eléctrico",
+    "precio": 95.0
+  },
+  {
+    "cod": "P008",
+    "descripcion": "Rodamiento industrial de alta resistencia",
+    "nombre": "Rodamiento",
+    "precio": 14.9
+  },
+  {
+    "cod": "P009",
+    "descripcion": "Tubo de PVC de 3 metros",
+    "nombre": "Tubo PVC",
+    "precio": 6.25
+  },
+  {
+    "cod": "P010",
+    "descripcion": "Pintura anticorrosiva para metal, bote de 5 litros",
+    "nombre": "Pintura anticorrosiva",
+    "precio": 28.5
+  }
+]

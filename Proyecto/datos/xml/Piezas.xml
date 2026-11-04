@@ -1,1 +1,63 @@
-<?xml version="1.0" encoding="UTF-8"?><registros></registros>
+<?xml version="1.0" encoding="UTF-8"?>
+<registros>
+    <registro>
+        <cod>P001</cod>
+        <descripcion>Tornillo de acero inoxidable de 5 cm</descripcion>
+        <nombre>Tornillo M5</nombre>
+        <precio>0.15</precio>
+    </registro>
+    <registro>
+        <cod>P002</cod>
+        <descripcion>Tuerca hexagonal de acero galvanizado</descripcion>
+        <nombre>Tuerca M5</nombre>
+        <precio>0.08</precio>
+    </registro>
+    <registro>
+        <cod>P003</cod>
+        <descripcion>Arandela plana de acero</descripcion>
+        <nombre>Arandela M5</nombre>
+        <precio>0.05</precio>
+    </registro>
+    <registro>
+        <cod>P004</cod>
+        <descripcion>Barra de acero de 2 metros</descripcion>
+        <nombre>Barra de acero</nombre>
+        <precio>12.5</precio>
+    </registro>
+    <registro>
+        <cod>P005</cod>
+        <descripcion>Plancha de aluminio de 1 metro cuadrado</descripcion>
+        <nombre>Plancha aluminio</nombre>
+        <precio>35.0</precio>
+    </registro>
+    <registro>
+        <cod>P006</cod>
+        <descripcion>Cable eléctrico de cobre de 10 metros</descripcion>
+        <nombre>Cable eléctrico</nombre>
+        <precio>8.75</precio>
+    </registro>
+    <registro>
+        <cod>P007</cod>
+        <descripcion>Motor eléctrico de 500 W</descripcion>
+        <nombre>Motor eléctrico</nombre>
+        <precio>95.0</precio>
+    </registro>
+    <registro>
+        <cod>P008</cod>
+        <descripcion>Rodamiento industrial de alta resistencia</descripcion>
+        <nombre>Rodamiento</nombre>
+        <precio>14.9</precio>
+    </registro>
+    <registro>
+        <cod>P009</cod>
+        <descripcion>Tubo de PVC de 3 metros</descripcion>
+        <nombre>Tubo PVC</nombre>
+        <precio>6.25</precio>
+    </registro>
+    <registro>
+        <cod>P010</cod>
+        <descripcion>Pintura anticorrosiva para metal, bote de 5 litros</descripcion>
+        <nombre>Pintura anticorrosiva</nombre>
+        <precio>28.5</precio>
+    </registro>
+</registros>

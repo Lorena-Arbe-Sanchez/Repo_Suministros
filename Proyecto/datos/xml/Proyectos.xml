@@ -1,1 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?><registros></registros>
+<?xml version="1.0" encoding="UTF-8"?>
+<registros>
+    <registro>
+        <cod>PRY001</cod>
+        <ciudad>Vitoria-Gasteiz</ciudad>
+        <nombre>Construcción de nave industrial</nombre>
+    </registro>
+    <registro>
+        <cod>PRY002</cod>
+        <ciudad>Bilbao</ciudad>
+        <nombre>Reforma de instalaciones eléctricas</nombre>
+    </registro>
+    <registro>
+        <cod>PRY003</cod>
+        <ciudad>Donostia</ciudad>
+        <nombre>Ampliación de almacén</nombre>
+    </registro>
+    <registro>
+        <cod>PRY004</cod>
+        <ciudad>Pamplona</ciudad>
+        <nombre>Fabricación de maquinaria</nombre>
+    </registro>
+    <registro>
+        <cod>PRY005</cod>
+        <ciudad>Burgos</ciudad>
+        <nombre>Rehabilitación de edificio</nombre>
+    </registro>
+    <registro>
+        <cod>PRY006</cod>
+        <ciudad>Logroño</ciudad>
+        <nombre>Instalación de sistema de climatización</nombre>
+    </registro>
+</registros>

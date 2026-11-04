@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": 16,
+    "cantidad": 500,
+    "fecha": "2026-01-10",
+    "pieza_cod": "P001",
+    "proveedor_cod": "PR001",
+    "proyecto_cod": "PRY001"
+  },
+  {
+    "id": 17,
+    "cantidad": 500,
+    "fecha": "2026-01-10",
+    "pieza_cod": "P002",
+    "proveedor_cod": "PR001",
+    "proyecto_cod": "PRY001"
+  },
+  {
+    "id": 18,
+    "cantidad": 1000,
+    "fecha": "2026-01-12",
+    "pieza_cod": "P003",
+    "proveedor_cod": "PR002",
+    "proyecto_cod": "PRY001"
+  },
+  {
+    "id": 19,
+    "cantidad": 20,
+    "fecha": "2026-01-15",
+    "pieza_cod": "P004",
+    "proveedor_cod": "PR003",
+    "proyecto_cod": "PRY002"
+  },
+  {
+    "id": 20,
+    "cantidad": 10,
+    "fecha": "2026-01-18",
+    "pieza_cod": "P005",
+    "proveedor_cod": "PR003",
+    "proyecto_cod": "PRY002"
+  },
+  {
+    "id": 21,
+    "cantidad": 100,
+    "fecha": "2026-01-20",
+    "pieza_cod": "P006",
+    "proveedor_cod": "PR002",
+    "proyecto_cod": "PRY002"
+  },
+  {
+    "id": 22,
+    "cantidad": 5,
+    "fecha": "2026-02-01",
+    "pieza_cod": "P007",
+    "proveedor_cod": "PR004",
+    "proyecto_cod": "PRY004"
+  },
+  {
+    "id": 23,
+    "cantidad": 12,
+    "fecha": "2026-02-03",
+    "pieza_cod": "P008",
+    "proveedor_cod": "PR004",
+    "proyecto_cod": "PRY004"
+  },
+  {
+    "id": 24,
+    "cantidad": 30,
+    "fecha": "2026-02-05",
+    "pieza_cod": "P009",
+    "proveedor_cod": "PR005",
+    "proyecto_cod": "PRY003"
+  },
+  {
+    "id": 25,
+    "cantidad": 8,
+    "fecha": "2026-02-08",
+    "pieza_cod": "P010",
+    "proveedor_cod": "PR005",
+    "proyecto_cod": "PRY003"
+  },
+  {
+    "id": 26,
+    "cantidad": 300,
+    "fecha": "2026-02-12",
+    "pieza_cod": "P001",
+    "proveedor_cod": "PR002",
+    "proyecto_cod": "PRY005"
+  },
+  {
+    "id": 27,
+    "cantidad": 300,
+    "fecha": "2026-02-12",
+    "pieza_cod": "P002",
+    "proveedor_cod": "PR002",
+    "proyecto_cod": "PRY005"
+  },
+  {
+    "id": 28,
+    "cantidad": 15,
+    "fecha": "2026-02-15",
+    "pieza_cod": "P009",
+    "proveedor_cod": "PR001",
+    "proyecto_cod": "PRY006"
+  },
+  {
+    "id": 29,
+    "cantidad": 3,
+    "fecha": "2026-02-18",
+    "pieza_cod": "P007",
+    "proveedor_cod": "PR004",
+    "proyecto_cod": "PRY006"
+  },
+  {
+    "id": 30,
+    "cantidad": 50,
+    "fecha": "2026-02-20",
+    "pieza_cod": "P008",
+    "proveedor_cod": "PR003",
+    "proyecto_cod": "PRY004"
+  }
+]

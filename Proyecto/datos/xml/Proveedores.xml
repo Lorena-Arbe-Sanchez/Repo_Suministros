@@ -1,1 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?><registros></registros>
+<?xml version="1.0" encoding="UTF-8"?>
+<registros>
+    <registro>
+        <cod>PR001</cod>
+        <apellido1>García</apellido1>
+        <apellido2>López</apellido2>
+        <direccion>Calle Mayor 12, Vitoria-Gasteiz</direccion>
+        <nombre>Comercial García</nombre>
+    </registro>
+    <registro>
+        <cod>PR002</cod>
+        <apellido1>Martínez</apellido1>
+        <apellido2>Sánchez</apellido2>
+        <direccion>Avenida Gasteiz 25, Vitoria-Gasteiz</direccion>
+        <nombre>Suministros Martínez</nombre>
+    </registro>
+    <registro>
+        <cod>PR003</cod>
+        <apellido1>Fernández</apellido1>
+        <apellido2>Ruiz</apellido2>
+        <direccion>Calle Dato 8, Vitoria-Gasteiz</direccion>
+        <nombre>Materiales Fernández</nombre>
+    </registro>
+    <registro>
+        <cod>PR004</cod>
+        <apellido1>Pérez</apellido1>
+        <apellido2>Gómez</apellido2>
+        <direccion>Polígono Industrial 4, Bilbao</direccion>
+        <nombre>Distribuciones Pérez</nombre>
+    </registro>
+    <registro>
+        <cod>PR005</cod>
+        <apellido1>López</apellido1>
+        <apellido2>Díaz</apellido2>
+        <direccion>Calle Navarra 15, Donostia</direccion>
+        <nombre>Componentes López</nombre>
+    </registro>
+</registros>
