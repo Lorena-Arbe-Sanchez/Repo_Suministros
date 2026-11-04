@@ -1,4 +1,5 @@
 import dao.*;
+import utils.ExportarDatos;
 import utils.MetadatosBD;
 
 import java.time.LocalDate;
@@ -286,37 +287,37 @@ public class App {
 
             switch (opcion) {
                 case 1:
-                    // TODO: Exportar proveedores a XML
+                    ExportarDatos.exportarProveedoresXML();
                     break;
                 case 2:
-                    // TODO: Exportar proveedores a JSON
+                    ExportarDatos.exportarProveedoresJSON();
                     break;
                 case 3:
-                    // TODO: Exportar piezas a XML
+                    ExportarDatos.exportarPiezasXML();
                     break;
                 case 4:
-                    // TODO: Exportar piezas a JSON
+                    ExportarDatos.exportarPiezasJSON();
                     break;
                 case 5:
-                    // TODO: Exportar proyectos a XML
+                    ExportarDatos.exportarProyectosXML();
                     break;
                 case 6:
-                    // TODO: Exportar proyectos a JSON
+                    ExportarDatos.exportarProyectosJSON();
                     break;
                 case 7:
-                    // TODO: Exportar suministros a XML
+                    ExportarDatos.exportarSuministrosXML();
                     break;
                 case 8:
-                    // TODO: Exportar suministros a JSON
+                    ExportarDatos.exportarSuministrosJSON();
                     break;
                 case 9:
-                    // TODO: Exportar todas las entidades a XML
+                    ExportarDatos.exportarTodoXML();
                     break;
                 case 10:
-                    // TODO: Exportar todas las entidades a JSON
+                    ExportarDatos.exportarTodoJSON();
                     break;
                 case 11:
-                    // TODO: Exportar todas las entidades a XML y JSON
+                    ExportarDatos.exportarTodoXMLyJSON();
                     break;
                 case 0:
                     break;
