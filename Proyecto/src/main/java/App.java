@@ -103,7 +103,7 @@ public class App {
             System.out.println("2. Dar de alta un proveedor");
             System.out.println("3. Modificar un proveedor");
             System.out.println("4. Dar de baja un proveedor");
-            System.out.println("5. Buscar proveedores");
+            System.out.println("5. Buscar proveedores (por código, nombre, apellidos o dirección)");
             System.out.println("0. ↩️ Volver al menú principal");
             System.out.print("\nElige una opción: ");
 
@@ -352,84 +352,94 @@ public class App {
     // Crear un proveedor
     private static void crearProveedor(Scanner sc, ProveedorDao dao) {
 
-        System.out.print("Código: ");
-        String cod = sc.nextLine();
+        String cod;
 
-        if (dao.find(cod) != null) {
-            System.out.println("⚠️ Ya existe un proveedor con ese código");
-            return;
-        }
+        do {
+            cod = leerTexto(sc, "Código: ");
 
-        System.out.print("Nombre: ");
-        String nombre = sc.nextLine();
+            if (dao.find(cod) != null) {
+                System.out.println("⚠️ Ya existe un proveedor con ese código");
+            }
+        } while (dao.find(cod) != null);
 
-        System.out.print("Primer apellido: ");
-        String apellido1 = sc.nextLine();
+        String nombre = leerTexto(sc, "Nombre: ");
+        String apellido1 = leerTexto(sc, "Primer apellido: ");
+        String apellido2 = leerTexto(sc, "Segundo apellido: ");
+        String direccion = leerTexto(sc, "Dirección: ");
 
-        System.out.print("Segundo apellido: ");
-        String apellido2 = sc.nextLine();
-
-        System.out.print("Dirección: ");
-        String direccion = sc.nextLine();
-
-        Proveedor proveedor = new Proveedor(
-                cod, nombre, apellido1, apellido2, direccion, null
-        );
+        Proveedor proveedor = new Proveedor(cod, nombre, apellido1, apellido2, direccion, null);
 
         dao.create(proveedor);
 
-        System.out.println("Proveedor creado correctamente");
+        System.out.println("✅ Proveedor creado correctamente");
     }
 
     // Modificar un proveedor
     private static void modificarProveedor(Scanner sc, ProveedorDao dao) {
 
-        System.out.print("Introduce el código del proveedor: ");
-        String cod = sc.nextLine();
+        String cod;
+        Proveedor proveedor;
 
-        Proveedor proveedor = dao.find(cod);
+        do {
+            cod = leerTexto(sc, "Introduce el código del proveedor: ");
+            proveedor = dao.find(cod);
 
-        if (proveedor == null) {
-            System.out.println("⚠️ No existe ningún proveedor con ese código");
-            return;
+            if (proveedor == null) {
+                System.out.println("⚠️ No existe ningún proveedor con ese código");
+            }
+
+        } while (proveedor == null);
+
+        System.out.print("Nuevo nombre (" + proveedor.getNombre() + "): ");
+        String nombre = sc.nextLine();
+        if (!nombre.trim().isEmpty()) {
+            proveedor.setNombre(nombre);
         }
 
-        System.out.print("Nuevo nombre: ");
-        proveedor.setNombre(sc.nextLine());
+        System.out.print("Nuevo primer apellido (" + proveedor.getApellido1() + "): ");
+        String apellido1 = sc.nextLine();
+        if (!apellido1.trim().isEmpty()) {
+            proveedor.setApellido1(apellido1);
+        }
 
-        System.out.print("Nuevo primer apellido: ");
-        proveedor.setApellido1(sc.nextLine());
+        System.out.print("Nuevo segundo apellido (" + proveedor.getApellido2() + "): ");
+        String apellido2 = sc.nextLine();
+        if (!apellido2.trim().isEmpty()) {
+            proveedor.setApellido2(apellido2);
+        }
 
-        System.out.print("Nuevo segundo apellido: ");
-        proveedor.setApellido2(sc.nextLine());
-
-        System.out.print("Nueva dirección: ");
-        proveedor.setDireccion(sc.nextLine());
+        System.out.print("Nueva dirección (" + proveedor.getDireccion() + "): ");
+        String direccion = sc.nextLine();
+        if (!direccion.trim().isEmpty()) {
+            proveedor.setDireccion(direccion);
+        }
 
         dao.update(proveedor);
 
-        System.out.println("Proveedor modificado correctamente");
+        System.out.println("✅ Proveedor modificado correctamente");
     }
 
     // Eliminar un proveedor
     private static void eliminarProveedor(Scanner sc, ProveedorDao dao) {
 
-        System.out.print("Introduce el código del proveedor: ");
-        String cod = sc.nextLine();
+        String cod;
+        Proveedor proveedor;
 
-        Proveedor proveedor = dao.find(cod);
+        do {
+            cod = leerTexto(sc, "Introduce el código del proveedor: ");
+            proveedor = dao.find(cod);
 
-        if (proveedor == null) {
-            System.out.println("⚠️ No existe ningún proveedor con ese código");
-            return;
-        }
+            if (proveedor == null) {
+                System.out.println("⚠️ No existe ningún proveedor con ese código");
+            }
 
-        System.out.println("¿Seguro que quieres eliminar este proveedor? (s/n)");
-        String respuesta = sc.nextLine();
+        } while (proveedor == null);
+
+        String respuesta = leerTexto(sc, "¿Seguro que quieres eliminarlo? (s/n): ");
 
         if (respuesta.equalsIgnoreCase("s")) {
             dao.delete(proveedor);
-            System.out.println("Proveedor eliminado correctamente");
+            System.out.println("✅ Proveedor eliminado correctamente");
         } else {
             System.out.println("Operación cancelada");
         }
@@ -438,8 +448,7 @@ public class App {
     // Buscar proveedores
     private static void buscarProveedores(Scanner sc, ProveedorDao dao) {
 
-        System.out.print("Introduce el texto que quieres buscar: ");
-        String texto = sc.nextLine();
+        String texto = leerTexto(sc, "Introduce el texto (código, nombre, apellidos o dirección) que quieres buscar: ");
 
         List<Proveedor> proveedores = dao.buscar(texto);
 
@@ -530,7 +539,7 @@ public class App {
 
         } while (texto.trim().isEmpty());
 
-        return texto;
+        return texto.trim();
     }
 
     // Leer una fecha válida
