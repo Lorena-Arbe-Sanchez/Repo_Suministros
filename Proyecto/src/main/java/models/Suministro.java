@@ -18,10 +18,6 @@ public class Suministro {
     private LocalDate fecha;
 
     @NotNull
-    @Column(name = "precio", nullable = false)
-    private Double precio;
-
-    @NotNull
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
@@ -40,11 +36,10 @@ public class Suministro {
     public Suministro() {
     }
 
-    public Suministro(int id, LocalDate fecha, Double precio, int cantidad, Proveedor proveedor, Pieza pieza,
+    public Suministro(int id, LocalDate fecha, int cantidad, Proveedor proveedor, Pieza pieza,
                       Proyecto proyecto) {
         this.id = id;
         this.fecha = fecha;
-        this.precio = precio;
         this.cantidad = cantidad;
         this.proveedor = proveedor;
         this.pieza = pieza;
@@ -65,14 +60,6 @@ public class Suministro {
 
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
     }
 
     public int getCantidad() {
