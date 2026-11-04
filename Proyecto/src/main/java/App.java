@@ -1,9 +1,11 @@
 import dao.*;
+import models.Proveedor;
 import utils.ExportarDatos;
 import utils.MetadatosBD;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -109,19 +111,19 @@ public class App {
 
             switch (opcion) {
                 case 1:
-                    // TODO: Listar proveedores
+                    listarProveedores(dao);
                     break;
                 case 2:
-                    // TODO: Dar de alta un proveedor
+                    crearProveedor(sc, dao);
                     break;
                 case 3:
-                    // TODO: Modificar un proveedor
+                    modificarProveedor(sc, dao);
                     break;
                 case 4:
-                    // TODO: Dar de baja un proveedor
+                    eliminarProveedor(sc, dao);
                     break;
                 case 5:
-                    // TODO: Buscar proveedores
+                    buscarProveedores(sc, dao);
                     break;
                 case 0:
                     break;
@@ -326,6 +328,133 @@ public class App {
             }
 
         } while (opcion != 0);
+    }
+
+    // Listar todos los proveedores
+    private static void listarProveedores(ProveedorDao dao) {
+
+        List<Proveedor> proveedores = dao.findAll();
+
+        if (proveedores.isEmpty()) {
+            System.out.println("No hay proveedores registrados");
+            return;
+        }
+
+        for (Proveedor p : proveedores) {
+            System.out.println("\nCódigo: " + p.getCod());
+            System.out.println("Nombre: " + p.getNombre());
+            System.out.println("Primer apellido: " + p.getApellido1());
+            System.out.println("Segundo apellido: " + p.getApellido2());
+            System.out.println("Dirección: " + p.getDireccion());
+        }
+    }
+
+    // Crear un proveedor
+    private static void crearProveedor(Scanner sc, ProveedorDao dao) {
+
+        System.out.print("Código: ");
+        String cod = sc.nextLine();
+
+        if (dao.find(cod) != null) {
+            System.out.println("⚠️ Ya existe un proveedor con ese código");
+            return;
+        }
+
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+
+        System.out.print("Primer apellido: ");
+        String apellido1 = sc.nextLine();
+
+        System.out.print("Segundo apellido: ");
+        String apellido2 = sc.nextLine();
+
+        System.out.print("Dirección: ");
+        String direccion = sc.nextLine();
+
+        Proveedor proveedor = new Proveedor(
+                cod, nombre, apellido1, apellido2, direccion, null
+        );
+
+        dao.create(proveedor);
+
+        System.out.println("Proveedor creado correctamente");
+    }
+
+    // Modificar un proveedor
+    private static void modificarProveedor(Scanner sc, ProveedorDao dao) {
+
+        System.out.print("Introduce el código del proveedor: ");
+        String cod = sc.nextLine();
+
+        Proveedor proveedor = dao.find(cod);
+
+        if (proveedor == null) {
+            System.out.println("⚠️ No existe ningún proveedor con ese código");
+            return;
+        }
+
+        System.out.print("Nuevo nombre: ");
+        proveedor.setNombre(sc.nextLine());
+
+        System.out.print("Nuevo primer apellido: ");
+        proveedor.setApellido1(sc.nextLine());
+
+        System.out.print("Nuevo segundo apellido: ");
+        proveedor.setApellido2(sc.nextLine());
+
+        System.out.print("Nueva dirección: ");
+        proveedor.setDireccion(sc.nextLine());
+
+        dao.update(proveedor);
+
+        System.out.println("Proveedor modificado correctamente");
+    }
+
+    // Eliminar un proveedor
+    private static void eliminarProveedor(Scanner sc, ProveedorDao dao) {
+
+        System.out.print("Introduce el código del proveedor: ");
+        String cod = sc.nextLine();
+
+        Proveedor proveedor = dao.find(cod);
+
+        if (proveedor == null) {
+            System.out.println("⚠️ No existe ningún proveedor con ese código");
+            return;
+        }
+
+        System.out.println("¿Seguro que quieres eliminar este proveedor? (s/n)");
+        String respuesta = sc.nextLine();
+
+        if (respuesta.equalsIgnoreCase("s")) {
+            dao.delete(proveedor);
+            System.out.println("Proveedor eliminado correctamente");
+        } else {
+            System.out.println("Operación cancelada");
+        }
+    }
+
+    // Buscar proveedores
+    private static void buscarProveedores(Scanner sc, ProveedorDao dao) {
+
+        System.out.print("Introduce el texto que quieres buscar: ");
+        String texto = sc.nextLine();
+
+        List<Proveedor> proveedores = dao.buscar(texto);
+
+        if (proveedores.isEmpty()) {
+            System.out.println("No se han encontrado proveedores");
+            return;
+        }
+
+        for (Proveedor p : proveedores) {
+            System.out.println("\nCódigo: " + p.getCod());
+            System.out.println("Nombre: " + p.getNombre());
+            System.out.println("Primer apellido: " + p.getApellido1());
+            System.out.println("Segundo apellido: " + p.getApellido2());
+            System.out.println("Dirección: " + p.getDireccion());
+        }
     }
 
     /* ----- Funciones auxiliares ----- */
