@@ -1,4 +1,9 @@
 import dao.*;
+import utils.MetadatosBD;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
 
 public class App {
 
@@ -9,28 +14,406 @@ public class App {
         ProyectoDao proyectoDao = null;
         SuministroDao suministroDao = null;
 
-        try {
+        try (Scanner sc = new Scanner(System.in)) {
+
+            // Inicializar los DAO
             proveedorDao = new ProveedorDao();
             piezaDao = new PiezaDao();
             proyectoDao = new ProyectoDao();
             suministroDao = new SuministroDao();
 
-            System.out.println("Conexión con la base de datos establecida");
-            System.out.println("Entidades inicializadas correctamente");
+            System.out.println("🔌 Conexión con la base de datos establecida");
+            System.out.println("✅ Entidades inicializadas correctamente");
+
+            // Menú principal
+            int opcion;
+
+            do {
+
+                System.out.println("\n\n===== MENÚ PRINCIPAL =====");
+                System.out.println("1. Gestión de proveedores");
+                System.out.println("2. Gestión de piezas");
+                System.out.println("3. Gestión de proyectos");
+                System.out.println("4. Gestión de suministros");
+                System.out.println("5. Exportar datos XML y JSON");
+                System.out.println("6. Metadatos de la BBDD");
+                System.out.println("0. Salir");
+                System.out.print("\nElige una opción: ");
+
+                opcion = leerInt(sc);
+
+                switch (opcion) {
+                    case 1:
+                        menuProveedores(sc, proveedorDao);
+                        break;
+                    case 2:
+                        menuPiezas(sc, piezaDao);
+                        break;
+                    case 3:
+                        menuProyectos(sc, proyectoDao);
+                        break;
+                    case 4:
+                        menuSuministros(sc, suministroDao);
+                        break;
+                    case 5:
+                        menuExportaciones(sc);
+                        break;
+                    case 6:
+                        MetadatosBD.mostrarMetadatos();
+                        MetadatosBD.exportarMetadatos();
+                        break;
+                    case 0:
+                        System.out.println("👋 ¡Hasta pronto!");
+                        break;
+                    default:
+                        System.out.println("⚠️ Opción no válida.");
+                }
+
+            } while (opcion != 0);
 
         } catch (Exception e) {
-            System.out.println("Error al inicializar la aplicación");
+            System.out.println("❌ Error: " + e.getMessage());
             e.printStackTrace();
 
         } finally {
+
+            // Cerrar los EntityManager
             if (proveedorDao != null) proveedorDao.cerrar();
             if (piezaDao != null) piezaDao.cerrar();
             if (proyectoDao != null) proyectoDao.cerrar();
             if (suministroDao != null) suministroDao.cerrar();
 
+            // Cerrar la fábrica de EntityManager
             Dao.cerrarFabrica();
         }
+    }
 
-        // todo : continuar
+    // Menú de proveedores
+    private static void menuProveedores(Scanner sc, ProveedorDao dao) {
+
+        int opcion;
+
+        do {
+
+            System.out.println("\n\n===== GESTIÓN DE PROVEEDORES =====");
+            System.out.println("1. Listar proveedores");
+            System.out.println("2. Dar de alta un proveedor");
+            System.out.println("3. Modificar un proveedor");
+            System.out.println("4. Dar de baja un proveedor");
+            System.out.println("5. Buscar proveedores");
+            System.out.println("0. ↩️ Volver al menú principal");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            switch (opcion) {
+                case 1:
+                    // TODO: Listar proveedores
+                    break;
+                case 2:
+                    // TODO: Dar de alta un proveedor
+                    break;
+                case 3:
+                    // TODO: Modificar un proveedor
+                    break;
+                case 4:
+                    // TODO: Dar de baja un proveedor
+                    break;
+                case 5:
+                    // TODO: Buscar proveedores
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+        } while (opcion != 0);
+    }
+
+    // Menú de piezas
+    private static void menuPiezas(Scanner sc, PiezaDao dao) {
+
+        int opcion;
+
+        do {
+
+            System.out.println("\n\n===== GESTIÓN DE PIEZAS =====");
+            System.out.println("1. Listar piezas");
+            System.out.println("2. Dar de alta una pieza");
+            System.out.println("3. Modificar una pieza");
+            System.out.println("4. Dar de baja una pieza");
+            System.out.println("5. Buscar piezas");
+            System.out.println("0. ↩️ Volver al menú principal");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            switch (opcion) {
+                case 1:
+                    // TODO: Listar piezas
+                    break;
+                case 2:
+                    // TODO: Dar de alta una pieza
+                    break;
+                case 3:
+                    // TODO: Modificar una pieza
+                    break;
+                case 4:
+                    // TODO: Dar de baja una pieza
+                    break;
+                case 5:
+                    // TODO: Buscar piezas
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+        } while (opcion != 0);
+    }
+
+    // Menú de proyectos
+    private static void menuProyectos(Scanner sc, ProyectoDao dao) {
+
+        int opcion;
+
+        do {
+
+            System.out.println("\n\n===== GESTIÓN DE PROYECTOS =====");
+            System.out.println("1. Listar proyectos");
+            System.out.println("2. Dar de alta un proyecto");
+            System.out.println("3. Modificar un proyecto");
+            System.out.println("4. Dar de baja un proyecto");
+            System.out.println("5. Buscar proyectos");
+            System.out.println("0. ↩️ Volver al menú principal");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            switch (opcion) {
+                case 1:
+                    // TODO: Listar proyectos
+                    break;
+                case 2:
+                    // TODO: Dar de alta un proyecto
+                    break;
+                case 3:
+                    // TODO: Modificar un proyecto
+                    break;
+                case 4:
+                    // TODO: Dar de baja un proyecto
+                    break;
+                case 5:
+                    // TODO: Buscar proyectos
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+        } while (opcion != 0);
+    }
+
+    // Menú de suministros
+    private static void menuSuministros(Scanner sc, SuministroDao dao) {
+
+        int opcion;
+
+        do {
+
+            System.out.println("\n\n===== GESTIÓN DE SUMINISTROS =====");
+            System.out.println("1. Listar suministros");
+            System.out.println("2. Registrar un suministro");
+            System.out.println("3. Modificar un suministro");
+            System.out.println("4. Eliminar un suministro");
+            System.out.println("5. Buscar suministros");
+            System.out.println("0. ↩️ Volver al menú principal");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            switch (opcion) {
+                case 1:
+                    // TODO: Listar suministros
+                    break;
+                case 2:
+                    // TODO: Registrar un suministro
+                    break;
+                case 3:
+                    // TODO: Modificar un suministro
+                    break;
+                case 4:
+                    // TODO: Eliminar un suministro
+                    break;
+                case 5:
+                    // TODO: Buscar suministros
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+        } while (opcion != 0);
+    }
+
+    // Menú de exportaciones
+    private static void menuExportaciones(Scanner sc) {
+
+        int opcion;
+
+        do {
+
+            System.out.println("\n\n===== EXPORTAR DATOS =====");
+            System.out.println("1. Exportar proveedores a XML");
+            System.out.println("2. Exportar proveedores a JSON");
+            System.out.println("3. Exportar piezas a XML");
+            System.out.println("4. Exportar piezas a JSON");
+            System.out.println("5. Exportar proyectos a XML");
+            System.out.println("6. Exportar proyectos a JSON");
+            System.out.println("7. Exportar suministros a XML");
+            System.out.println("8. Exportar suministros a JSON");
+            System.out.println("9. Exportar todo a XML");
+            System.out.println("10. Exportar todo a JSON");
+            System.out.println("11. Exportar todo a XML y JSON");
+            System.out.println("0. ↩️ Volver al menú principal");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            switch (opcion) {
+                case 1:
+                    // TODO: Exportar proveedores a XML
+                    break;
+                case 2:
+                    // TODO: Exportar proveedores a JSON
+                    break;
+                case 3:
+                    // TODO: Exportar piezas a XML
+                    break;
+                case 4:
+                    // TODO: Exportar piezas a JSON
+                    break;
+                case 5:
+                    // TODO: Exportar proyectos a XML
+                    break;
+                case 6:
+                    // TODO: Exportar proyectos a JSON
+                    break;
+                case 7:
+                    // TODO: Exportar suministros a XML
+                    break;
+                case 8:
+                    // TODO: Exportar suministros a JSON
+                    break;
+                case 9:
+                    // TODO: Exportar todas las entidades a XML
+                    break;
+                case 10:
+                    // TODO: Exportar todas las entidades a JSON
+                    break;
+                case 11:
+                    // TODO: Exportar todas las entidades a XML y JSON
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+        } while (opcion != 0);
+    }
+
+    /* ----- Funciones auxiliares ----- */
+
+    // Comprobar que el dato es numérico
+    public static int leerInt(Scanner sc) {
+        while (!sc.hasNextInt()) {
+            System.out.println("❌ Error: debes introducir un número.");
+            sc.nextLine();
+            System.out.print("Vuelve a intentarlo: ");
+        }
+
+        int numero = sc.nextInt();
+        sc.nextLine();
+
+        return numero;
+    }
+
+    // Leer un número entero mayor que 0
+    public static int leerPositivo(Scanner sc, String mensaje) {
+        int numero;
+
+        do {
+            System.out.print(mensaje);
+            numero = leerInt(sc);
+
+            if (numero <= 0) {
+                System.out.println("❌ Error: el número debe ser mayor que 0.");
+            }
+
+        } while (numero <= 0);
+
+        return numero;
+    }
+
+    // Leer un precio válido mayor que 0
+    public static double leerPrecio(Scanner sc, String mensaje) {
+        double precio;
+
+        do {
+            System.out.print(mensaje);
+
+            while (!sc.hasNextDouble()) {
+                System.out.println("❌ Error: debes introducir un número.");
+                sc.nextLine();
+                System.out.print("Vuelve a intentarlo: ");
+            }
+
+            precio = sc.nextDouble();
+            sc.nextLine();
+
+            if (precio <= 0) {
+                System.out.println("❌ Error: el precio debe ser mayor que 0.");
+            }
+
+        } while (precio <= 0);
+
+        return precio;
+    }
+
+    // Comprobar que se ha proporcionado un texto
+    public static String leerTexto(Scanner sc, String mensaje) {
+
+        String texto;
+
+        do {
+            System.out.print(mensaje);
+            texto = sc.nextLine();
+
+            if (texto.trim().isEmpty()) {
+                System.out.println("❌ Error: el campo no puede estar vacío.");
+            }
+
+        } while (texto.trim().isEmpty());
+
+        return texto;
+    }
+
+    // Leer una fecha válida
+    public static LocalDate leerFecha(Scanner sc, String mensaje) {
+
+        while (true) {
+            try {
+                System.out.print(mensaje);
+                return LocalDate.parse(sc.nextLine());
+
+            } catch (DateTimeParseException e) {
+                System.out.println("❌ Error: introduce una fecha válida (AAAA-MM-DD).");
+            }
+        }
     }
 }

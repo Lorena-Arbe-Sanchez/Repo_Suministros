@@ -1,0 +1,52 @@
+METADATOS DE LA BASE DE DATOS
+--------------------------------
+Nombre BBDD: ad_suministros
+Driver: MariaDB Connector/J
+Versión del driver: 3.5.11
+URL: jdbc:mariadb://localhost:3307/ad_suministros?user=root
+
+TABLA: pieza
+Claves primarias: cod 
+Columnas:
+- cod | Tipo: VARCHAR | Permite nulos: No
+- descripcion | Tipo: VARCHAR | Permite nulos: No
+- nombre | Tipo: VARCHAR | Permite nulos: No
+- precio | Tipo: DOUBLE | Permite nulos: No
+Claves foráneas:
+No tiene
+
+TABLA: proveedor
+Claves primarias: cod 
+Columnas:
+- cod | Tipo: VARCHAR | Permite nulos: No
+- apellido1 | Tipo: VARCHAR | Permite nulos: No
+- apellido2 | Tipo: VARCHAR | Permite nulos: No
+- direccion | Tipo: VARCHAR | Permite nulos: No
+- nombre | Tipo: VARCHAR | Permite nulos: No
+Claves foráneas:
+No tiene
+
+TABLA: proyecto
+Claves primarias: cod 
+Columnas:
+- cod | Tipo: VARCHAR | Permite nulos: No
+- ciudad | Tipo: VARCHAR | Permite nulos: No
+- nombre | Tipo: VARCHAR | Permite nulos: No
+Claves foráneas:
+No tiene
+
+TABLA: suministro
+Claves primarias: id 
+Columnas:
+- id | Tipo: INT | Permite nulos: No
+- cantidad | Tipo: INT | Permite nulos: No
+- fecha | Tipo: DATE | Permite nulos: No
+- precio | Tipo: DOUBLE | Permite nulos: No
+- pieza_cod | Tipo: VARCHAR | Permite nulos: No
+- proveedor_cod | Tipo: VARCHAR | Permite nulos: No
+- proyecto_cod | Tipo: VARCHAR | Permite nulos: No
+Claves foráneas:
+- pieza_cod → pieza.cod
+- proveedor_cod → proveedor.cod
+- proyecto_cod → proyecto.cod
+

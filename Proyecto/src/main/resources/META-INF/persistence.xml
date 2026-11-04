@@ -5,9 +5,9 @@
              version="3.0">
     <persistence-unit name="default">
         <properties>
-            <property name="hibernate.connection.url"
-                      value="jdbc:mariadb://localhost:3306/ad_suministros"/>
             <!-- TODO : Cambiar el puerto 3306 a 3307 en casa -->
+            <property name="hibernate.connection.url"
+                      value="jdbc:mariadb://localhost:3307/ad_suministros"/>
             <property name="hibernate.connection.driver_class"
                       value="org.mariadb.jdbc.Driver"/>
             <property name="hibernate.connection.password"

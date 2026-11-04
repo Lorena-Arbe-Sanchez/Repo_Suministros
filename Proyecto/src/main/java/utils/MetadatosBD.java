@@ -110,6 +110,34 @@ public class MetadatosBD {
                                 }
                             }
 
+                            // Obtener las claves foráneas de la tabla
+                            texto.append("Claves foráneas:\n");
+
+                            boolean tieneClavesForaneas = false;
+
+                            try (ResultSet clavesForaneas = metadatos.getImportedKeys(
+                                    conexion.getCatalog(), null, nombreTabla)) {
+
+                                while (clavesForaneas.next()) {
+
+                                    String columna = clavesForaneas.getString("FKCOLUMN_NAME");
+                                    String tablaReferenciada = clavesForaneas.getString("PKTABLE_NAME");
+                                    String columnaReferenciada = clavesForaneas.getString("PKCOLUMN_NAME");
+
+                                    texto.append("- ").append(columna)
+                                            .append(" → ")
+                                            .append(tablaReferenciada).append(".").append(columnaReferenciada)
+                                            .append("\n");
+
+                                    tieneClavesForaneas = true;
+                                }
+                            }
+
+                            // Indicar si la tabla no tiene claves foráneas
+                            if (!tieneClavesForaneas) {
+                                texto.append("No tiene\n");
+                            }
+
                             texto.append("\n");
                         }
                     }
