@@ -34,6 +34,4 @@ public class ProveedorDao extends Dao<Proveedor, String> implements IProveedorDa
                 ).setParameter("texto", "%" + texto.toLowerCase() + "%")
                 .getResultList();
     }
-
-    // todo
 }

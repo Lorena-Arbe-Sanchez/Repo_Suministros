@@ -1,4 +1,5 @@
 import dao.*;
+import models.Pieza;
 import models.Proveedor;
 import utils.ExportarDatos;
 import utils.MetadatosBD;
@@ -154,19 +155,19 @@ public class App {
 
             switch (opcion) {
                 case 1:
-                    // TODO: Listar piezas
+                    listarPiezas(dao);
                     break;
                 case 2:
-                    // TODO: Dar de alta una pieza
+                    crearPieza(sc, dao);
                     break;
                 case 3:
-                    // TODO: Modificar una pieza
+                    modificarPieza(sc, dao);
                     break;
                 case 4:
-                    // TODO: Dar de baja una pieza
+                    eliminarPieza(sc, dao);
                     break;
                 case 5:
-                    // TODO: Buscar piezas
+                    buscarPiezas(sc, dao);
                     break;
                 case 0:
                     break;
@@ -335,6 +336,7 @@ public class App {
 
         List<Proveedor> proveedores = dao.findAll();
 
+        // TODO : Probar esta opción
         if (proveedores.isEmpty()) {
             System.out.println("No hay proveedores registrados");
             return;
@@ -463,6 +465,133 @@ public class App {
             System.out.println("Primer apellido: " + p.getApellido1());
             System.out.println("Segundo apellido: " + p.getApellido2());
             System.out.println("Dirección: " + p.getDireccion());
+        }
+    }
+
+    // Listar todas las piezas
+    private static void listarPiezas(PiezaDao dao) {
+        List<Pieza> piezas = dao.findAll();
+
+        if (piezas.isEmpty()) {
+            System.out.println("No hay piezas registradas");
+            return;
+        }
+
+        for (Pieza p : piezas) {
+            System.out.println("\nCódigo: " + p.getCod());
+            System.out.println("Nombre: " + p.getNombre());
+            System.out.println("Precio: " + p.getPrecio());
+            System.out.println("Descripción: " + p.getDescripcion());
+        }
+    }
+
+    // Crear una pieza
+    private static void crearPieza(Scanner sc, PiezaDao dao) {
+        String cod;
+        Pieza piezaExistente;
+
+        do {
+            cod = leerTexto(sc, "Código: ");
+            piezaExistente = dao.find(cod);
+
+            if (piezaExistente != null) {
+                System.out.println("⚠️ Ya existe una pieza con ese código");
+            }
+        } while (piezaExistente != null);
+
+        String nombre = leerTexto(sc, "Nombre: ");
+        double precio = leerPrecio(sc, "Precio: ");
+        String descripcion = leerTexto(sc, "Descripción: ");
+
+        Pieza pieza = new Pieza(cod, nombre, precio, descripcion, null);
+
+        dao.create(pieza);
+        System.out.println("✅ Pieza creada correctamente");
+    }
+
+    // Modificar una pieza
+    private static void modificarPieza(Scanner sc, PiezaDao dao) {
+        String cod;
+        Pieza pieza;
+
+        do {
+            cod = leerTexto(sc, "Introduce el código de la pieza: ");
+            pieza = dao.find(cod);
+
+            if (pieza == null) {
+                System.out.println("⚠️ No existe ninguna pieza con ese código");
+            }
+        } while (pieza == null);
+
+        System.out.print("Nuevo nombre (" + pieza.getNombre() + "): ");
+        String nombre = sc.nextLine();
+        if (!nombre.trim().isEmpty()) pieza.setNombre(nombre.trim());
+
+        // TODO : Revisar lo del precio
+        System.out.print("Nuevo precio (" + pieza.getPrecio() + "): ");
+        String precio = sc.nextLine();
+
+        if (!precio.trim().isEmpty()) {
+            try {
+                double nuevoPrecio = Double.parseDouble(precio);
+
+                if (nuevoPrecio > 0) {
+                    pieza.setPrecio(nuevoPrecio);
+                } else {
+                    System.out.println("⚠️ El precio debe ser mayor que 0");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("⚠️ Debes introducir un número válido");
+            }
+        }
+
+        System.out.print("Nueva descripción (" + pieza.getDescripcion() + "): ");
+        String descripcion = sc.nextLine();
+        if (!descripcion.trim().isEmpty()) pieza.setDescripcion(descripcion.trim());
+
+        dao.update(pieza);
+        System.out.println("✅ Pieza modificada correctamente");
+    }
+
+    // Eliminar una pieza
+    private static void eliminarPieza(Scanner sc, PiezaDao dao) {
+        String cod;
+        Pieza pieza;
+
+        do {
+            cod = leerTexto(sc, "Introduce el código de la pieza: ");
+            pieza = dao.find(cod);
+
+            if (pieza == null) {
+                System.out.println("⚠️ No existe ninguna pieza con ese código");
+            }
+        } while (pieza == null);
+
+        String respuesta = leerTexto(sc, "¿Seguro que quieres eliminarla? (s/n): ");
+
+        if (respuesta.equalsIgnoreCase("s")) {
+            dao.delete(pieza);
+            System.out.println("✅ Pieza eliminada correctamente");
+        } else {
+            System.out.println("Operación cancelada");
+        }
+    }
+
+    // Buscar piezas
+    private static void buscarPiezas(Scanner sc, PiezaDao dao) {
+        String texto = leerTexto(sc, "Introduce el texto (código, nombre o descripción) que quieres buscar: ");
+        List<Pieza> piezas = dao.buscar(texto);
+
+        if (piezas.isEmpty()) {
+            System.out.println("No se han encontrado piezas");
+            return;
+        }
+
+        for (Pieza p : piezas) {
+            System.out.println("\nCódigo: " + p.getCod());
+            System.out.println("Nombre: " + p.getNombre());
+            System.out.println("Precio: " + p.getPrecio());
+            System.out.println("Descripción: " + p.getDescripcion());
         }
     }
 
