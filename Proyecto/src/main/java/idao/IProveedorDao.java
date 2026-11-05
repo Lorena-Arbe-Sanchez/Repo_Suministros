@@ -9,6 +9,4 @@ public interface IProveedorDao {
     List<Proveedor> findAll();
 
     List<Proveedor> buscar(String texto);
-
-    // todo
 }
