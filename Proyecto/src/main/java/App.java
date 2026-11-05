@@ -1,6 +1,7 @@
 import dao.*;
 import models.Pieza;
 import models.Proveedor;
+import models.Proyecto;
 import utils.ExportarDatos;
 import utils.MetadatosBD;
 
@@ -198,19 +199,19 @@ public class App {
 
             switch (opcion) {
                 case 1:
-                    // TODO: Listar proyectos
+                    listarProyectos(dao);
                     break;
                 case 2:
-                    // TODO: Dar de alta un proyecto
+                    crearProyecto(sc, dao);
                     break;
                 case 3:
-                    // TODO: Modificar un proyecto
+                    modificarProyecto(sc, dao);
                     break;
                 case 4:
-                    // TODO: Dar de baja un proyecto
+                    eliminarProyecto(sc, dao);
                     break;
                 case 5:
-                    // TODO: Buscar proyectos
+                    buscarProyectos(sc, dao);
                     break;
                 case 0:
                     break;
@@ -596,6 +597,112 @@ public class App {
             System.out.println("Nombre: " + p.getNombre());
             System.out.println("Precio: " + p.getPrecio());
             System.out.println("Descripción: " + p.getDescripcion());
+        }
+    }
+
+    // Listar todos los proyectos
+    private static void listarProyectos(ProyectoDao dao) {
+        List<Proyecto> proyectos = dao.findAll();
+
+        if (proyectos.isEmpty()) {
+            System.out.println("No hay proyectos registrados.");
+            return;
+        }
+
+        for (Proyecto p : proyectos) {
+            System.out.println("\nCódigo: " + p.getCod());
+            System.out.println("Nombre: " + p.getNombre());
+            System.out.println("Ciudad: " + p.getCiudad());
+        }
+    }
+
+    // Crear un proyecto
+    private static void crearProyecto(Scanner sc, ProyectoDao dao) {
+        String cod;
+        Proyecto proyectoExistente;
+
+        do {
+            cod = leerTexto(sc, "Código: ");
+            proyectoExistente = dao.find(cod);
+
+            if (proyectoExistente != null) {
+                System.out.println("⚠️ Ya existe un proyecto con ese código.");
+            }
+        } while (proyectoExistente != null);
+
+        String nombre = leerTexto(sc, "Nombre: ");
+        String ciudad = leerTexto(sc, "Ciudad: ");
+
+        Proyecto proyecto = new Proyecto(cod, nombre, ciudad, null);
+
+        dao.create(proyecto);
+        System.out.println("✅ Proyecto creado correctamente.");
+    }
+
+    // Modificar un proyecto
+    private static void modificarProyecto(Scanner sc, ProyectoDao dao) {
+        String cod;
+        Proyecto proyecto;
+
+        do {
+            cod = leerTexto(sc, "Introduce el código del proyecto: ");
+            proyecto = dao.find(cod);
+
+            if (proyecto == null) {
+                System.out.println("⚠️ No existe ningún proyecto con ese código.");
+            }
+        } while (proyecto == null);
+
+        System.out.print("Nuevo nombre (" + proyecto.getNombre() + "): ");
+        String nombre = sc.nextLine();
+        if (!nombre.trim().isEmpty()) proyecto.setNombre(nombre.trim());
+
+        System.out.print("Nueva ciudad (" + proyecto.getCiudad() + "): ");
+        String ciudad = sc.nextLine();
+        if (!ciudad.trim().isEmpty()) proyecto.setCiudad(ciudad.trim());
+
+        dao.update(proyecto);
+        System.out.println("✅ Proyecto modificado correctamente.");
+    }
+
+    // Eliminar un proyecto
+    private static void eliminarProyecto(Scanner sc, ProyectoDao dao) {
+        String cod;
+        Proyecto proyecto;
+
+        do {
+            cod = leerTexto(sc, "Introduce el código del proyecto: ");
+            proyecto = dao.find(cod);
+
+            if (proyecto == null) {
+                System.out.println("⚠️ No existe ningún proyecto con ese código.");
+            }
+        } while (proyecto == null);
+
+        String respuesta = leerTexto(sc, "¿Seguro que quieres eliminarlo? (s/n): ");
+
+        if (respuesta.equalsIgnoreCase("s")) {
+            dao.delete(proyecto);
+            System.out.println("✅ Proyecto eliminado correctamente.");
+        } else {
+            System.out.println("Operación cancelada.");
+        }
+    }
+
+    // Buscar proyectos
+    private static void buscarProyectos(Scanner sc, ProyectoDao dao) {
+        String texto = leerTexto(sc, "Introduce el texto (código, nombre o ciudad) que quieres buscar: ");
+        List<Proyecto> proyectos = dao.buscar(texto);
+
+        if (proyectos.isEmpty()) {
+            System.out.println("No se han encontrado proyectos.");
+            return;
+        }
+
+        for (Proyecto p : proyectos) {
+            System.out.println("\nCódigo: " + p.getCod());
+            System.out.println("Nombre: " + p.getNombre());
+            System.out.println("Ciudad: " + p.getCiudad());
         }
     }
 
