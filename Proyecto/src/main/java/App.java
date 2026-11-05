@@ -26,8 +26,8 @@ public class App {
             proyectoDao = new ProyectoDao();
             suministroDao = new SuministroDao();
 
-            System.out.println("🔌 Conexión con la base de datos establecida");
-            System.out.println("✅ Entidades inicializadas correctamente");
+            System.out.println("🔌 Conexión con la base de datos establecida.");
+            System.out.println("✅ Entidades inicializadas correctamente.");
 
             // Menú principal
             int opcion;
@@ -336,9 +336,9 @@ public class App {
 
         List<Proveedor> proveedores = dao.findAll();
 
-        // TODO : Probar esta opción
+        // TODO : Probar esta opción y la de "isEmpty" de los demás modelos
         if (proveedores.isEmpty()) {
-            System.out.println("No hay proveedores registrados");
+            System.out.println("No hay proveedores registrados.");
             return;
         }
 
@@ -360,7 +360,7 @@ public class App {
             cod = leerTexto(sc, "Código: ");
 
             if (dao.find(cod) != null) {
-                System.out.println("⚠️ Ya existe un proveedor con ese código");
+                System.out.println("⚠️ Ya existe un proveedor con ese código.");
             }
         } while (dao.find(cod) != null);
 
@@ -373,7 +373,7 @@ public class App {
 
         dao.create(proveedor);
 
-        System.out.println("✅ Proveedor creado correctamente");
+        System.out.println("✅ Proveedor creado correctamente.");
     }
 
     // Modificar un proveedor
@@ -387,7 +387,7 @@ public class App {
             proveedor = dao.find(cod);
 
             if (proveedor == null) {
-                System.out.println("⚠️ No existe ningún proveedor con ese código");
+                System.out.println("⚠️ No existe ningún proveedor con ese código.");
             }
 
         } while (proveedor == null);
@@ -418,7 +418,7 @@ public class App {
 
         dao.update(proveedor);
 
-        System.out.println("✅ Proveedor modificado correctamente");
+        System.out.println("✅ Proveedor modificado correctamente.");
     }
 
     // Eliminar un proveedor
@@ -432,7 +432,7 @@ public class App {
             proveedor = dao.find(cod);
 
             if (proveedor == null) {
-                System.out.println("⚠️ No existe ningún proveedor con ese código");
+                System.out.println("⚠️ No existe ningún proveedor con ese código.");
             }
 
         } while (proveedor == null);
@@ -441,9 +441,9 @@ public class App {
 
         if (respuesta.equalsIgnoreCase("s")) {
             dao.delete(proveedor);
-            System.out.println("✅ Proveedor eliminado correctamente");
+            System.out.println("✅ Proveedor eliminado correctamente.");
         } else {
-            System.out.println("Operación cancelada");
+            System.out.println("Operación cancelada.");
         }
     }
 
@@ -455,7 +455,7 @@ public class App {
         List<Proveedor> proveedores = dao.buscar(texto);
 
         if (proveedores.isEmpty()) {
-            System.out.println("No se han encontrado proveedores");
+            System.out.println("No se han encontrado proveedores.");
             return;
         }
 
@@ -473,7 +473,7 @@ public class App {
         List<Pieza> piezas = dao.findAll();
 
         if (piezas.isEmpty()) {
-            System.out.println("No hay piezas registradas");
+            System.out.println("No hay piezas registradas.");
             return;
         }
 
@@ -495,7 +495,7 @@ public class App {
             piezaExistente = dao.find(cod);
 
             if (piezaExistente != null) {
-                System.out.println("⚠️ Ya existe una pieza con ese código");
+                System.out.println("⚠️ Ya existe una pieza con ese código.");
             }
         } while (piezaExistente != null);
 
@@ -506,7 +506,7 @@ public class App {
         Pieza pieza = new Pieza(cod, nombre, precio, descripcion, null);
 
         dao.create(pieza);
-        System.out.println("✅ Pieza creada correctamente");
+        System.out.println("✅ Pieza creada correctamente.");
     }
 
     // Modificar una pieza
@@ -519,7 +519,7 @@ public class App {
             pieza = dao.find(cod);
 
             if (pieza == null) {
-                System.out.println("⚠️ No existe ninguna pieza con ese código");
+                System.out.println("⚠️ No existe ninguna pieza con ese código.");
             }
         } while (pieza == null);
 
@@ -527,22 +527,26 @@ public class App {
         String nombre = sc.nextLine();
         if (!nombre.trim().isEmpty()) pieza.setNombre(nombre.trim());
 
-        // TODO : Revisar lo del precio
         System.out.print("Nuevo precio (" + pieza.getPrecio() + "): ");
         String precio = sc.nextLine();
 
-        if (!precio.trim().isEmpty()) {
+        while (!precio.trim().isEmpty()) {
             try {
                 double nuevoPrecio = Double.parseDouble(precio);
 
                 if (nuevoPrecio > 0) {
                     pieza.setPrecio(nuevoPrecio);
+                    break;
                 } else {
-                    System.out.println("⚠️ El precio debe ser mayor que 0");
+                    System.out.println("⚠️ El precio debe ser mayor que 0.");
                 }
+
             } catch (NumberFormatException e) {
-                System.out.println("⚠️ Debes introducir un número válido");
+                System.out.println("⚠️ Debes introducir un número válido.");
             }
+
+            System.out.print("Vuelve a introducir el precio: ");
+            precio = sc.nextLine();
         }
 
         System.out.print("Nueva descripción (" + pieza.getDescripcion() + "): ");
@@ -550,7 +554,7 @@ public class App {
         if (!descripcion.trim().isEmpty()) pieza.setDescripcion(descripcion.trim());
 
         dao.update(pieza);
-        System.out.println("✅ Pieza modificada correctamente");
+        System.out.println("✅ Pieza modificada correctamente.");
     }
 
     // Eliminar una pieza
@@ -563,7 +567,7 @@ public class App {
             pieza = dao.find(cod);
 
             if (pieza == null) {
-                System.out.println("⚠️ No existe ninguna pieza con ese código");
+                System.out.println("⚠️ No existe ninguna pieza con ese código.");
             }
         } while (pieza == null);
 
@@ -571,9 +575,9 @@ public class App {
 
         if (respuesta.equalsIgnoreCase("s")) {
             dao.delete(pieza);
-            System.out.println("✅ Pieza eliminada correctamente");
+            System.out.println("✅ Pieza eliminada correctamente.");
         } else {
-            System.out.println("Operación cancelada");
+            System.out.println("Operación cancelada.");
         }
     }
 
@@ -583,7 +587,7 @@ public class App {
         List<Pieza> piezas = dao.buscar(texto);
 
         if (piezas.isEmpty()) {
-            System.out.println("No se han encontrado piezas");
+            System.out.println("No se han encontrado piezas.");
             return;
         }
 
@@ -632,25 +636,23 @@ public class App {
     public static double leerPrecio(Scanner sc, String mensaje) {
         double precio;
 
-        do {
+        while (true) {
             System.out.print(mensaje);
+            String texto = sc.nextLine().trim();
 
-            while (!sc.hasNextDouble()) {
-                System.out.println("❌ Error: debes introducir un número.");
-                sc.nextLine();
-                System.out.print("Vuelve a intentarlo: ");
-            }
+            try {
+                precio = Double.parseDouble(texto);
 
-            precio = sc.nextDouble();
-            sc.nextLine();
+                if (precio > 0) {
+                    return precio;
+                }
 
-            if (precio <= 0) {
                 System.out.println("❌ Error: el precio debe ser mayor que 0.");
+
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Error: debes introducir un número válido.");
             }
-
-        } while (precio <= 0);
-
-        return precio;
+        }
     }
 
     // Comprobar que se ha proporcionado un texto
