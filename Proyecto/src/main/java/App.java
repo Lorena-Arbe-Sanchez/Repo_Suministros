@@ -2,6 +2,7 @@ import dao.*;
 import models.Pieza;
 import models.Proveedor;
 import models.Proyecto;
+import models.Suministro;
 import utils.ExportarDatos;
 import utils.MetadatosBD;
 
@@ -58,7 +59,7 @@ public class App {
                         menuProyectos(sc, proyectoDao);
                         break;
                     case 4:
-                        menuSuministros(sc, suministroDao);
+                        menuSuministros(sc, suministroDao, proveedorDao, piezaDao, proyectoDao);
                         break;
                     case 5:
                         menuExportaciones(sc);
@@ -223,7 +224,8 @@ public class App {
     }
 
     // Menú de suministros
-    private static void menuSuministros(Scanner sc, SuministroDao dao) {
+    private static void menuSuministros(Scanner sc, SuministroDao dao, ProveedorDao proveedorDao,
+                                        PiezaDao piezaDao, ProyectoDao proyectoDao) {
 
         int opcion;
 
@@ -242,19 +244,19 @@ public class App {
 
             switch (opcion) {
                 case 1:
-                    // TODO: Listar suministros
+                    listarSuministros(dao);
                     break;
                 case 2:
-                    // TODO: Registrar un suministro
+                    crearSuministro(sc, dao, proveedorDao, piezaDao, proyectoDao);
                     break;
                 case 3:
-                    // TODO: Modificar un suministro
+                    modificarSuministro(sc, dao, proveedorDao, piezaDao, proyectoDao);
                     break;
                 case 4:
-                    // TODO: Eliminar un suministro
+                    eliminarSuministro(sc, dao);
                     break;
                 case 5:
-                    // TODO: Buscar suministros
+                    buscarSuministros(sc, dao);
                     break;
                 case 0:
                     break;
@@ -703,6 +705,218 @@ public class App {
             System.out.println("\nCódigo: " + p.getCod());
             System.out.println("Nombre: " + p.getNombre());
             System.out.println("Ciudad: " + p.getCiudad());
+        }
+    }
+
+    // Listar todos los suministros
+    private static void listarSuministros(SuministroDao dao) {
+        List<Suministro> suministros = dao.findAll();
+
+        if (suministros.isEmpty()) {
+            System.out.println("No hay suministros registrados.");
+            return;
+        }
+
+        for (Suministro s : suministros) {
+            System.out.println("\nID: " + s.getId());
+            System.out.println("Fecha: " + s.getFecha());
+            System.out.println("Cantidad: " + s.getCantidad());
+            System.out.println("Proveedor: " + s.getProveedor().getCod() + " - " + s.getProveedor().getNombre());
+            System.out.println("Pieza: " + s.getPieza().getCod() + " - " + s.getPieza().getNombre());
+            System.out.println("Proyecto: " + s.getProyecto().getCod() + " - " + s.getProyecto().getNombre());
+        }
+    }
+
+    // Crear un suministro
+    private static void crearSuministro(Scanner sc, SuministroDao dao, ProveedorDao proveedorDao,
+                                        PiezaDao piezaDao, ProyectoDao proyectoDao) {
+
+        LocalDate fecha = leerFecha(sc, "Fecha (AAAA-MM-DD): ");
+        int cantidad = leerPositivo(sc, "Cantidad: ");
+
+        Proveedor proveedor;
+        do {
+            String codProveedor = leerTexto(sc, "Código del proveedor: ");
+            proveedor = proveedorDao.find(codProveedor);
+
+            if (proveedor == null) {
+                System.out.println("⚠️ No existe ningún proveedor con ese código.");
+            }
+        } while (proveedor == null);
+
+        Pieza pieza;
+        do {
+            String codPieza = leerTexto(sc, "Código de la pieza: ");
+            pieza = piezaDao.find(codPieza);
+
+            if (pieza == null) {
+                System.out.println("⚠️ No existe ninguna pieza con ese código.");
+            }
+        } while (pieza == null);
+
+        Proyecto proyecto;
+        do {
+            String codProyecto = leerTexto(sc, "Código del proyecto: ");
+            proyecto = proyectoDao.find(codProyecto);
+
+            if (proyecto == null) {
+                System.out.println("⚠️ No existe ningún proyecto con ese código.");
+            }
+        } while (proyecto == null);
+
+        Suministro suministro = new Suministro(0, fecha, cantidad, proveedor, pieza, proyecto);
+
+        dao.create(suministro);
+        System.out.println("✅ Suministro registrado correctamente.");
+    }
+
+    // Modificar un suministro
+    private static void modificarSuministro(Scanner sc, SuministroDao dao, ProveedorDao proveedorDao,
+                                            PiezaDao piezaDao, ProyectoDao proyectoDao) {
+
+        int id;
+        Suministro suministro;
+
+        do {
+            id = leerPositivo(sc, "Introduce el ID del suministro: ");
+            suministro = dao.find(id);
+
+            if (suministro == null) {
+                System.out.println("⚠️ No existe ningún suministro con ese ID.");
+            }
+        } while (suministro == null);
+
+        System.out.print("Nueva fecha (" + suministro.getFecha() + "): ");
+        String fecha = sc.nextLine();
+
+        while (!fecha.trim().isEmpty()) {
+            try {
+                suministro.setFecha(LocalDate.parse(fecha));
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("⚠️ Introduce una fecha válida (AAAA-MM-DD).");
+                System.out.print("Vuelve a introducir la fecha: ");
+                fecha = sc.nextLine();
+            }
+        }
+
+        System.out.print("Nueva cantidad (" + suministro.getCantidad() + "): ");
+        String cantidad = sc.nextLine();
+
+        while (!cantidad.trim().isEmpty()) {
+            try {
+                int nuevaCantidad = Integer.parseInt(cantidad);
+
+                if (nuevaCantidad > 0) {
+                    suministro.setCantidad(nuevaCantidad);
+                    break;
+                } else {
+                    System.out.println("⚠️ La cantidad debe ser mayor que 0.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("⚠️ Debes introducir un número entero válido.");
+            }
+
+            System.out.print("Vuelve a introducir la cantidad: ");
+            cantidad = sc.nextLine();
+        }
+
+        System.out.print("Nuevo código de proveedor (" + suministro.getProveedor().getCod() + "): ");
+        String codProveedor = sc.nextLine();
+
+        while (!codProveedor.trim().isEmpty()) {
+            Proveedor proveedor = proveedorDao.find(codProveedor.trim());
+
+            if (proveedor != null) {
+                suministro.setProveedor(proveedor);
+                break;
+            } else {
+                System.out.println("⚠️ No existe ningún proveedor con ese código.");
+            }
+
+            System.out.print("Vuelve a introducir el código del proveedor: ");
+            codProveedor = sc.nextLine();
+        }
+
+        System.out.print("Nuevo código de pieza (" + suministro.getPieza().getCod() + "): ");
+        String codPieza = sc.nextLine();
+
+        while (!codPieza.trim().isEmpty()) {
+            Pieza pieza = piezaDao.find(codPieza.trim());
+
+            if (pieza != null) {
+                suministro.setPieza(pieza);
+                break;
+            } else {
+                System.out.println("⚠️ No existe ninguna pieza con ese código.");
+            }
+
+            System.out.print("Vuelve a introducir el código de la pieza: ");
+            codPieza = sc.nextLine();
+        }
+
+        System.out.print("Nuevo código de proyecto (" + suministro.getProyecto().getCod() + "): ");
+        String codProyecto = sc.nextLine();
+
+        while (!codProyecto.trim().isEmpty()) {
+            Proyecto proyecto = proyectoDao.find(codProyecto.trim());
+
+            if (proyecto != null) {
+                suministro.setProyecto(proyecto);
+                break;
+            } else {
+                System.out.println("⚠️ No existe ningún proyecto con ese código.");
+            }
+
+            System.out.print("Vuelve a introducir el código del proyecto: ");
+            codProyecto = sc.nextLine();
+        }
+
+        dao.update(suministro);
+        System.out.println("✅ Suministro modificado correctamente.");
+    }
+
+    // Eliminar un suministro
+    private static void eliminarSuministro(Scanner sc, SuministroDao dao) {
+        int id;
+        Suministro suministro;
+
+        do {
+            id = leerPositivo(sc, "Introduce el ID del suministro: ");
+            suministro = dao.find(id);
+
+            if (suministro == null) {
+                System.out.println("⚠️ No existe ningún suministro con ese ID.");
+            }
+        } while (suministro == null);
+
+        String respuesta = leerTexto(sc, "¿Seguro que quieres eliminarlo? (s/n): ");
+
+        if (respuesta.equalsIgnoreCase("s")) {
+            dao.delete(suministro);
+            System.out.println("✅ Suministro eliminado correctamente.");
+        } else {
+            System.out.println("Operación cancelada.");
+        }
+    }
+
+    // Buscar suministros
+    private static void buscarSuministros(Scanner sc, SuministroDao dao) {
+        String texto = leerTexto(sc, "Introduce el texto (ID, proveedor, pieza o proyecto) que quieres buscar: ");
+        List<Suministro> suministros = dao.buscar(texto);
+
+        if (suministros.isEmpty()) {
+            System.out.println("No se han encontrado suministros.");
+            return;
+        }
+
+        for (Suministro s : suministros) {
+            System.out.println("\nID: " + s.getId());
+            System.out.println("Fecha: " + s.getFecha());
+            System.out.println("Cantidad: " + s.getCantidad());
+            System.out.println("Proveedor: " + s.getProveedor().getCod() + " - " + s.getProveedor().getNombre());
+            System.out.println("Pieza: " + s.getPieza().getCod() + " - " + s.getPieza().getNombre());
+            System.out.println("Proyecto: " + s.getProyecto().getCod() + " - " + s.getProyecto().getNombre());
         }
     }
 
