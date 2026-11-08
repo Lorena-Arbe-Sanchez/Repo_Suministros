@@ -47,13 +47,27 @@ public abstract class Dao<T, K> {
         return actualizado;
     }
 
-    public void delete(T t) {
+    // Eliminar un registro
+    public boolean delete(T t) {
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
 
-        em.remove(em.contains(t) ? t : em.merge(t));
+        try {
+            transaction.begin();
 
-        transaction.commit();
+            em.remove(em.contains(t) ? t : em.merge(t));
+
+            transaction.commit();
+            return true;
+
+        } catch (jakarta.persistence.PersistenceException e) {
+
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            em.clear();
+            return false;
+        }
     }
 
     public void cerrar() {

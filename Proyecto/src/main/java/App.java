@@ -443,8 +443,11 @@ public class App {
         String respuesta = leerTexto(sc, "¿Seguro que quieres eliminarlo? (s/n): ");
 
         if (respuesta.equalsIgnoreCase("s")) {
-            dao.delete(proveedor);
-            System.out.println("✅ Proveedor eliminado correctamente.");
+            if (dao.delete(proveedor)) {
+                System.out.println("✅ Proveedor eliminado correctamente.");
+            } else {
+                System.out.println("❌ No se puede eliminar el proveedor porque tiene suministros asociados.");
+            }
         } else {
             System.out.println("Operación cancelada.");
         }
@@ -577,8 +580,11 @@ public class App {
         String respuesta = leerTexto(sc, "¿Seguro que quieres eliminarla? (s/n): ");
 
         if (respuesta.equalsIgnoreCase("s")) {
-            dao.delete(pieza);
-            System.out.println("✅ Pieza eliminada correctamente.");
+            if (dao.delete(pieza)) {
+                System.out.println("✅ Pieza eliminada correctamente.");
+            } else {
+                System.out.println("❌ No se puede eliminar la pieza porque tiene suministros asociados.");
+            }
         } else {
             System.out.println("Operación cancelada.");
         }
@@ -684,8 +690,11 @@ public class App {
         String respuesta = leerTexto(sc, "¿Seguro que quieres eliminarlo? (s/n): ");
 
         if (respuesta.equalsIgnoreCase("s")) {
-            dao.delete(proyecto);
-            System.out.println("✅ Proyecto eliminado correctamente.");
+            if (dao.delete(proyecto)) {
+                System.out.println("✅ Proyecto eliminado correctamente.");
+            } else {
+                System.out.println("❌ No se puede eliminar el proyecto porque tiene suministros asociados.");
+            }
         } else {
             System.out.println("Operación cancelada.");
         }
