@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <registros>
     <registro>
-        <id>16</id>
+        <id>1</id>
         <cantidad>500</cantidad>
         <fecha>2026-01-10</fecha>
         <pieza_cod>P001</pieza_cod>
@@ -9,7 +9,7 @@
         <proyecto_cod>PRY001</proyecto_cod>
     </registro>
     <registro>
-        <id>17</id>
+        <id>2</id>
         <cantidad>500</cantidad>
         <fecha>2026-01-10</fecha>
         <pieza_cod>P002</pieza_cod>
@@ -17,7 +17,7 @@
         <proyecto_cod>PRY001</proyecto_cod>
     </registro>
     <registro>
-        <id>18</id>
+        <id>3</id>
         <cantidad>1000</cantidad>
         <fecha>2026-01-12</fecha>
         <pieza_cod>P003</pieza_cod>
@@ -25,7 +25,7 @@
         <proyecto_cod>PRY001</proyecto_cod>
     </registro>
     <registro>
-        <id>19</id>
+        <id>4</id>
         <cantidad>20</cantidad>
         <fecha>2026-01-15</fecha>
         <pieza_cod>P004</pieza_cod>
@@ -33,7 +33,7 @@
         <proyecto_cod>PRY002</proyecto_cod>
     </registro>
     <registro>
-        <id>20</id>
+        <id>5</id>
         <cantidad>10</cantidad>
         <fecha>2026-01-18</fecha>
         <pieza_cod>P005</pieza_cod>
@@ -41,7 +41,7 @@
         <proyecto_cod>PRY002</proyecto_cod>
     </registro>
     <registro>
-        <id>21</id>
+        <id>6</id>
         <cantidad>100</cantidad>
         <fecha>2026-01-20</fecha>
         <pieza_cod>P006</pieza_cod>
@@ -49,7 +49,7 @@
         <proyecto_cod>PRY002</proyecto_cod>
     </registro>
     <registro>
-        <id>22</id>
+        <id>7</id>
         <cantidad>5</cantidad>
         <fecha>2026-02-01</fecha>
         <pieza_cod>P007</pieza_cod>
@@ -57,7 +57,7 @@
         <proyecto_cod>PRY004</proyecto_cod>
     </registro>
     <registro>
-        <id>23</id>
+        <id>8</id>
         <cantidad>12</cantidad>
         <fecha>2026-02-03</fecha>
         <pieza_cod>P008</pieza_cod>
@@ -65,7 +65,7 @@
         <proyecto_cod>PRY004</proyecto_cod>
     </registro>
     <registro>
-        <id>24</id>
+        <id>9</id>
         <cantidad>30</cantidad>
         <fecha>2026-02-05</fecha>
         <pieza_cod>P009</pieza_cod>
@@ -73,7 +73,7 @@
         <proyecto_cod>PRY003</proyecto_cod>
     </registro>
     <registro>
-        <id>25</id>
+        <id>10</id>
         <cantidad>8</cantidad>
         <fecha>2026-02-08</fecha>
         <pieza_cod>P010</pieza_cod>
@@ -81,7 +81,7 @@
         <proyecto_cod>PRY003</proyecto_cod>
     </registro>
     <registro>
-        <id>26</id>
+        <id>11</id>
         <cantidad>300</cantidad>
         <fecha>2026-02-12</fecha>
         <pieza_cod>P001</pieza_cod>
@@ -89,7 +89,7 @@
         <proyecto_cod>PRY005</proyecto_cod>
     </registro>
     <registro>
-        <id>27</id>
+        <id>12</id>
         <cantidad>300</cantidad>
         <fecha>2026-02-12</fecha>
         <pieza_cod>P002</pieza_cod>
@@ -97,7 +97,7 @@
         <proyecto_cod>PRY005</proyecto_cod>
     </registro>
     <registro>
-        <id>28</id>
+        <id>13</id>
         <cantidad>15</cantidad>
         <fecha>2026-02-15</fecha>
         <pieza_cod>P009</pieza_cod>
@@ -105,7 +105,7 @@
         <proyecto_cod>PRY006</proyecto_cod>
     </registro>
     <registro>
-        <id>29</id>
+        <id>14</id>
         <cantidad>3</cantidad>
         <fecha>2026-02-18</fecha>
         <pieza_cod>P007</pieza_cod>
@@ -113,7 +113,7 @@
         <proyecto_cod>PRY006</proyecto_cod>
     </registro>
     <registro>
-        <id>30</id>
+        <id>15</id>
         <cantidad>50</cantidad>
         <fecha>2026-02-20</fecha>
         <pieza_cod>P008</pieza_cod>

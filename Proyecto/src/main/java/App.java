@@ -940,17 +940,28 @@ public class App {
     public static int leerPositivo(Scanner sc, String mensaje) {
         int numero;
 
-        do {
+        while (true) {
             System.out.print(mensaje);
-            numero = leerInt(sc);
+            String texto = sc.nextLine().trim();
 
-            if (numero <= 0) {
-                System.out.println("❌ Error: el número debe ser mayor que 0.");
+            if (texto.isEmpty()) {
+                System.out.println("❌ Error: debes introducir un número");
+                continue;
             }
 
-        } while (numero <= 0);
+            try {
+                numero = Integer.parseInt(texto);
 
-        return numero;
+                if (numero > 0) {
+                    return numero;
+                }
+
+                System.out.println("❌ Error: el número debe ser mayor que 0");
+
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Error: debes introducir un número entero válido");
+            }
+        }
     }
 
     // Leer un precio válido mayor que 0

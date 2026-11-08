@@ -1,6 +1,6 @@
 [
   {
-    "id": 16,
+    "id": 1,
     "cantidad": 500,
     "fecha": "2026-01-10",
     "pieza_cod": "P001",
@@ -8,7 +8,7 @@
     "proyecto_cod": "PRY001"
   },
   {
-    "id": 17,
+    "id": 2,
     "cantidad": 500,
     "fecha": "2026-01-10",
     "pieza_cod": "P002",
@@ -16,7 +16,7 @@
     "proyecto_cod": "PRY001"
   },
   {
-    "id": 18,
+    "id": 3,
     "cantidad": 1000,
     "fecha": "2026-01-12",
     "pieza_cod": "P003",
@@ -24,7 +24,7 @@
     "proyecto_cod": "PRY001"
   },
   {
-    "id": 19,
+    "id": 4,
     "cantidad": 20,
     "fecha": "2026-01-15",
     "pieza_cod": "P004",
@@ -32,7 +32,7 @@
     "proyecto_cod": "PRY002"
   },
   {
-    "id": 20,
+    "id": 5,
     "cantidad": 10,
     "fecha": "2026-01-18",
     "pieza_cod": "P005",
@@ -40,7 +40,7 @@
     "proyecto_cod": "PRY002"
   },
   {
-    "id": 21,
+    "id": 6,
     "cantidad": 100,
     "fecha": "2026-01-20",
     "pieza_cod": "P006",
@@ -48,7 +48,7 @@
     "proyecto_cod": "PRY002"
   },
   {
-    "id": 22,
+    "id": 7,
     "cantidad": 5,
     "fecha": "2026-02-01",
     "pieza_cod": "P007",
@@ -56,7 +56,7 @@
     "proyecto_cod": "PRY004"
   },
   {
-    "id": 23,
+    "id": 8,
     "cantidad": 12,
     "fecha": "2026-02-03",
     "pieza_cod": "P008",
@@ -64,7 +64,7 @@
     "proyecto_cod": "PRY004"
   },
   {
-    "id": 24,
+    "id": 9,
     "cantidad": 30,
     "fecha": "2026-02-05",
     "pieza_cod": "P009",
@@ -72,7 +72,7 @@
     "proyecto_cod": "PRY003"
   },
   {
-    "id": 25,
+    "id": 10,
     "cantidad": 8,
     "fecha": "2026-02-08",
     "pieza_cod": "P010",
@@ -80,7 +80,7 @@
     "proyecto_cod": "PRY003"
   },
   {
-    "id": 26,
+    "id": 11,
     "cantidad": 300,
     "fecha": "2026-02-12",
     "pieza_cod": "P001",
@@ -88,7 +88,7 @@
     "proyecto_cod": "PRY005"
   },
   {
-    "id": 27,
+    "id": 12,
     "cantidad": 300,
     "fecha": "2026-02-12",
     "pieza_cod": "P002",
@@ -96,7 +96,7 @@
     "proyecto_cod": "PRY005"
   },
   {
-    "id": 28,
+    "id": 13,
     "cantidad": 15,
     "fecha": "2026-02-15",
     "pieza_cod": "P009",
@@ -104,7 +104,7 @@
     "proyecto_cod": "PRY006"
   },
   {
-    "id": 29,
+    "id": 14,
     "cantidad": 3,
     "fecha": "2026-02-18",
     "pieza_cod": "P007",
@@ -112,7 +112,7 @@
     "proyecto_cod": "PRY006"
   },
   {
-    "id": 30,
+    "id": 15,
     "cantidad": 50,
     "fecha": "2026-02-20",
     "pieza_cod": "P008",
