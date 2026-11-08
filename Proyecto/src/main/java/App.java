@@ -43,6 +43,7 @@ public class App {
                 System.out.println("4. Gestión de suministros");
                 System.out.println("5. Exportar datos XML y JSON");
                 System.out.println("6. Metadatos de la BBDD");
+                System.out.println("7. Ayuda");
                 System.out.println("0. Salir");
                 System.out.print("\nElige una opción: ");
 
@@ -67,6 +68,9 @@ public class App {
                     case 6:
                         MetadatosBD.mostrarMetadatos();
                         MetadatosBD.exportarMetadatos();
+                        break;
+                    case 7:
+                        mostrarAyuda();
                         break;
                     case 0:
                         System.out.println("👋 ¡Hasta pronto!");
@@ -332,6 +336,45 @@ public class App {
             }
 
         } while (opcion != 0);
+    }
+
+    // Mostrar información de ayuda
+    private static void mostrarAyuda() {
+
+        System.out.println("\n\n===== AYUDA =====");
+
+        System.out.println("\n¿QUÉ ES ESTA APLICACIÓN?");
+        System.out.println("Aplicación para gestionar proveedores, piezas, proyectos y suministros.");
+        System.out.println("Permite realizar operaciones CRUD, búsquedas y exportaciones de datos.");
+
+        System.out.println("\n1. GESTIÓN DE PROVEEDORES");
+        System.out.println("Permite registrar, consultar, modificar, eliminar y buscar proveedores.");
+        System.out.println("Los proveedores no se pueden eliminar si tienen suministros asociados.");
+
+        System.out.println("\n2. GESTIÓN DE PIEZAS");
+        System.out.println("Permite registrar, consultar, modificar, eliminar y buscar piezas.");
+        System.out.println("Las piezas no se pueden eliminar si tienen suministros asociados.");
+
+        System.out.println("\n3. GESTIÓN DE PROYECTOS");
+        System.out.println("Permite registrar, consultar, modificar, eliminar y buscar proyectos.");
+        System.out.println("Los proyectos no se pueden eliminar si tienen suministros asociados.");
+
+        System.out.println("\n4. GESTIÓN DE SUMINISTROS");
+        System.out.println("Permite registrar, consultar, modificar, eliminar y buscar suministros.");
+        System.out.println("Cada suministro debe estar asociado a un proveedor, una pieza y un proyecto.");
+        System.out.println("El ID de cada suministro se genera automáticamente.");
+
+        System.out.println("\n5. EXPORTAR DATOS XML Y JSON");
+        System.out.println("Permite exportar los datos de cada entidad por separado o todos juntos.");
+        System.out.println("Los archivos generados se guardan en los directorios correspondientes.");
+
+        System.out.println("\n6. METADATOS DE LA BBDD");
+        System.out.println("Permite consultar y exportar información sobre la estructura de la base de datos.");
+
+        System.out.println("\n0. SALIR");
+        System.out.println("Cierra la aplicación y libera los recursos utilizados.");
+
+        System.out.println("\nNOTA: Para volver al menú principal, utiliza la opción 0 de cada submenú.");
     }
 
     // Listar todos los proveedores
