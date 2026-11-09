@@ -52,6 +52,4 @@ public class AppTest {
             em.close();
         }
     }
-
-    // TODO: Añadir pruebas para comprobar los métodos de los DAO
 }

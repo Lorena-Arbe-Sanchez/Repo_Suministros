@@ -3,7 +3,7 @@ METADATOS DE LA BASE DE DATOS
 Nombre BBDD: ad_suministros
 Driver: MariaDB Connector/J
 Versión del driver: 3.5.11
-URL: jdbc:mariadb://localhost:3307/ad_suministros?user=root
+URL: jdbc:mariadb://localhost/ad_suministros?user=root
 
 TABLA: pieza
 Claves primarias: cod 
