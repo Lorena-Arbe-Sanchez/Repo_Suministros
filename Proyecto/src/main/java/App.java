@@ -390,7 +390,6 @@ public class App {
 
         List<Proveedor> proveedores = dao.findAll();
 
-        // TODO : Probar esta opción y la de "isEmpty" de los demás modelos
         if (proveedores.isEmpty()) {
             System.out.println("No hay proveedores registrados.");
             return;
