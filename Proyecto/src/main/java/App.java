@@ -30,6 +30,7 @@ public class App {
 
             System.out.println("🔌 Conexión con la base de datos establecida.");
             System.out.println("✅ Entidades inicializadas correctamente.");
+            System.out.println("ℹ️ Puedes escribir 'FIN' en cualquier momento para finalizar la aplicación.");
 
             // Menú principal
             int opcion;
@@ -80,6 +81,9 @@ public class App {
                 }
 
             } while (opcion != 0);
+
+        } catch (FinAplicacionException e) {
+            System.out.println("\n👋 Aplicación finalizada por el usuario.");
 
         } catch (Exception e) {
             System.out.println("❌ Error: " + e.getMessage());
@@ -375,6 +379,10 @@ public class App {
         System.out.println("Cierra la aplicación y libera los recursos utilizados.");
 
         System.out.println("\nNOTA: Para volver al menú principal, utiliza la opción 0 de cada submenú.");
+
+        System.out.println("\nFINALIZAR LA APLICACIÓN");
+        System.out.println("Puedes escribir 'FIN' en cualquier momento que se solicite un dato.");
+        System.out.println("La aplicación finalizará inmediatamente y cerrará los recursos utilizados.");
     }
 
     // Listar todos los proveedores
@@ -439,25 +447,25 @@ public class App {
         } while (proveedor == null);
 
         System.out.print("Nuevo nombre (" + proveedor.getNombre() + "): ");
-        String nombre = sc.nextLine();
+        String nombre = leerEntrada(sc);
         if (!nombre.trim().isEmpty()) {
             proveedor.setNombre(nombre);
         }
 
         System.out.print("Nuevo primer apellido (" + proveedor.getApellido1() + "): ");
-        String apellido1 = sc.nextLine();
+        String apellido1 = leerEntrada(sc);
         if (!apellido1.trim().isEmpty()) {
             proveedor.setApellido1(apellido1);
         }
 
         System.out.print("Nuevo segundo apellido (" + proveedor.getApellido2() + "): ");
-        String apellido2 = sc.nextLine();
+        String apellido2 = leerEntrada(sc);
         if (!apellido2.trim().isEmpty()) {
             proveedor.setApellido2(apellido2);
         }
 
         System.out.print("Nueva dirección (" + proveedor.getDireccion() + "): ");
-        String direccion = sc.nextLine();
+        String direccion = leerEntrada(sc);
         if (!direccion.trim().isEmpty()) {
             proveedor.setDireccion(direccion);
         }
@@ -573,11 +581,11 @@ public class App {
         } while (pieza == null);
 
         System.out.print("Nuevo nombre (" + pieza.getNombre() + "): ");
-        String nombre = sc.nextLine();
+        String nombre = leerEntrada(sc);
         if (!nombre.trim().isEmpty()) pieza.setNombre(nombre.trim());
 
         System.out.print("Nuevo precio (" + pieza.getPrecio() + "): ");
-        String precio = sc.nextLine();
+        String precio = leerEntrada(sc);
 
         while (!precio.trim().isEmpty()) {
             try {
@@ -595,11 +603,11 @@ public class App {
             }
 
             System.out.print("Vuelve a introducir el precio: ");
-            precio = sc.nextLine();
+            precio = leerEntrada(sc);
         }
 
         System.out.print("Nueva descripción (" + pieza.getDescripcion() + "): ");
-        String descripcion = sc.nextLine();
+        String descripcion = leerEntrada(sc);
         if (!descripcion.trim().isEmpty()) pieza.setDescripcion(descripcion.trim());
 
         dao.update(pieza);
@@ -705,11 +713,11 @@ public class App {
         } while (proyecto == null);
 
         System.out.print("Nuevo nombre (" + proyecto.getNombre() + "): ");
-        String nombre = sc.nextLine();
+        String nombre = leerEntrada(sc);
         if (!nombre.trim().isEmpty()) proyecto.setNombre(nombre.trim());
 
         System.out.print("Nueva ciudad (" + proyecto.getCiudad() + "): ");
-        String ciudad = sc.nextLine();
+        String ciudad = leerEntrada(sc);
         if (!ciudad.trim().isEmpty()) proyecto.setCiudad(ciudad.trim());
 
         dao.update(proyecto);
@@ -839,7 +847,7 @@ public class App {
         } while (suministro == null);
 
         System.out.print("Nueva fecha (" + suministro.getFecha() + "): ");
-        String fecha = sc.nextLine();
+        String fecha = leerEntrada(sc);
 
         while (!fecha.trim().isEmpty()) {
             try {
@@ -848,12 +856,12 @@ public class App {
             } catch (DateTimeParseException e) {
                 System.out.println("⚠️ Introduce una fecha válida (AAAA-MM-DD).");
                 System.out.print("Vuelve a introducir la fecha: ");
-                fecha = sc.nextLine();
+                fecha = leerEntrada(sc);
             }
         }
 
         System.out.print("Nueva cantidad (" + suministro.getCantidad() + "): ");
-        String cantidad = sc.nextLine();
+        String cantidad = leerEntrada(sc);
 
         while (!cantidad.trim().isEmpty()) {
             try {
@@ -870,11 +878,11 @@ public class App {
             }
 
             System.out.print("Vuelve a introducir la cantidad: ");
-            cantidad = sc.nextLine();
+            cantidad = leerEntrada(sc);
         }
 
         System.out.print("Nuevo código de proveedor (" + suministro.getProveedor().getCod() + "): ");
-        String codProveedor = sc.nextLine();
+        String codProveedor = leerEntrada(sc);
 
         while (!codProveedor.trim().isEmpty()) {
             Proveedor proveedor = proveedorDao.find(codProveedor.trim());
@@ -887,11 +895,11 @@ public class App {
             }
 
             System.out.print("Vuelve a introducir el código del proveedor: ");
-            codProveedor = sc.nextLine();
+            codProveedor = leerEntrada(sc);
         }
 
         System.out.print("Nuevo código de pieza (" + suministro.getPieza().getCod() + "): ");
-        String codPieza = sc.nextLine();
+        String codPieza = leerEntrada(sc);
 
         while (!codPieza.trim().isEmpty()) {
             Pieza pieza = piezaDao.find(codPieza.trim());
@@ -904,11 +912,11 @@ public class App {
             }
 
             System.out.print("Vuelve a introducir el código de la pieza: ");
-            codPieza = sc.nextLine();
+            codPieza = leerEntrada(sc);
         }
 
         System.out.print("Nuevo código de proyecto (" + suministro.getProyecto().getCod() + "): ");
-        String codProyecto = sc.nextLine();
+        String codProyecto = leerEntrada(sc);
 
         while (!codProyecto.trim().isEmpty()) {
             Proyecto proyecto = proyectoDao.find(codProyecto.trim());
@@ -921,7 +929,7 @@ public class App {
             }
 
             System.out.print("Vuelve a introducir el código del proyecto: ");
-            codProyecto = sc.nextLine();
+            codProyecto = leerEntrada(sc);
         }
 
         dao.update(suministro);
@@ -945,10 +953,11 @@ public class App {
         String respuesta = leerTexto(sc, "¿Seguro que quieres eliminarlo? (s/n): ");
 
         if (respuesta.equalsIgnoreCase("s")) {
-            dao.delete(suministro);
-            System.out.println("✅ Suministro eliminado correctamente.");
-        } else {
-            System.out.println("Operación cancelada.");
+            if (dao.delete(suministro)) {
+                System.out.println("✅ Suministro eliminado correctamente.");
+            } else {
+                System.out.println("❌ No se ha podido eliminar el suministro.");
+            }
         }
     }
 
@@ -974,18 +983,28 @@ public class App {
 
     /* ----- Funciones auxiliares ----- */
 
-    // Comprobar que el dato es numérico
-    public static int leerInt(Scanner sc) {
-        while (!sc.hasNextInt()) {
-            System.out.println("❌ Error: debes introducir un número.");
-            sc.nextLine();
-            System.out.print("Vuelve a intentarlo: ");
+    // Leer un dato y comprobar si se quiere finalizar la aplicación
+    private static String leerEntrada(Scanner sc) {
+        String texto = sc.nextLine();
+
+        if (texto.trim().equalsIgnoreCase("FIN")) {
+            throw new FinAplicacionException();
         }
 
-        int numero = sc.nextInt();
-        sc.nextLine();
+        return texto;
+    }
 
-        return numero;
+    // Comprobar que el dato es numérico
+    public static int leerInt(Scanner sc) {
+        while (true) {
+            try {
+                return Integer.parseInt(leerEntrada(sc));
+
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Error: debes introducir un número.");
+                System.out.print("Vuelve a intentarlo: ");
+            }
+        }
     }
 
     // Leer un número entero mayor que 0
@@ -994,7 +1013,7 @@ public class App {
 
         while (true) {
             System.out.print(mensaje);
-            String texto = sc.nextLine().trim();
+            String texto = leerEntrada(sc).trim();
 
             if (texto.isEmpty()) {
                 System.out.println("❌ Error: debes introducir un número");
@@ -1022,7 +1041,7 @@ public class App {
 
         while (true) {
             System.out.print(mensaje);
-            String texto = sc.nextLine().trim();
+            String texto = leerEntrada(sc).trim();
 
             try {
                 precio = Double.parseDouble(texto);
@@ -1046,7 +1065,7 @@ public class App {
 
         do {
             System.out.print(mensaje);
-            texto = sc.nextLine();
+            texto = leerEntrada(sc);
 
             if (texto.trim().isEmpty()) {
                 System.out.println("❌ Error: el campo no puede estar vacío.");
@@ -1063,11 +1082,15 @@ public class App {
         while (true) {
             try {
                 System.out.print(mensaje);
-                return LocalDate.parse(sc.nextLine());
+                return LocalDate.parse(leerEntrada(sc));
 
             } catch (DateTimeParseException e) {
                 System.out.println("❌ Error: introduce una fecha válida (AAAA-MM-DD).");
             }
         }
+    }
+
+    // Excepción para finalizar la aplicación
+    private static class FinAplicacionException extends RuntimeException {
     }
 }
