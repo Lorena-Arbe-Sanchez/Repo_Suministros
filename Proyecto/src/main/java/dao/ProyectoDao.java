@@ -2,10 +2,14 @@ package dao;
 
 import idao.IProyectoDao;
 import models.Proyecto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class ProyectoDao extends Dao<Proyecto, String> implements IProyectoDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProyectoDao.class);
 
     @Override
     public Proyecto find(String cod) {
@@ -23,6 +27,8 @@ public class ProyectoDao extends Dao<Proyecto, String> implements IProyectoDao {
     // Buscar proyectos por código, nombre o ciudad
     @Override
     public List<Proyecto> buscar(String texto) {
+        logger.info("Buscando proyectos con el texto: {}", texto);
+
         return em.createQuery(
                         "SELECT p FROM Proyecto p WHERE " +
                                 "LOWER(p.cod) LIKE :texto OR " +

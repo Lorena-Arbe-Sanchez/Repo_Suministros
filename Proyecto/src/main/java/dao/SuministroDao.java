@@ -2,10 +2,14 @@ package dao;
 
 import idao.ISuministroDao;
 import models.Suministro;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class SuministroDao extends Dao<Suministro, Integer> implements ISuministroDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(SuministroDao.class);
 
     @Override
     public Suministro find(Integer id) {
@@ -23,6 +27,8 @@ public class SuministroDao extends Dao<Suministro, Integer> implements ISuminist
     // Buscar suministros por ID, proveedor, pieza o proyecto
     @Override
     public List<Suministro> buscar(String texto) {
+        logger.info("Buscando suministros con el texto: {}", texto);
+
         String consulta =
                 "SELECT s FROM Suministro s WHERE " +
                         "LOWER(s.proveedor.cod) LIKE :texto OR " +

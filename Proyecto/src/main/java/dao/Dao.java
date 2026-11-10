@@ -4,8 +4,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Dao<T, K> {
+
+    private static final Logger logger = LoggerFactory.getLogger(Dao.class);
 
     // Fábrica compartida por todos los DAO
     private static final EntityManagerFactory emf =
@@ -36,6 +40,9 @@ public abstract class Dao<T, K> {
         transaction.begin();
         em.persist(t);
         transaction.commit();
+
+        logger.info("Registro creado correctamente: {}", t.getClass().getSimpleName());
+
         return t;
     }
 
@@ -44,10 +51,12 @@ public abstract class Dao<T, K> {
         transaction.begin();
         T actualizado = em.merge(t);
         transaction.commit();
+
+        logger.info("Registro actualizado correctamente: {}", t.getClass().getSimpleName());
+
         return actualizado;
     }
 
-    // Eliminar un registro
     public boolean delete(T t) {
         EntityTransaction transaction = em.getTransaction();
 
@@ -57,6 +66,9 @@ public abstract class Dao<T, K> {
             em.remove(em.contains(t) ? t : em.merge(t));
 
             transaction.commit();
+
+            logger.info("Registro eliminado correctamente: {}", t.getClass().getSimpleName());
+
             return true;
 
         } catch (jakarta.persistence.PersistenceException e) {
@@ -66,6 +78,9 @@ public abstract class Dao<T, K> {
             }
 
             em.clear();
+
+            logger.warn("No se ha podido eliminar el registro: {}", t.getClass().getSimpleName(), e);
+
             return false;
         }
     }

@@ -2,10 +2,14 @@ package dao;
 
 import idao.IProveedorDao;
 import models.Proveedor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class ProveedorDao extends Dao<Proveedor, String> implements IProveedorDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProveedorDao.class);
 
     @Override
     public Proveedor find(String cod) {
@@ -23,6 +27,8 @@ public class ProveedorDao extends Dao<Proveedor, String> implements IProveedorDa
     // Buscar proveedores por código, nombre, apellidos o dirección
     @Override
     public List<Proveedor> buscar(String texto) {
+        logger.info("Buscando proveedores con el texto: {}", texto);
+
         return em.createQuery(
                         "SELECT p FROM Proveedor p WHERE " +
                                 "LOWER(p.cod) LIKE :texto OR " +
