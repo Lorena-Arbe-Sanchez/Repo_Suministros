@@ -36,6 +36,7 @@ public class App {
 
             System.out.println("🔌 Conexión con la base de datos establecida.");
             System.out.println("✅ Entidades inicializadas correctamente.");
+            System.out.println("🟡 Los mensajes de color amarillo corresponden al registro de eventos (logs) de la aplicación.");
             System.out.println("ℹ️ Puedes escribir 'FIN' en cualquier momento para finalizar la aplicación.");
 
             // Menú principal

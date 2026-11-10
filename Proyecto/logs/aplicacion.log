@@ -17,3 +17,156 @@
 2026-11-10 18:45:26 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@65844c96] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
 2026-11-10 18:47:35 INFO  App - Aplicación finalizada por el usuario
 2026-11-10 18:47:35 INFO  App - Aplicación finalizada
+2026-11-10 19:05:32 INFO  App - Iniciando la aplicación
+2026-11-10 19:05:32 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-10 19:05:32 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-10 19:05:32 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-10 19:05:32 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-10 19:05:33 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-10 19:05:33 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3306/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-10 19:05:33 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-10 19:05:33 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-10 19:05:34 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@566c1e71] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-10 19:05:48 INFO  App - Aplicación finalizada
+2026-11-10 19:05:52 INFO  App - Iniciando la aplicación
+2026-11-10 19:05:52 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-10 19:05:52 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-10 19:05:52 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-10 19:05:52 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-10 19:05:52 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-10 19:05:52 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3306/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-10 19:05:53 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-10 19:05:53 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-10 19:05:53 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@2b44605c] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-10 19:07:04 INFO  dao.ProveedorDao - Buscando proveedores con el texto: PR00
+2026-11-10 19:07:12 INFO  dao.ProveedorDao - Buscando proveedores con el texto: PR008
+2026-11-10 19:07:15 INFO  dao.ProveedorDao - Buscando proveedores con el texto: PR001
+2026-11-10 19:07:54 INFO  dao.PiezaDao - Buscando piezas con el texto: P001
+2026-11-10 19:08:02 INFO  dao.ProyectoDao - Buscando proyectos con el texto: PRY001
+2026-11-10 19:08:31 INFO  dao.SuministroDao - Buscando suministros con el texto: 1
+2026-11-10 19:11:54 INFO  dao.SuministroDao - Buscando suministros con el texto: Componentes
+2026-11-10 19:12:41 INFO  dao.Dao - Registro creado correctamente: Proveedor
+2026-11-10 19:12:53 INFO  dao.ProveedorDao - Buscando proveedores con el texto: hola
+2026-11-10 19:13:24 INFO  dao.Dao - Registro actualizado correctamente: Proveedor
+2026-11-10 19:13:28 INFO  dao.ProveedorDao - Buscando proveedores con el texto: kaixo
+2026-11-10 19:13:44 INFO  dao.Dao - Registro eliminado correctamente: Proveedor
+2026-11-10 19:14:13 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1451, SQLState: 23000
+2026-11-10 19:14:13 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - (conn=30) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKm8d7b043fwcullsrj75tn2mig` FOREIGN KEY (`proveedor_cod`) REFERENCES `proveedor` (`cod`))
+2026-11-10 19:14:13 WARN  dao.Dao - No se ha podido eliminar el registro: Proveedor
+jakarta.persistence.RollbackException: Error while committing the transaction
+	at org.hibernate.internal.ExceptionConverterImpl.convertCommitException(ExceptionConverterImpl.java:67)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:104)
+	at dao.Dao.delete(Dao.java:68)
+	at App.eliminarProveedor(App.java:505)
+	at App.menuProveedores(App.java:143)
+	at App.main(App.java:61)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [(conn=30) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKm8d7b043fwcullsrj75tn2mig` FOREIGN KEY (`proveedor_cod`) REFERENCES `proveedor` (`cod`))] [delete from Proveedor where cod=?]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:62)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:280)
+	at org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	... 4 common frames omitted
+Caused by: java.sql.SQLIntegrityConstraintViolationException: (conn=30) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKm8d7b043fwcullsrj75tn2mig` FOREIGN KEY (`proveedor_cod`) REFERENCES `proveedor` (`cod`))
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:317)
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:402)
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:310)
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:1549)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:1488)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:1407)
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:1331)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:91)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:345)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:322)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 23 common frames omitted
+2026-11-10 19:20:42 INFO  App - Aplicación finalizada
+2026-11-10 19:29:11 INFO  App - Iniciando la aplicación
+2026-11-10 19:29:11 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-10 19:29:11 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-10 19:29:12 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-10 19:29:12 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-10 19:29:12 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-10 19:29:12 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3306/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-10 19:29:12 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-10 19:29:13 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-10 19:29:13 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@b56ec6c] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-10 19:29:46 INFO  dao.ProveedorDao - Buscando proveedores con el texto: garcía
+2026-11-10 19:30:22 INFO  App - Aplicación finalizada
+2026-11-10 19:32:12 INFO  App - Iniciando la aplicación
+2026-11-10 19:32:12 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-10 19:32:12 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-10 19:32:13 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-10 19:32:13 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-10 19:32:13 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-10 19:32:13 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3306/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-10 19:32:13 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-10 19:32:14 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-10 19:32:14 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@4607d78b] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-10 19:32:34 INFO  dao.ProveedorDao - Buscando proveedores con el texto: garcía
+2026-11-10 19:33:33 INFO  App - Aplicación finalizada
+2026-11-10 19:36:53 INFO  App - Iniciando la aplicación
+2026-11-10 19:36:53 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-10 19:36:53 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-10 19:36:53 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-10 19:36:53 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-10 19:36:53 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-10 19:36:53 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3306/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-10 19:36:53 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-10 19:36:54 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-10 19:36:54 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@113dcaf8] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-10 19:37:05 INFO  App - Aplicación finalizada por el usuario
+2026-11-10 19:37:05 INFO  App - Aplicación finalizada
