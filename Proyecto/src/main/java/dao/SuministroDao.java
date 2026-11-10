@@ -53,4 +53,53 @@ public class SuministroDao extends Dao<Suministro, Integer> implements ISuminist
                     .getResultList();
         }
     }
+
+    // Buscar suministros por ID
+    @Override
+    public List<Suministro> buscarPorId(int id) {
+        logger.info("Buscando suministro por ID: {}", id);
+
+        return em.createQuery(
+                "SELECT s FROM Suministro s WHERE s.id = :id", Suministro.class
+        ).setParameter("id", id).getResultList();
+    }
+
+    // Buscar suministros por proveedor
+    @Override
+    public List<Suministro> buscarPorProveedor(String proveedor) {
+        logger.info("Buscando suministros por proveedor: {}", proveedor);
+
+        return em.createQuery(
+                "SELECT s FROM Suministro s WHERE " +
+                        "LOWER(s.proveedor.cod) LIKE :texto OR " +
+                        "LOWER(s.proveedor.nombre) LIKE :texto",
+                Suministro.class
+        ).setParameter("texto", "%" + proveedor.toLowerCase() + "%").getResultList();
+    }
+
+    // Buscar suministros por pieza
+    @Override
+    public List<Suministro> buscarPorPieza(String pieza) {
+        logger.info("Buscando suministros por pieza: {}", pieza);
+
+        return em.createQuery(
+                "SELECT s FROM Suministro s WHERE " +
+                        "LOWER(s.pieza.cod) LIKE :texto OR " +
+                        "LOWER(s.pieza.nombre) LIKE :texto",
+                Suministro.class
+        ).setParameter("texto", "%" + pieza.toLowerCase() + "%").getResultList();
+    }
+
+    // Buscar suministros por proyecto
+    @Override
+    public List<Suministro> buscarPorProyecto(String proyecto) {
+        logger.info("Buscando suministros por proyecto: {}", proyecto);
+
+        return em.createQuery(
+                "SELECT s FROM Suministro s WHERE " +
+                        "LOWER(s.proyecto.cod) LIKE :texto OR " +
+                        "LOWER(s.proyecto.nombre) LIKE :texto",
+                Suministro.class
+        ).setParameter("texto", "%" + proyecto.toLowerCase() + "%").getResultList();
+    }
 }

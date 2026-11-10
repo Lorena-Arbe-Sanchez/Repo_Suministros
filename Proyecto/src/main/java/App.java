@@ -124,7 +124,7 @@ public class App {
             System.out.println("2. Dar de alta un proveedor");
             System.out.println("3. Modificar un proveedor");
             System.out.println("4. Dar de baja un proveedor");
-            System.out.println("5. Buscar proveedores (por código, nombre, apellidos o dirección)");
+            System.out.println("5. Buscar proveedores");
             System.out.println("0. ↩️ Volver al menú principal");
             System.out.print("\nElige una opción: ");
 
@@ -513,25 +513,66 @@ public class App {
         }
     }
 
-    // Buscar proveedores
+    // Menú de búsquedas de proveedores
     private static void buscarProveedores(Scanner sc, ProveedorDao dao) {
 
-        String texto = leerTexto(sc, "Introduce el texto (código, nombre, apellidos o dirección) que quieres buscar: ");
+        int opcion;
 
-        List<Proveedor> proveedores = dao.buscar(texto);
+        do {
+            System.out.println("\n===== BÚSQUEDA DE PROVEEDORES =====");
+            System.out.println("1. Por código");
+            System.out.println("2. Por nombre");
+            System.out.println("3. Por primer apellido");
+            System.out.println("4. Por segundo apellido");
+            System.out.println("5. Por dirección");
+            System.out.println("6. Por pieza suministrada");
+            System.out.println("0. ↩️ Volver");
+            System.out.print("\nElige una opción: ");
 
-        if (proveedores.isEmpty()) {
-            System.out.println("No se han encontrado proveedores.");
-            return;
-        }
+            opcion = leerInt(sc);
 
-        for (Proveedor p : proveedores) {
-            System.out.println("\nCódigo: " + p.getCod());
-            System.out.println("Nombre: " + p.getNombre());
-            System.out.println("Primer apellido: " + p.getApellido1());
-            System.out.println("Segundo apellido: " + p.getApellido2());
-            System.out.println("Dirección: " + p.getDireccion());
-        }
+            List<Proveedor> proveedores = null;
+
+            switch (opcion) {
+                case 1:
+                    proveedores = dao.buscarPorCod(leerTexto(sc, "Código: "));
+                    break;
+                case 2:
+                    proveedores = dao.buscarPorNombre(leerTexto(sc, "Nombre: "));
+                    break;
+                case 3:
+                    proveedores = dao.buscarPorApellido1(leerTexto(sc, "Primer apellido: "));
+                    break;
+                case 4:
+                    proveedores = dao.buscarPorApellido2(leerTexto(sc, "Segundo apellido: "));
+                    break;
+                case 5:
+                    proveedores = dao.buscarPorDireccion(leerTexto(sc, "Dirección: "));
+                    break;
+                case 6:
+                    proveedores = dao.buscarPorPieza(leerTexto(sc, "Código o nombre de la pieza: "));
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+            if (proveedores != null) {
+                if (proveedores.isEmpty()) {
+                    System.out.println("No se han encontrado proveedores.");
+                } else {
+                    for (Proveedor p : proveedores) {
+                        System.out.println("\nCódigo: " + p.getCod());
+                        System.out.println("Nombre: " + p.getNombre());
+                        System.out.println("Primer apellido: " + p.getApellido1());
+                        System.out.println("Segundo apellido: " + p.getApellido2());
+                        System.out.println("Dirección: " + p.getDireccion());
+                    }
+                }
+            }
+
+        } while (opcion != 0);
     }
 
     // Listar todas las piezas
@@ -650,22 +691,76 @@ public class App {
         }
     }
 
-    // Buscar piezas
+    // Menú de búsquedas de piezas
     private static void buscarPiezas(Scanner sc, PiezaDao dao) {
-        String texto = leerTexto(sc, "Introduce el texto (código, nombre o descripción) que quieres buscar: ");
-        List<Pieza> piezas = dao.buscar(texto);
 
-        if (piezas.isEmpty()) {
-            System.out.println("No se han encontrado piezas.");
-            return;
-        }
+        int opcion;
 
-        for (Pieza p : piezas) {
-            System.out.println("\nCódigo: " + p.getCod());
-            System.out.println("Nombre: " + p.getNombre());
-            System.out.println("Precio: " + p.getPrecio());
-            System.out.println("Descripción: " + p.getDescripcion());
-        }
+        do {
+            System.out.println("\n===== BÚSQUEDA DE PIEZAS =====");
+            System.out.println("1. Por código");
+            System.out.println("2. Por nombre");
+            System.out.println("3. Por descripción");
+            System.out.println("4. Por intervalo de precios");
+            System.out.println("5. Por proveedor");
+            System.out.println("6. Por proyecto al que se destinan");
+            System.out.println("0. ↩️ Volver");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            List<Pieza> piezas = null;
+
+            switch (opcion) {
+                case 1:
+                    piezas = dao.buscarPorCod(leerTexto(sc, "Código: "));
+                    break;
+                case 2:
+                    piezas = dao.buscarPorNombre(leerTexto(sc, "Nombre: "));
+                    break;
+                case 3:
+                    piezas = dao.buscarPorDescripcion(leerTexto(sc, "Descripción: "));
+                    break;
+                case 4:
+                    double precioMin = leerPrecio(sc, "Precio mínimo: ");
+                    double precioMax;
+
+                    do {
+                        precioMax = leerPrecio(sc, "Precio máximo: ");
+
+                        if (precioMax < precioMin) {
+                            System.out.println("⚠️ El precio máximo no puede ser inferior al mínimo.");
+                        }
+                    } while (precioMax < precioMin);
+
+                    piezas = dao.buscarPorPrecio(precioMin, precioMax);
+                    break;
+                case 5:
+                    piezas = dao.buscarPorProveedor(leerTexto(sc, "Código o nombre del proveedor: "));
+                    break;
+                case 6:
+                    piezas = dao.buscarPorProyecto(leerTexto(sc, "Código o nombre del proyecto: "));
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+            if (piezas != null) {
+                if (piezas.isEmpty()) {
+                    System.out.println("No se han encontrado piezas.");
+                } else {
+                    for (Pieza p : piezas) {
+                        System.out.println("\nCódigo: " + p.getCod());
+                        System.out.println("Nombre: " + p.getNombre());
+                        System.out.println("Precio: " + p.getPrecio());
+                        System.out.println("Descripción: " + p.getDescripcion());
+                    }
+                }
+            }
+
+        } while (opcion != 0);
     }
 
     // Listar todos los proyectos
@@ -760,21 +855,60 @@ public class App {
         }
     }
 
-    // Buscar proyectos
+    // Menú de búsquedas de proyectos
     private static void buscarProyectos(Scanner sc, ProyectoDao dao) {
-        String texto = leerTexto(sc, "Introduce el texto (código, nombre o ciudad) que quieres buscar: ");
-        List<Proyecto> proyectos = dao.buscar(texto);
 
-        if (proyectos.isEmpty()) {
-            System.out.println("No se han encontrado proyectos.");
-            return;
-        }
+        int opcion;
 
-        for (Proyecto p : proyectos) {
-            System.out.println("\nCódigo: " + p.getCod());
-            System.out.println("Nombre: " + p.getNombre());
-            System.out.println("Ciudad: " + p.getCiudad());
-        }
+        do {
+            System.out.println("\n===== BÚSQUEDA DE PROYECTOS =====");
+            System.out.println("1. Por código");
+            System.out.println("2. Por nombre");
+            System.out.println("3. Por ciudad");
+            System.out.println("4. Por proveedor participante");
+            System.out.println("5. Por pieza utilizada");
+            System.out.println("0. ↩️ Volver");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            List<Proyecto> proyectos = null;
+
+            switch (opcion) {
+                case 1:
+                    proyectos = dao.buscarPorCod(leerTexto(sc, "Código: "));
+                    break;
+                case 2:
+                    proyectos = dao.buscarPorNombre(leerTexto(sc, "Nombre: "));
+                    break;
+                case 3:
+                    proyectos = dao.buscarPorCiudad(leerTexto(sc, "Ciudad: "));
+                    break;
+                case 4:
+                    proyectos = dao.buscarPorProveedor(leerTexto(sc, "Código o nombre del proveedor: "));
+                    break;
+                case 5:
+                    proyectos = dao.buscarPorPieza(leerTexto(sc, "Código o nombre de la pieza: "));
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+            if (proyectos != null) {
+                if (proyectos.isEmpty()) {
+                    System.out.println("No se han encontrado proyectos.");
+                } else {
+                    for (Proyecto p : proyectos) {
+                        System.out.println("\nCódigo: " + p.getCod());
+                        System.out.println("Nombre: " + p.getNombre());
+                        System.out.println("Ciudad: " + p.getCiudad());
+                    }
+                }
+            }
+
+        } while (opcion != 0);
     }
 
     // Listar todos los suministros
@@ -970,24 +1104,59 @@ public class App {
         }
     }
 
-    // Buscar suministros
+    // Menú de búsquedas de suministros
     private static void buscarSuministros(Scanner sc, SuministroDao dao) {
-        String texto = leerTexto(sc, "Introduce el texto (ID, proveedor, pieza o proyecto) que quieres buscar: ");
-        List<Suministro> suministros = dao.buscar(texto);
 
-        if (suministros.isEmpty()) {
-            System.out.println("No se han encontrado suministros.");
-            return;
-        }
+        int opcion;
 
-        for (Suministro s : suministros) {
-            System.out.println("\nID: " + s.getId());
-            System.out.println("Fecha: " + s.getFecha());
-            System.out.println("Cantidad: " + s.getCantidad());
-            System.out.println("Proveedor: " + s.getProveedor().getCod() + " - " + s.getProveedor().getNombre());
-            System.out.println("Pieza: " + s.getPieza().getCod() + " - " + s.getPieza().getNombre());
-            System.out.println("Proyecto: " + s.getProyecto().getCod() + " - " + s.getProyecto().getNombre());
-        }
+        do {
+            System.out.println("\n===== BÚSQUEDA DE SUMINISTROS =====");
+            System.out.println("1. Por ID");
+            System.out.println("2. Por proveedor");
+            System.out.println("3. Por pieza");
+            System.out.println("4. Por proyecto");
+            System.out.println("0. ↩️ Volver");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            List<Suministro> suministros = null;
+
+            switch (opcion) {
+                case 1:
+                    suministros = dao.buscarPorId(leerPositivo(sc, "ID: "));
+                    break;
+                case 2:
+                    suministros = dao.buscarPorProveedor(leerTexto(sc, "Código o nombre del proveedor: "));
+                    break;
+                case 3:
+                    suministros = dao.buscarPorPieza(leerTexto(sc, "Código o nombre de la pieza: "));
+                    break;
+                case 4:
+                    suministros = dao.buscarPorProyecto(leerTexto(sc, "Código o nombre del proyecto: "));
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+            if (suministros != null) {
+                if (suministros.isEmpty()) {
+                    System.out.println("No se han encontrado suministros.");
+                } else {
+                    for (Suministro s : suministros) {
+                        System.out.println("\nID: " + s.getId());
+                        System.out.println("Fecha: " + s.getFecha());
+                        System.out.println("Cantidad: " + s.getCantidad());
+                        System.out.println("Proveedor: " + s.getProveedor().getCod() + " - " + s.getProveedor().getNombre());
+                        System.out.println("Pieza: " + s.getPieza().getCod() + " - " + s.getPieza().getNombre());
+                        System.out.println("Proyecto: " + s.getProyecto().getCod() + " - " + s.getProyecto().getNombre());
+                    }
+                }
+            }
+
+        } while (opcion != 0);
     }
 
     /* ----- Funciones auxiliares ----- */
