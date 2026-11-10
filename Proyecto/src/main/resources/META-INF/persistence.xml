@@ -7,7 +7,7 @@
         <properties>
             <!-- Normalmente el puerto será "3306" (dependiendo de la configuración de XAMPP puede ser "3307") -->
             <property name="hibernate.connection.url"
-                      value="jdbc:mariadb://localhost:3306/ad_suministros"/>
+                      value="jdbc:mariadb://localhost:3307/ad_suministros"/>
             <property name="hibernate.connection.driver_class"
                       value="org.mariadb.jdbc.Driver"/>
             <property name="hibernate.connection.password"

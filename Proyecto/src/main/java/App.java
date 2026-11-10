@@ -3,6 +3,8 @@ import models.Pieza;
 import models.Proveedor;
 import models.Proyecto;
 import models.Suministro;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utils.ExportarDatos;
 import utils.MetadatosBD;
 
@@ -13,7 +15,11 @@ import java.util.Scanner;
 
 public class App {
 
+    private static final Logger logger = LoggerFactory.getLogger(App.class);
+
     public static void main(String[] args) {
+
+        logger.info("Iniciando la aplicación");
 
         ProveedorDao proveedorDao = null;
         PiezaDao piezaDao = null;
@@ -83,11 +89,12 @@ public class App {
             } while (opcion != 0);
 
         } catch (FinAplicacionException e) {
+            logger.info("Aplicación finalizada por el usuario");
             System.out.println("\n👋 Aplicación finalizada por el usuario.");
 
         } catch (Exception e) {
+            logger.error("Error inesperado en la aplicación", e);
             System.out.println("❌ Error: " + e.getMessage());
-            e.printStackTrace();
 
         } finally {
 
@@ -100,6 +107,8 @@ public class App {
             // Cerrar la fábrica de EntityManager
             Dao.cerrarFabrica();
         }
+
+        logger.info("Aplicación finalizada");
     }
 
     // Menú de proveedores
