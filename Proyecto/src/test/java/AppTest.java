@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -584,5 +586,215 @@ public class AppTest {
         assertTrue(proveedorDao.delete(proveedor));
         assertTrue(piezaDao.delete(pieza));
         assertTrue(proyectoDao.delete(proyecto));
+    }
+
+    /**
+     * Comprueba las búsquedas avanzadas de proveedores
+     */
+    @Test
+    public void testBusquedasProveedor() {
+
+        // Por código
+        assertEquals(Set.of("PR001"),
+                proveedorDao.buscarPorCod("PR001").stream()
+                        .map(Proveedor::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por nombre
+        assertEquals(Set.of("PR001"),
+                proveedorDao.buscarPorNombre("Comercial").stream()
+                        .map(Proveedor::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por primer apellido
+        assertEquals(Set.of("PR001"),
+                proveedorDao.buscarPorApellido1("García").stream()
+                        .map(Proveedor::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por segundo apellido
+        assertEquals(Set.of("PR002"),
+                proveedorDao.buscarPorApellido2("Sánchez").stream()
+                        .map(Proveedor::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por dirección
+        List<Proveedor> resultados = proveedorDao.buscarPorDireccion("Vitoria");
+
+        assertEquals(Set.of("PR001", "PR002", "PR003"),
+                resultados.stream()
+                        .map(Proveedor::getCod)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(3, resultados.size());
+
+        // Por pieza suministrada
+        resultados = proveedorDao.buscarPorPieza("P001");
+
+        assertEquals(Set.of("PR001", "PR002"),
+                resultados.stream()
+                        .map(Proveedor::getCod)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(2, resultados.size());
+
+        // Búsqueda sin resultados
+        assertTrue(proveedorDao.buscarPorCod("PR999").isEmpty());
+    }
+
+    /**
+     * Comprueba las búsquedas avanzadas de piezas
+     */
+    @Test
+    public void testBusquedasPieza() {
+
+        // Por código
+        assertEquals(Set.of("P001"),
+                piezaDao.buscarPorCod("P001").stream()
+                        .map(Pieza::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por nombre
+        assertEquals(Set.of("P001"),
+                piezaDao.buscarPorNombre("Tornillo").stream()
+                        .map(Pieza::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por descripción
+        List<Pieza> resultados = piezaDao.buscarPorDescripcion("acero");
+
+        assertEquals(Set.of("P001", "P002", "P003", "P004"),
+                resultados.stream()
+                        .map(Pieza::getCod)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(4, resultados.size());
+
+        // Por intervalo de precios
+        resultados = piezaDao.buscarPorPrecio(0.01, 0.10);
+
+        assertEquals(Set.of("P002", "P003"),
+                resultados.stream()
+                        .map(Pieza::getCod)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(2, resultados.size());
+
+        // Por proveedor
+        resultados = piezaDao.buscarPorProveedor("PR001");
+
+        assertEquals(Set.of("P001", "P002", "P009"),
+                resultados.stream()
+                        .map(Pieza::getCod)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(3, resultados.size());
+
+        // Por proyecto
+        resultados = piezaDao.buscarPorProyecto("PRY002");
+
+        assertEquals(Set.of("P004", "P005", "P006"),
+                resultados.stream()
+                        .map(Pieza::getCod)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(3, resultados.size());
+
+        // Búsqueda sin resultados
+        assertTrue(piezaDao.buscarPorCod("P999").isEmpty());
+    }
+
+    /**
+     * Comprueba las búsquedas avanzadas de proyectos
+     */
+    @Test
+    public void testBusquedasProyecto() {
+
+        // Por código
+        assertEquals(Set.of("PRY001"),
+                proyectoDao.buscarPorCod("PRY001").stream()
+                        .map(Proyecto::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por nombre
+        assertEquals(Set.of("PRY001"),
+                proyectoDao.buscarPorNombre("nave").stream()
+                        .map(Proyecto::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por ciudad
+        assertEquals(Set.of("PRY002"),
+                proyectoDao.buscarPorCiudad("Bilbao").stream()
+                        .map(Proyecto::getCod)
+                        .collect(Collectors.toSet()));
+
+        // Por proveedor participante
+        List<Proyecto> resultados = proyectoDao.buscarPorProveedor("PR001");
+
+        assertEquals(Set.of("PRY001", "PRY006"),
+                resultados.stream()
+                        .map(Proyecto::getCod)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(2, resultados.size());
+
+        // Por pieza utilizada
+        resultados = proyectoDao.buscarPorPieza("P001");
+
+        assertEquals(Set.of("PRY001", "PRY005"),
+                resultados.stream()
+                        .map(Proyecto::getCod)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(2, resultados.size());
+
+        // Búsqueda sin resultados
+        assertTrue(proyectoDao.buscarPorCod("PRY999").isEmpty());
+    }
+
+    /**
+     * Comprueba las búsquedas avanzadas de suministros
+     */
+    @Test
+    public void testBusquedasSuministro() {
+
+        // Por ID
+        assertEquals(Set.of(1),
+                suministroDao.buscarPorId(1).stream()
+                        .map(Suministro::getId)
+                        .collect(Collectors.toSet()));
+
+        // Por proveedor
+        List<Suministro> resultados = suministroDao.buscarPorProveedor("PR001");
+
+        assertEquals(Set.of(1, 2, 13),
+                resultados.stream()
+                        .map(Suministro::getId)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(3, resultados.size());
+
+        // Por pieza
+        resultados = suministroDao.buscarPorPieza("P001");
+
+        assertEquals(Set.of(1, 11),
+                resultados.stream()
+                        .map(Suministro::getId)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(2, resultados.size());
+
+        // Por proyecto
+        resultados = suministroDao.buscarPorProyecto("PRY002");
+
+        assertEquals(Set.of(4, 5, 6),
+                resultados.stream()
+                        .map(Suministro::getId)
+                        .collect(Collectors.toSet()));
+
+        assertEquals(3, resultados.size());
+
+        // Búsqueda sin resultados
+        assertTrue(suministroDao.buscarPorId(999).isEmpty());
     }
 }
