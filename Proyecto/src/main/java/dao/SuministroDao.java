@@ -123,4 +123,21 @@ public class SuministroDao extends Dao<Suministro, Integer> implements ISuminist
                 .setParameter("hasta", hasta)
                 .getResultList();
     }
+
+    // Consultar los suministros de un proyecto para realizar su análisis
+    @Override
+    public List<Suministro> buscarAnalisisProyecto(String codProyecto) {
+        logger.info("Consultando análisis del proyecto {}", codProyecto);
+
+        return em.createQuery(
+                        "SELECT s FROM Suministro s " +
+                                "JOIN FETCH s.pieza " +
+                                "JOIN FETCH s.proveedor " +
+                                "JOIN FETCH s.proyecto " +
+                                "WHERE s.proyecto.cod = :codProyecto " +
+                                "ORDER BY s.fecha, s.id",
+                        Suministro.class
+                ).setParameter("codProyecto", codProyecto)
+                .getResultList();
+    }
 }

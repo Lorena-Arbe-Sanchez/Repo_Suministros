@@ -20,4 +20,6 @@ public interface ISuministroDao {
     List<Suministro> buscarPorProyecto(String proyecto);
 
     List<Suministro> buscarHistoricoProveedor(String codProveedor, LocalDate desde, LocalDate hasta);
+
+    List<Suministro> buscarAnalisisProyecto(String codProyecto);
 }

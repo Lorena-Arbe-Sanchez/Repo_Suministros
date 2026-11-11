@@ -80,7 +80,7 @@ public class App {
                         MetadatosBD.exportarMetadatos();
                         break;
                     case 7:
-                        menuAnalisis(sc, suministroDao, proveedorDao);
+                        menuAnalisis(sc, suministroDao, proveedorDao, proyectoDao);
                         break;
                     case 8:
                         mostrarAyuda();
@@ -358,7 +358,8 @@ public class App {
     }
 
     // Menú de análisis y estadísticas
-    private static void menuAnalisis(Scanner sc, SuministroDao suministroDao, ProveedorDao proveedorDao) {
+    private static void menuAnalisis(Scanner sc, SuministroDao suministroDao,
+                                     ProveedorDao proveedorDao, ProyectoDao proyectoDao) {
 
         int opcion;
 
@@ -378,7 +379,7 @@ public class App {
                     historicoProveedor(sc, suministroDao, proveedorDao);
                     break;
                 case 2:
-                    // TODO : Pendiente de implementar
+                    analisisProyecto(sc, suministroDao, proyectoDao);
                     break;
                 case 3:
                     // TODO : Pendiente de implementar
@@ -441,7 +442,7 @@ public class App {
         System.out.printf("%n%-12s %-20s %-45s %10s%n",
                 "Fecha", "Pieza", "Proyecto", "Cantidad");
 
-        System.out.println("----------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------");
 
         for (Suministro s : suministros) {
 
@@ -457,6 +458,76 @@ public class App {
 
         System.out.println("\nTotal de suministros: " + suministros.size());
         System.out.println("Cantidad total suministrada: " + cantidadTotal);
+    }
+
+    // Consultar el análisis de recursos utilizados en un proyecto
+    private static void analisisProyecto(Scanner sc, SuministroDao suministroDao, ProyectoDao proyectoDao) {
+
+        System.out.println("\n===== ANÁLISIS DE PROYECTO =====");
+
+        // Comprobar que existe el proyecto
+        Proyecto proyecto;
+
+        do {
+            String codProyecto = leerTexto(sc, "Código del proyecto: ");
+            proyecto = proyectoDao.find(codProyecto);
+
+            if (proyecto == null) {
+                System.out.println("⚠️ No existe ningún proyecto con ese código.");
+            }
+
+        } while (proyecto == null);
+
+        // Consultar los suministros del proyecto
+        List<Suministro> suministros = suministroDao.buscarAnalisisProyecto(proyecto.getCod());
+
+        System.out.println("\n===== ANÁLISIS DE " + proyecto.getNombre().toUpperCase() + " =====");
+        System.out.println("Ciudad: " + proyecto.getCiudad());
+
+        if (suministros.isEmpty()) {
+            System.out.println("\nEste proyecto todavía no tiene suministros.");
+            return;
+        }
+
+        // Mostrar los suministros y calcular los recursos utilizados
+        java.util.Set<String> proveedores = new java.util.HashSet<>();
+        java.util.Set<String> piezas = new java.util.HashSet<>();
+
+        long cantidadTotal = 0;
+        double costeTotal = 0;
+
+        System.out.printf("%n%-12s %-20s %-25s %-45s %10s %12s%n",
+                "Fecha", "Pieza", "Proveedor", "Proyecto", "Cantidad", "Coste");
+
+        System.out.println("----------------------------------------------------------------------------------------" +
+                "--------------------------------------------");
+
+        for (Suministro s : suministros) {
+
+            double coste = s.getPieza().getPrecio() * s.getCantidad();
+
+            System.out.printf("%-12s %-20s %-25s %-45s %10d %12.2f €%n",
+                    s.getFecha(),
+                    s.getPieza().getNombre(),
+                    s.getProveedor().getNombre(),
+                    s.getProyecto().getNombre(),
+                    s.getCantidad(),
+                    coste
+            );
+
+            proveedores.add(s.getProveedor().getCod());
+            piezas.add(s.getPieza().getCod());
+
+            cantidadTotal += s.getCantidad();
+            costeTotal += coste;
+        }
+
+        System.out.println("\n===== RESUMEN DEL PROYECTO =====");
+        System.out.println("Número de proveedores: " + proveedores.size());
+        System.out.println("Número de piezas utilizadas: " + piezas.size());
+        System.out.println("Número de suministros: " + suministros.size());
+        System.out.println("Cantidad total suministrada: " + cantidadTotal);
+        System.out.printf("Coste total estimado: %.2f €%n", costeTotal);
     }
 
     // Mostrar información de ayuda
