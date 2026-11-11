@@ -11,6 +11,8 @@
 
     <!-- Logs en archivo -->
     <appender name="ARCHIVO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- El archivo actual se guarda como aplicacion.log y los anteriores se archivan con su fecha.
+         Se conservan los archivos de los últimos 30 días -->
         <file>logs/aplicacion.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/aplicacion-%d{yyyy-MM-dd}.log</fileNamePattern>

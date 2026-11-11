@@ -36,7 +36,8 @@ public class App {
 
             System.out.println("🔌 Conexión con la base de datos establecida.");
             System.out.println("✅ Entidades inicializadas correctamente.");
-            System.out.println("🟡 Los mensajes de color amarillo corresponden al registro de eventos (logs) de la aplicación.");
+            System.out.println("🟡 Los mensajes de color amarillo corresponden al registro de " +
+                    "eventos (logs) de la aplicación.");
             System.out.println("ℹ️ Puedes escribir 'FIN' en cualquier momento para finalizar la aplicación.");
 
             // Menú principal
@@ -49,9 +50,10 @@ public class App {
                 System.out.println("2. Gestión de piezas");
                 System.out.println("3. Gestión de proyectos");
                 System.out.println("4. Gestión de suministros");
-                System.out.println("5. Exportar datos XML y JSON");
+                System.out.println("5. Exportar datos a XML y JSON");
                 System.out.println("6. Metadatos de la BBDD");
-                System.out.println("7. Ayuda");
+                System.out.println("7. Análisis y estadísticas");
+                System.out.println("8. Ayuda");
                 System.out.println("0. Salir");
                 System.out.print("\nElige una opción: ");
 
@@ -78,6 +80,9 @@ public class App {
                         MetadatosBD.exportarMetadatos();
                         break;
                     case 7:
+                        menuAnalisis(sc, suministroDao, proveedorDao);
+                        break;
+                    case 8:
                         mostrarAyuda();
                         break;
                     case 0:
@@ -350,6 +355,108 @@ public class App {
             }
 
         } while (opcion != 0);
+    }
+
+    // Menú de análisis y estadísticas
+    private static void menuAnalisis(Scanner sc, SuministroDao suministroDao, ProveedorDao proveedorDao) {
+
+        int opcion;
+
+        do {
+
+            System.out.println("\n\n===== ANÁLISIS Y ESTADÍSTICAS =====");
+            System.out.println("1. Histórico de proveedor");
+            System.out.println("2. Análisis de proyectos");
+            System.out.println("3. Estadísticas globales");
+            System.out.println("0. ↩️ Volver al menú principal");
+            System.out.print("\nElige una opción: ");
+
+            opcion = leerInt(sc);
+
+            switch (opcion) {
+                case 1:
+                    historicoProveedor(sc, suministroDao, proveedorDao);
+                    break;
+                case 2:
+                    // TODO : Pendiente de implementar
+                    break;
+                case 3:
+                    // TODO : Pendiente de implementar
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida.");
+            }
+
+        } while (opcion != 0);
+    }
+
+    // Consultar el histórico de suministros de un proveedor
+    private static void historicoProveedor(Scanner sc, SuministroDao suministroDao, ProveedorDao proveedorDao) {
+
+        System.out.println("\n===== HISTÓRICO DE PROVEEDOR =====");
+
+        // Comprobar que existe el proveedor
+        Proveedor proveedor;
+
+        do {
+            String codProveedor = leerTexto(sc, "Código del proveedor: ");
+            proveedor = proveedorDao.find(codProveedor);
+
+            if (proveedor == null) {
+                System.out.println("⚠️ No existe ningún proveedor con ese código.");
+            }
+
+        } while (proveedor == null);
+
+        // Introducir el periodo
+        LocalDate desde = leerFecha(sc, "Fecha inicial (AAAA-MM-DD): ");
+        LocalDate hasta;
+
+        do {
+            hasta = leerFecha(sc, "Fecha final (AAAA-MM-DD): ");
+
+            if (hasta.isBefore(desde)) {
+                System.out.println("⚠️ La fecha final no puede ser anterior a la inicial.");
+            }
+
+        } while (hasta.isBefore(desde));
+
+        // Consultar el histórico
+        List<Suministro> suministros = suministroDao.buscarHistoricoProveedor(proveedor.getCod(), desde, hasta);
+
+        System.out.println("\n===== HISTÓRICO DE " + proveedor.getNombre().toUpperCase() + " =====");
+
+        System.out.println("Periodo: " + desde + " - " + hasta);
+
+        if (suministros.isEmpty()) {
+            System.out.println("\nNo se han encontrado suministros durante este periodo.");
+            return;
+        }
+
+        // Mostrar los suministros y calcular las cantidades
+        long cantidadTotal = 0;
+
+        System.out.printf("%n%-12s %-20s %-45s %10s%n",
+                "Fecha", "Pieza", "Proyecto", "Cantidad");
+
+        System.out.println("----------------------------------------------------------------------------------------");
+
+        for (Suministro s : suministros) {
+
+            System.out.printf("%-12s %-20s %-45s %10d%n",
+                    s.getFecha(),
+                    s.getPieza().getNombre(),
+                    s.getProyecto().getNombre(),
+                    s.getCantidad()
+            );
+
+            cantidadTotal += s.getCantidad();
+        }
+
+        System.out.println("\nTotal de suministros: " + suministros.size());
+        System.out.println("Cantidad total suministrada: " + cantidadTotal);
     }
 
     // Mostrar información de ayuda
@@ -1149,9 +1256,12 @@ public class App {
                         System.out.println("\nID: " + s.getId());
                         System.out.println("Fecha: " + s.getFecha());
                         System.out.println("Cantidad: " + s.getCantidad());
-                        System.out.println("Proveedor: " + s.getProveedor().getCod() + " - " + s.getProveedor().getNombre());
-                        System.out.println("Pieza: " + s.getPieza().getCod() + " - " + s.getPieza().getNombre());
-                        System.out.println("Proyecto: " + s.getProyecto().getCod() + " - " + s.getProyecto().getNombre());
+                        System.out.println("Proveedor: " + s.getProveedor().getCod() +
+                                " - " + s.getProveedor().getNombre());
+                        System.out.println("Pieza: " + s.getPieza().getCod() +
+                                " - " + s.getPieza().getNombre());
+                        System.out.println("Proyecto: " + s.getProyecto().getCod() +
+                                " - " + s.getProyecto().getNombre());
                     }
                 }
             }

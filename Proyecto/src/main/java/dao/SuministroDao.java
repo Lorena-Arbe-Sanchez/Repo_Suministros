@@ -5,6 +5,7 @@ import models.Suministro;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class SuministroDao extends Dao<Suministro, Integer> implements ISuministroDao {
@@ -101,5 +102,25 @@ public class SuministroDao extends Dao<Suministro, Integer> implements ISuminist
                         "LOWER(s.proyecto.nombre) LIKE :texto",
                 Suministro.class
         ).setParameter("texto", "%" + proyecto.toLowerCase() + "%").getResultList();
+    }
+
+    // Consultar el histórico de suministros de un proveedor durante un periodo
+    @Override
+    public List<Suministro> buscarHistoricoProveedor(String codProveedor, LocalDate desde, LocalDate hasta) {
+        logger.info("Consultando histórico del proveedor {} entre {} y {}", codProveedor, desde, hasta);
+
+        return em.createQuery(
+                        "SELECT s FROM Suministro s " +
+                                "JOIN FETCH s.pieza " +
+                                "JOIN FETCH s.proyecto " +
+                                "JOIN FETCH s.proveedor " +
+                                "WHERE s.proveedor.cod = :codProveedor " +
+                                "AND s.fecha BETWEEN :desde AND :hasta " +
+                                "ORDER BY s.fecha, s.id",
+                        Suministro.class
+                ).setParameter("codProveedor", codProveedor)
+                .setParameter("desde", desde)
+                .setParameter("hasta", hasta)
+                .getResultList();
     }
 }
