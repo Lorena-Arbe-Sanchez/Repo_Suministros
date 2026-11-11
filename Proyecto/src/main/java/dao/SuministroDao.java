@@ -140,4 +140,19 @@ public class SuministroDao extends Dao<Suministro, Integer> implements ISuminist
                 ).setParameter("codProyecto", codProyecto)
                 .getResultList();
     }
+
+    // Obtener todos los suministros con sus relaciones para las estadísticas
+    @Override
+    public List<Suministro> buscarTodosParaEstadisticas() {
+        logger.info("Consultando todos los suministros para las estadísticas");
+
+        return em.createQuery(
+                "SELECT s FROM Suministro s " +
+                        "JOIN FETCH s.pieza " +
+                        "JOIN FETCH s.proveedor " +
+                        "JOIN FETCH s.proyecto " +
+                        "ORDER BY s.id",
+                Suministro.class
+        ).getResultList();
+    }
 }

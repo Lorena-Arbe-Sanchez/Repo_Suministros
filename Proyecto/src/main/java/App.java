@@ -10,7 +10,9 @@ import utils.MetadatosBD;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class App {
@@ -80,7 +82,7 @@ public class App {
                         MetadatosBD.exportarMetadatos();
                         break;
                     case 7:
-                        menuAnalisis(sc, suministroDao, proveedorDao, proyectoDao);
+                        menuAnalisis(sc, suministroDao, proveedorDao, proyectoDao, piezaDao);
                         break;
                     case 8:
                         mostrarAyuda();
@@ -358,8 +360,8 @@ public class App {
     }
 
     // Menú de análisis y estadísticas
-    private static void menuAnalisis(Scanner sc, SuministroDao suministroDao,
-                                     ProveedorDao proveedorDao, ProyectoDao proyectoDao) {
+    private static void menuAnalisis(Scanner sc, SuministroDao suministroDao, ProveedorDao proveedorDao,
+                                     ProyectoDao proyectoDao, PiezaDao piezaDao) {
 
         int opcion;
 
@@ -382,7 +384,7 @@ public class App {
                     analisisProyecto(sc, suministroDao, proyectoDao);
                     break;
                 case 3:
-                    // TODO : Pendiente de implementar
+                    estadisticasGlobales(suministroDao, proveedorDao, piezaDao, proyectoDao);
                     break;
                 case 0:
                     break;
@@ -528,6 +530,111 @@ public class App {
         System.out.println("Número de suministros: " + suministros.size());
         System.out.println("Cantidad total suministrada: " + cantidadTotal);
         System.out.printf("Coste total estimado: %.2f €%n", costeTotal);
+    }
+
+    // Consultar las estadísticas globales
+    private static void estadisticasGlobales(SuministroDao suministroDao, ProveedorDao proveedorDao,
+                                             PiezaDao piezaDao, ProyectoDao proyectoDao) {
+
+        System.out.println("\n===== ESTADÍSTICAS GLOBALES =====");
+
+        // Obtener todos los registros
+        List<Proveedor> proveedores = proveedorDao.findAll();
+        List<Pieza> piezas = piezaDao.findAll();
+        List<Proyecto> proyectos = proyectoDao.findAll();
+        List<Suministro> suministros = suministroDao.buscarTodosParaEstadisticas();
+
+        // Mostrar totales generales
+        System.out.println("\n===== RESUMEN GENERAL =====");
+        System.out.println("Total de proveedores: " + proveedores.size());
+        System.out.println("Total de piezas: " + piezas.size());
+        System.out.println("Total de proyectos: " + proyectos.size());
+        System.out.println("Total de suministros: " + suministros.size());
+
+        // Almacenar los suministros realizados por proveedor, pieza y proyecto
+        Map<String, Integer> suministrosPorProveedor = new HashMap<>();
+        Map<String, Integer> cantidadesPorPieza = new HashMap<>();
+        Map<String, Integer> suministrosPorProyecto = new HashMap<>();
+
+        long cantidadTotal = 0;
+
+        for (Suministro s : suministros) {
+
+            suministrosPorProveedor.merge(s.getProveedor().getCod(), 1, Integer::sum);
+            cantidadesPorPieza.merge(s.getPieza().getCod(), s.getCantidad(), Integer::sum);
+            suministrosPorProyecto.merge(s.getProyecto().getCod(), 1, Integer::sum);
+
+            cantidadTotal += s.getCantidad();
+        }
+
+        System.out.println("Cantidad total suministrada: " + cantidadTotal);
+
+        if (suministros.isEmpty()) {
+            System.out.println("\nNo hay suministros registrados para generar estadísticas.");
+            return;
+        }
+
+        // Calcular los valores máximos
+        int maxProveedor = 0;
+        int maxPieza = 0;
+        int maxProyecto = 0;
+
+        for (int cantidad : suministrosPorProveedor.values()) {
+            if (cantidad > maxProveedor) {
+                maxProveedor = cantidad;
+            }
+        }
+
+        for (int cantidad : cantidadesPorPieza.values()) {
+            if (cantidad > maxPieza) {
+                maxPieza = cantidad;
+            }
+        }
+
+        for (int cantidad : suministrosPorProyecto.values()) {
+            if (cantidad > maxProyecto) {
+                maxProyecto = cantidad;
+            }
+        }
+
+        // Mostrar los proveedores más activos
+        System.out.println("\n===== PROVEEDORES MÁS ACTIVOS =====");
+
+        for (Proveedor p : proveedores) {
+
+            int cantidad = suministrosPorProveedor.getOrDefault(p.getCod(), 0);
+
+            if (cantidad == maxProveedor) {
+                System.out.println(p.getCod() + " - " + p.getNombre() + " " +
+                        p.getApellido1() + ": " + cantidad + " suministros");
+            }
+        }
+
+        // Mostrar las piezas más utilizadas
+        System.out.println("\n===== PIEZAS MÁS UTILIZADAS =====");
+
+        for (Pieza p : piezas) {
+
+            int cantidad = cantidadesPorPieza.getOrDefault(p.getCod(), 0);
+
+            if (cantidad == maxPieza) {
+                System.out.println(p.getCod() + " - " + p.getNombre() + ": " +
+                        cantidad + " unidades");
+            }
+        }
+
+        // Mostrar los proyectos con más suministros
+        System.out.println("\n===== PROYECTOS CON MÁS SUMINISTROS =====");
+
+        for (Proyecto p : proyectos) {
+
+            int cantidad = suministrosPorProyecto.getOrDefault(p.getCod(), 0);
+
+            if (cantidad == maxProyecto) {
+                System.out.println(p.getCod() + " - " + p.getNombre() + ": " +
+                        cantidad + " suministros");
+            }
+        }
     }
 
     // Mostrar información de ayuda

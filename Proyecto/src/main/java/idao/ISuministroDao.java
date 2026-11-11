@@ -21,5 +21,9 @@ public interface ISuministroDao {
 
     List<Suministro> buscarHistoricoProveedor(String codProveedor, LocalDate desde, LocalDate hasta);
 
+    // Consultar los suministros de un proyecto para realizar su análisis
     List<Suministro> buscarAnalisisProyecto(String codProyecto);
+
+    // Obtener todos los suministros con sus relaciones para las estadísticas
+    List<Suministro> buscarTodosParaEstadisticas();
 }
