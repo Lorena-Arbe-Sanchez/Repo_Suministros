@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<informe>
+    <totalProveedores>5</totalProveedores>
+    <totalPiezas>10</totalPiezas>
+    <totalProyectos>6</totalProyectos>
+    <totalSuministros>15</totalSuministros>
+    <cantidadTotal>2853</cantidadTotal>
+    <proveedoresMasActivos>
+        <registro>
+            <codigo>PR002</codigo>
+            <nombre>Suministros Martínez</nombre>
+            <apellido>Martínez</apellido>
+            <numeroSuministros>4</numeroSuministros>
+        </registro>
+    </proveedoresMasActivos>
+    <piezasMasUtilizadas>
+        <registro>
+            <codigo>P003</codigo>
+            <nombre>Arandela M5</nombre>
+            <unidades>1000</unidades>
+        </registro>
+    </piezasMasUtilizadas>
+    <proyectosConMasSuministros>
+        <registro>
+            <codigo>PRY001</codigo>
+            <nombre>Construcción de nave industrial</nombre>
+            <numeroSuministros>3</numeroSuministros>
+        </registro>
+        <registro>
+            <codigo>PRY002</codigo>
+            <nombre>Reforma de instalaciones eléctricas</nombre>
+            <numeroSuministros>3</numeroSuministros>
+        </registro>
+        <registro>
+            <codigo>PRY004</codigo>
+            <nombre>Fabricación de maquinaria</nombre>
+            <numeroSuministros>3</numeroSuministros>
+        </registro>
+    </proyectosConMasSuministros>
+</informe>

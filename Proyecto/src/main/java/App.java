@@ -10,10 +10,7 @@ import utils.MetadatosBD;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
 
@@ -433,33 +430,66 @@ public class App {
 
         System.out.println("Periodo: " + desde + " - " + hasta);
 
+        // Preparar los datos del informe
+        Map<String, Object> informe = new LinkedHashMap<>();
+        List<Map<String, Object>> registros = new ArrayList<>();
+
+        informe.put("codigoProveedor", proveedor.getCod());
+        informe.put("proveedor", proveedor.getNombre() + " " + proveedor.getApellido1());
+        informe.put("fechaDesde", desde.toString());
+        informe.put("fechaHasta", hasta.toString());
+
         if (suministros.isEmpty()) {
             System.out.println("\nNo se han encontrado suministros durante este periodo.");
-            return;
+
+            informe.put("suministros", registros);
+            informe.put("totalSuministros", 0);
+            informe.put("cantidadTotal", 0);
+
+        } else {
+
+            // Mostrar los suministros y calcular las cantidades
+            long cantidadTotal = 0;
+
+            System.out.printf("%n%-12s %-20s %-45s %10s%n",
+                    "Fecha", "Pieza", "Proyecto", "Cantidad");
+
+            System.out.println("-------------------------------------------------------------------------------------------");
+
+            for (Suministro s : suministros) {
+
+                System.out.printf("%-12s %-20s %-45s %10d%n",
+                        s.getFecha(),
+                        s.getPieza().getNombre(),
+                        s.getProyecto().getNombre(),
+                        s.getCantidad()
+                );
+
+                // Guardar los datos del suministro
+                Map<String, Object> registro = new LinkedHashMap<>();
+
+                registro.put("fecha", s.getFecha().toString());
+                registro.put("pieza", s.getPieza().getNombre());
+                registro.put("proyecto", s.getProyecto().getNombre());
+                registro.put("cantidad", s.getCantidad());
+
+                registros.add(registro);
+
+                cantidadTotal += s.getCantidad();
+            }
+
+            System.out.println("\nTotal de suministros: " + suministros.size());
+            System.out.println("Cantidad total suministrada: " + cantidadTotal);
+
+            // Completar los datos del informe
+            informe.put("suministros", registros);
+            informe.put("totalSuministros", suministros.size());
+            informe.put("cantidadTotal", cantidadTotal);
         }
 
-        // Mostrar los suministros y calcular las cantidades
-        long cantidadTotal = 0;
-
-        System.out.printf("%n%-12s %-20s %-45s %10s%n",
-                "Fecha", "Pieza", "Proyecto", "Cantidad");
-
-        System.out.println("-------------------------------------------------------------------------------------------");
-
-        for (Suministro s : suministros) {
-
-            System.out.printf("%-12s %-20s %-45s %10d%n",
-                    s.getFecha(),
-                    s.getPieza().getNombre(),
-                    s.getProyecto().getNombre(),
-                    s.getCantidad()
-            );
-
-            cantidadTotal += s.getCantidad();
-        }
-
-        System.out.println("\nTotal de suministros: " + suministros.size());
-        System.out.println("Cantidad total suministrada: " + cantidadTotal);
+        // Exportar el informe automáticamente
+        ExportarDatos.exportarInformeXML("HistoricoProveedor.xml", informe);
+        ExportarDatos.exportarInformeJSON("HistoricoProveedor.json", informe);
     }
 
     // Consultar el análisis de recursos utilizados en un proyecto
@@ -486,51 +516,92 @@ public class App {
         System.out.println("\n===== ANÁLISIS DE " + proyecto.getNombre().toUpperCase() + " =====");
         System.out.println("Ciudad: " + proyecto.getCiudad());
 
+        // Preparar los datos del informe
+        Map<String, Object> informe = new LinkedHashMap<>();
+        List<Map<String, Object>> registros = new ArrayList<>();
+
+        informe.put("codigoProyecto", proyecto.getCod());
+        informe.put("proyecto", proyecto.getNombre());
+        informe.put("ciudad", proyecto.getCiudad());
+
         if (suministros.isEmpty()) {
             System.out.println("\nEste proyecto todavía no tiene suministros.");
-            return;
+
+            informe.put("suministros", registros);
+            informe.put("numeroProveedores", 0);
+            informe.put("numeroPiezas", 0);
+            informe.put("totalSuministros", 0);
+            informe.put("cantidadTotal", 0);
+            informe.put("costeTotal", 0);
+
+        } else {
+
+            // Mostrar los suministros y calcular los recursos utilizados
+            java.util.Set<String> proveedores = new java.util.HashSet<>();
+            java.util.Set<String> piezas = new java.util.HashSet<>();
+
+            long cantidadTotal = 0;
+            double costeTotal = 0;
+
+            System.out.printf("%n%-12s %-20s %-25s %-45s %10s %12s%n",
+                    "Fecha", "Pieza", "Proveedor", "Proyecto", "Cantidad", "Coste");
+
+            System.out.println("----------------------------------------------------------------------------------------" +
+                    "--------------------------------------------");
+
+            for (Suministro s : suministros) {
+
+                double coste = s.getPieza().getPrecio() * s.getCantidad();
+
+                System.out.printf("%-12s %-20s %-25s %-45s %10d %12.2f €%n",
+                        s.getFecha(),
+                        s.getPieza().getNombre(),
+                        s.getProveedor().getNombre(),
+                        s.getProyecto().getNombre(),
+                        s.getCantidad(),
+                        coste
+                );
+
+                proveedores.add(s.getProveedor().getCod());
+                piezas.add(s.getPieza().getCod());
+
+                // Guardar los datos del suministro
+                Map<String, Object> registro = new LinkedHashMap<>();
+
+                registro.put("fecha", s.getFecha().toString());
+                registro.put("pieza", s.getPieza().getNombre());
+                registro.put("proveedor", s.getProveedor().getNombre());
+                registro.put("cantidad", s.getCantidad());
+                registro.put("precioUnitario", s.getPieza().getPrecio());
+                registro.put("coste", coste);
+
+                registros.add(registro);
+
+                cantidadTotal += s.getCantidad();
+                costeTotal += coste;
+            }
+
+            System.out.println("\n===== RESUMEN DEL PROYECTO =====");
+            System.out.println("Número de proveedores: " + proveedores.size());
+            System.out.println("Número de piezas utilizadas: " + piezas.size());
+            System.out.println("Número de suministros: " + suministros.size());
+            System.out.println("Cantidad total suministrada: " + cantidadTotal);
+            System.out.printf("Coste total estimado: %.2f €%n", costeTotal);
+
+            // Completar los datos del informe
+            informe.put("suministros", registros);
+            informe.put("numeroProveedores", proveedores.size());
+            informe.put("numeroPiezas", piezas.size());
+            informe.put("totalSuministros", suministros.size());
+            informe.put("cantidadTotal", cantidadTotal);
+            informe.put("costeTotal", costeTotal);
         }
 
-        // Mostrar los suministros y calcular los recursos utilizados
-        java.util.Set<String> proveedores = new java.util.HashSet<>();
-        java.util.Set<String> piezas = new java.util.HashSet<>();
-
-        long cantidadTotal = 0;
-        double costeTotal = 0;
-
-        System.out.printf("%n%-12s %-20s %-25s %-45s %10s %12s%n",
-                "Fecha", "Pieza", "Proveedor", "Proyecto", "Cantidad", "Coste");
-
-        System.out.println("----------------------------------------------------------------------------------------" +
-                "--------------------------------------------");
-
-        for (Suministro s : suministros) {
-
-            double coste = s.getPieza().getPrecio() * s.getCantidad();
-
-            System.out.printf("%-12s %-20s %-25s %-45s %10d %12.2f €%n",
-                    s.getFecha(),
-                    s.getPieza().getNombre(),
-                    s.getProveedor().getNombre(),
-                    s.getProyecto().getNombre(),
-                    s.getCantidad(),
-                    coste
-            );
-
-            proveedores.add(s.getProveedor().getCod());
-            piezas.add(s.getPieza().getCod());
-
-            cantidadTotal += s.getCantidad();
-            costeTotal += coste;
-        }
-
-        System.out.println("\n===== RESUMEN DEL PROYECTO =====");
-        System.out.println("Número de proveedores: " + proveedores.size());
-        System.out.println("Número de piezas utilizadas: " + piezas.size());
-        System.out.println("Número de suministros: " + suministros.size());
-        System.out.println("Cantidad total suministrada: " + cantidadTotal);
-        System.out.printf("Coste total estimado: %.2f €%n", costeTotal);
+        // Exportar el informe automáticamente
+        ExportarDatos.exportarInformeXML("AnalisisProyecto.xml", informe);
+        ExportarDatos.exportarInformeJSON("AnalisisProyecto.json", informe);
     }
+
 
     // Consultar las estadísticas globales
     private static void estadisticasGlobales(SuministroDao suministroDao, ProveedorDao proveedorDao,
@@ -543,6 +614,14 @@ public class App {
         List<Pieza> piezas = piezaDao.findAll();
         List<Proyecto> proyectos = proyectoDao.findAll();
         List<Suministro> suministros = suministroDao.buscarTodosParaEstadisticas();
+
+        // Preparar los datos del informe
+        Map<String, Object> informe = new LinkedHashMap<>();
+
+        informe.put("totalProveedores", proveedores.size());
+        informe.put("totalPiezas", piezas.size());
+        informe.put("totalProyectos", proyectos.size());
+        informe.put("totalSuministros", suministros.size());
 
         // Mostrar totales generales
         System.out.println("\n===== RESUMEN GENERAL =====");
@@ -569,72 +648,115 @@ public class App {
 
         System.out.println("Cantidad total suministrada: " + cantidadTotal);
 
+        // Preparar las listas de resultados
+        List<Map<String, Object>> proveedoresActivos = new ArrayList<>();
+        List<Map<String, Object>> piezasUtilizadas = new ArrayList<>();
+        List<Map<String, Object>> proyectosActivos = new ArrayList<>();
+
         if (suministros.isEmpty()) {
             System.out.println("\nNo hay suministros registrados para generar estadísticas.");
-            return;
-        }
 
-        // Calcular los valores máximos
-        int maxProveedor = 0;
-        int maxPieza = 0;
-        int maxProyecto = 0;
+            informe.put("cantidadTotal", cantidadTotal);
+            informe.put("proveedoresMasActivos", proveedoresActivos);
+            informe.put("piezasMasUtilizadas", piezasUtilizadas);
+            informe.put("proyectosConMasSuministros", proyectosActivos);
 
-        for (int cantidad : suministrosPorProveedor.values()) {
-            if (cantidad > maxProveedor) {
-                maxProveedor = cantidad;
+        } else {
+
+            // Calcular los valores máximos
+            int maxProveedor = 0;
+            int maxPieza = 0;
+            int maxProyecto = 0;
+
+            for (int cantidad : suministrosPorProveedor.values()) {
+                if (cantidad > maxProveedor) {
+                    maxProveedor = cantidad;
+                }
             }
-        }
 
-        for (int cantidad : cantidadesPorPieza.values()) {
-            if (cantidad > maxPieza) {
-                maxPieza = cantidad;
+            for (int cantidad : cantidadesPorPieza.values()) {
+                if (cantidad > maxPieza) {
+                    maxPieza = cantidad;
+                }
             }
-        }
 
-        for (int cantidad : suministrosPorProyecto.values()) {
-            if (cantidad > maxProyecto) {
-                maxProyecto = cantidad;
+            for (int cantidad : suministrosPorProyecto.values()) {
+                if (cantidad > maxProyecto) {
+                    maxProyecto = cantidad;
+                }
             }
-        }
 
-        // Mostrar los proveedores más activos
-        System.out.println("\n===== PROVEEDORES MÁS ACTIVOS =====");
+            // Mostrar los proveedores más activos
+            System.out.println("\n===== PROVEEDORES MÁS ACTIVOS =====");
 
-        for (Proveedor p : proveedores) {
+            for (Proveedor p : proveedores) {
 
-            int cantidad = suministrosPorProveedor.getOrDefault(p.getCod(), 0);
+                int cantidad = suministrosPorProveedor.getOrDefault(p.getCod(), 0);
 
-            if (cantidad == maxProveedor) {
-                System.out.println(p.getCod() + " - " + p.getNombre() + " " +
-                        p.getApellido1() + ": " + cantidad + " suministros");
+                if (cantidad == maxProveedor) {
+                    System.out.println(p.getCod() + " - " + p.getNombre() + " " +
+                            p.getApellido1() + ": " + cantidad + " suministros");
+
+                    Map<String, Object> registro = new LinkedHashMap<>();
+                    registro.put("codigo", p.getCod());
+                    registro.put("nombre", p.getNombre());
+                    registro.put("apellido", p.getApellido1());
+                    registro.put("numeroSuministros", cantidad);
+
+                    proveedoresActivos.add(registro);
+                }
             }
-        }
 
-        // Mostrar las piezas más utilizadas
-        System.out.println("\n===== PIEZAS MÁS UTILIZADAS =====");
+            // Mostrar las piezas más utilizadas
+            System.out.println("\n===== PIEZAS MÁS UTILIZADAS =====");
 
-        for (Pieza p : piezas) {
+            for (Pieza p : piezas) {
 
-            int cantidad = cantidadesPorPieza.getOrDefault(p.getCod(), 0);
+                int cantidad = cantidadesPorPieza.getOrDefault(p.getCod(), 0);
 
-            if (cantidad == maxPieza) {
-                System.out.println(p.getCod() + " - " + p.getNombre() + ": " +
-                        cantidad + " unidades");
+                if (cantidad == maxPieza) {
+                    System.out.println(p.getCod() + " - " + p.getNombre() + ": " +
+                            cantidad + " unidades");
+
+                    Map<String, Object> registro = new LinkedHashMap<>();
+                    registro.put("codigo", p.getCod());
+                    registro.put("nombre", p.getNombre());
+                    registro.put("unidades", cantidad);
+
+                    piezasUtilizadas.add(registro);
+                }
             }
-        }
 
-        // Mostrar los proyectos con más suministros
-        System.out.println("\n===== PROYECTOS CON MÁS SUMINISTROS =====");
+            // Mostrar los proyectos con más suministros
+            System.out.println("\n===== PROYECTOS CON MÁS SUMINISTROS =====");
 
-        for (Proyecto p : proyectos) {
+            for (Proyecto p : proyectos) {
 
-            int cantidad = suministrosPorProyecto.getOrDefault(p.getCod(), 0);
+                int cantidad = suministrosPorProyecto.getOrDefault(p.getCod(), 0);
 
-            if (cantidad == maxProyecto) {
-                System.out.println(p.getCod() + " - " + p.getNombre() + ": " +
-                        cantidad + " suministros");
+                if (cantidad == maxProyecto) {
+                    System.out.println(p.getCod() + " - " + p.getNombre() + ": " +
+                            cantidad + " suministros");
+
+                    Map<String, Object> registro = new LinkedHashMap<>();
+                    registro.put("codigo", p.getCod());
+                    registro.put("nombre", p.getNombre());
+                    registro.put("numeroSuministros", cantidad);
+
+                    proyectosActivos.add(registro);
+                }
             }
+
+            // Completar los datos del informe
+            informe.put("cantidadTotal", cantidadTotal);
+            informe.put("proveedoresMasActivos", proveedoresActivos);
+            informe.put("piezasMasUtilizadas", piezasUtilizadas);
+            informe.put("proyectosConMasSuministros", proyectosActivos);
         }
+
+        // Exportar el informe automáticamente
+        ExportarDatos.exportarInformeXML("EstadisticasGlobales.xml", informe);
+        ExportarDatos.exportarInformeJSON("EstadisticasGlobales.json", informe);
     }
 
     // Mostrar información de ayuda

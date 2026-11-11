@@ -1,0 +1,28 @@
+{
+  "codigoProveedor": "PR001",
+  "proveedor": "Comercial García García",
+  "fechaDesde": "2026-01-01",
+  "fechaHasta": "2026-12-31",
+  "suministros": [
+    {
+      "fecha": "2026-01-10",
+      "pieza": "Tornillo M5",
+      "proyecto": "Construcción de nave industrial",
+      "cantidad": 500
+    },
+    {
+      "fecha": "2026-01-10",
+      "pieza": "Tuerca M5",
+      "proyecto": "Construcción de nave industrial",
+      "cantidad": 500
+    },
+    {
+      "fecha": "2026-02-15",
+      "pieza": "Tubo PVC",
+      "proyecto": "Instalación de sistema de climatización",
+      "cantidad": 15
+    }
+  ],
+  "totalSuministros": 3,
+  "cantidadTotal": 1015
+}

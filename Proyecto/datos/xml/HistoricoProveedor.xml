@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<informe>
+    <codigoProveedor>PR001</codigoProveedor>
+    <proveedor>Comercial García García</proveedor>
+    <fechaDesde>2026-01-01</fechaDesde>
+    <fechaHasta>2026-12-31</fechaHasta>
+    <suministros>
+        <registro>
+            <fecha>2026-01-10</fecha>
+            <pieza>Tornillo M5</pieza>
+            <proyecto>Construcción de nave industrial</proyecto>
+            <cantidad>500</cantidad>
+        </registro>
+        <registro>
+            <fecha>2026-01-10</fecha>
+            <pieza>Tuerca M5</pieza>
+            <proyecto>Construcción de nave industrial</proyecto>
+            <cantidad>500</cantidad>
+        </registro>
+        <registro>
+            <fecha>2026-02-15</fecha>
+            <pieza>Tubo PVC</pieza>
+            <proyecto>Instalación de sistema de climatización</proyecto>
+            <cantidad>15</cantidad>
+        </registro>
+    </suministros>
+    <totalSuministros>3</totalSuministros>
+    <cantidadTotal>1015</cantidadTotal>
+</informe>

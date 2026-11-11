@@ -1,0 +1,36 @@
+{
+  "codigoProyecto": "PRY001",
+  "proyecto": "Construcción de nave industrial",
+  "ciudad": "Vitoria-Gasteiz",
+  "suministros": [
+    {
+      "fecha": "2026-01-10",
+      "pieza": "Tornillo M5",
+      "proveedor": "Comercial García",
+      "cantidad": 500,
+      "precioUnitario": 0.15,
+      "coste": 75.0
+    },
+    {
+      "fecha": "2026-01-10",
+      "pieza": "Tuerca M5",
+      "proveedor": "Comercial García",
+      "cantidad": 500,
+      "precioUnitario": 0.08,
+      "coste": 40.0
+    },
+    {
+      "fecha": "2026-01-12",
+      "pieza": "Arandela M5",
+      "proveedor": "Suministros Martínez",
+      "cantidad": 1000,
+      "precioUnitario": 0.05,
+      "coste": 50.0
+    }
+  ],
+  "numeroProveedores": 2,
+  "numeroPiezas": 3,
+  "totalSuministros": 3,
+  "cantidadTotal": 2000,
+  "costeTotal": 165.0
+}

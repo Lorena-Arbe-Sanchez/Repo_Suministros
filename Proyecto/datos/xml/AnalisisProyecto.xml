@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<informe>
+    <codigoProyecto>PRY001</codigoProyecto>
+    <proyecto>Construcción de nave industrial</proyecto>
+    <ciudad>Vitoria-Gasteiz</ciudad>
+    <suministros>
+        <registro>
+            <fecha>2026-01-10</fecha>
+            <pieza>Tornillo M5</pieza>
+            <proveedor>Comercial García</proveedor>
+            <cantidad>500</cantidad>
+            <precioUnitario>0.15</precioUnitario>
+            <coste>75.0</coste>
+        </registro>
+        <registro>
+            <fecha>2026-01-10</fecha>
+            <pieza>Tuerca M5</pieza>
+            <proveedor>Comercial García</proveedor>
+            <cantidad>500</cantidad>
+            <precioUnitario>0.08</precioUnitario>
+            <coste>40.0</coste>
+        </registro>
+        <registro>
+            <fecha>2026-01-12</fecha>
+            <pieza>Arandela M5</pieza>
+            <proveedor>Suministros Martínez</proveedor>
+            <cantidad>1000</cantidad>
+            <precioUnitario>0.05</precioUnitario>
+            <coste>50.0</coste>
+        </registro>
+    </suministros>
+    <numeroProveedores>2</numeroProveedores>
+    <numeroPiezas>3</numeroPiezas>
+    <totalSuministros>3</totalSuministros>
+    <cantidadTotal>2000</cantidadTotal>
+    <costeTotal>165.0</costeTotal>
+</informe>

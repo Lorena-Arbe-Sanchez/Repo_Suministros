@@ -101,6 +101,10 @@ public class AppTest {
         }
     }
 
+    // --------------------------------------------------
+    // PRUEBAS DE CONEXIÓN Y ENTIDADES
+    // --------------------------------------------------
+
     /**
      * Comprueba la conexión con la base de datos
      */
@@ -588,6 +592,10 @@ public class AppTest {
         assertTrue(proyectoDao.delete(proyecto));
     }
 
+    // --------------------------------------------------
+    // PRUEBAS DE BÚSQUEDAS AVANZADAS
+    // --------------------------------------------------
+
     /**
      * Comprueba las búsquedas avanzadas de proveedores
      */
@@ -796,5 +804,110 @@ public class AppTest {
 
         // Búsqueda sin resultados
         assertTrue(suministroDao.buscarPorId(999).isEmpty());
+    }
+
+    // --------------------------------------------------
+    // PRUEBAS DE ANÁLISIS Y ESTADÍSTICAS
+    // --------------------------------------------------
+
+    /**
+     * Comprueba el histórico de suministros de un proveedor durante un periodo
+     */
+    @Test
+    public void testHistoricoProveedor() {
+
+        // Histórico de PR001 durante el 2026
+        List<Suministro> resultados = suministroDao.buscarHistoricoProveedor(
+                "PR001",
+                LocalDate.of(2026, 1, 1),
+                LocalDate.of(2026, 12, 31)
+        );
+
+        assertEquals(3, resultados.size());
+
+        assertEquals(
+                Set.of(1, 2, 13),
+                resultados.stream()
+                        .map(Suministro::getId)
+                        .collect(Collectors.toSet())
+        );
+
+        // Comprobar que las relaciones están disponibles
+        for (Suministro s : resultados) {
+            assertNotNull(s.getPieza());
+            assertNotNull(s.getProyecto());
+            assertNotNull(s.getProveedor());
+        }
+
+        // Comprobar que no devuelve resultados para un periodo sin suministros
+        assertTrue(suministroDao.buscarHistoricoProveedor(
+                "PR001",
+                LocalDate.of(2099, 1, 1),
+                LocalDate.of(2099, 12, 31)
+        ).isEmpty());
+
+        // Comprobar que no devuelve resultados para un proveedor inexistente
+        assertTrue(suministroDao.buscarHistoricoProveedor(
+                "PR999",
+                LocalDate.of(2026, 1, 1),
+                LocalDate.of(2026, 12, 31)
+        ).isEmpty());
+    }
+
+    /**
+     * Comprueba la consulta de suministros para analizar un proyecto
+     */
+    @Test
+    public void testAnalisisProyecto() {
+
+        // Consultar los suministros de PRY001
+        List<Suministro> resultados = suministroDao.buscarAnalisisProyecto("PRY001");
+
+        assertEquals(3, resultados.size());
+
+        assertEquals(
+                Set.of(1, 2, 3),
+                resultados.stream()
+                        .map(Suministro::getId)
+                        .collect(Collectors.toSet())
+        );
+
+        // Comprobar que las relaciones están disponibles
+        for (Suministro s : resultados) {
+            assertNotNull(s.getPieza());
+            assertNotNull(s.getProveedor());
+            assertNotNull(s.getProyecto());
+            assertEquals("PRY001", s.getProyecto().getCod());
+        }
+
+        // Comprobar que no devuelve resultados para un proyecto sin suministros
+        assertTrue(suministroDao.buscarAnalisisProyecto("PRY999").isEmpty());
+    }
+
+    /**
+     * Comprueba la consulta de todos los suministros para las estadísticas globales
+     */
+    @Test
+    public void testBuscarTodosParaEstadisticas() {
+
+        List<Suministro> resultados = suministroDao.buscarTodosParaEstadisticas();
+
+        assertFalse(resultados.isEmpty());
+
+        // Comprobar que están incluidos los suministros originales
+        assertTrue(resultados.stream().anyMatch(s -> s.getId() == 1));
+        assertTrue(resultados.stream().anyMatch(s -> s.getId() == 15));
+
+        // Comprobar que las relaciones están disponibles
+        for (Suministro s : resultados) {
+            assertNotNull(s.getPieza());
+            assertNotNull(s.getProveedor());
+            assertNotNull(s.getProyecto());
+        }
+
+        // Comprobar que los resultados están ordenados por ID
+        for (int i = 1; i < resultados.size(); i++) {
+            assertTrue(resultados.get(i - 1).getId() < resultados.get(i).getId());
+        }
     }
 }

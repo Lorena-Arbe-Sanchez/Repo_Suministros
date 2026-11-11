@@ -1,0 +1,39 @@
+{
+  "totalProveedores": 5,
+  "totalPiezas": 10,
+  "totalProyectos": 6,
+  "totalSuministros": 15,
+  "cantidadTotal": 2853,
+  "proveedoresMasActivos": [
+    {
+      "codigo": "PR002",
+      "nombre": "Suministros Martínez",
+      "apellido": "Martínez",
+      "numeroSuministros": 4
+    }
+  ],
+  "piezasMasUtilizadas": [
+    {
+      "codigo": "P003",
+      "nombre": "Arandela M5",
+      "unidades": 1000
+    }
+  ],
+  "proyectosConMasSuministros": [
+    {
+      "codigo": "PRY001",
+      "nombre": "Construcción de nave industrial",
+      "numeroSuministros": 3
+    },
+    {
+      "codigo": "PRY002",
+      "nombre": "Reforma de instalaciones eléctricas",
+      "numeroSuministros": 3
+    },
+    {
+      "codigo": "PRY004",
+      "nombre": "Fabricación de maquinaria",
+      "numeroSuministros": 3
+    }
+  ]
+}

@@ -5,8 +5,11 @@ import com.google.gson.GsonBuilder;
 import dao.Dao;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -19,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ExportarDatos {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExportarDatos.class);
 
     // Exportar proveedores a XML
     public static void exportarProveedoresXML() {
@@ -216,5 +221,78 @@ public class ExportarDatos {
         } catch (Exception e) {
             System.out.println("❌ Error al exportar JSON: " + e.getMessage());
         }
+    }
+
+    // Exportar un informe analítico a XML
+    public static void exportarInformeXML(String nombreArchivo, Map<String, Object> datos) {
+        try {
+            Path directorio = Paths.get("datos/xml");
+            Files.createDirectories(directorio);
+
+            XMLOutputFactory factory = XMLOutputFactory.newInstance();
+
+            try (OutputStream salida = Files.newOutputStream(directorio.resolve(nombreArchivo))) {
+                XMLStreamWriter escritor = factory.createXMLStreamWriter(salida, "UTF-8");
+
+                escritor.writeStartDocument("UTF-8", "1.0");
+                escritor.writeStartElement("informe");
+
+                for (Map.Entry<String, Object> entrada : datos.entrySet()) {
+                    escribirElemento(escritor, entrada.getKey(), entrada.getValue());
+                }
+
+                escritor.writeEndElement();
+                escritor.writeEndDocument();
+                escritor.close();
+            }
+
+            System.out.println("\n✅ Informe XML exportado: " + directorio.resolve(nombreArchivo));
+
+        } catch (Exception e) {
+            logger.error("Error al exportar el informe XML", e);
+            System.out.println("Error al exportar el informe XML.");
+        }
+    }
+
+    // Exportar un informe analítico a JSON
+    public static void exportarInformeJSON(String nombreArchivo, Map<String, Object> datos) {
+        try {
+            Path directorio = Paths.get("datos/json");
+            Files.createDirectories(directorio);
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(datos);
+
+            Files.writeString(directorio.resolve(nombreArchivo), json);
+
+            System.out.println("✅ Informe JSON exportado: " + directorio.resolve(nombreArchivo));
+
+        } catch (Exception e) {
+            logger.error("Error al exportar el informe JSON", e);
+            System.out.println("Error al exportar el informe JSON.");
+        }
+    }
+
+    // Escribir los datos del informe en formato XML
+    private static void escribirElemento(XMLStreamWriter escritor, String nombre, Object valor)
+            throws XMLStreamException {
+
+        escritor.writeStartElement(nombre);
+
+        if (valor instanceof Map<?, ?> mapa) {
+            for (Map.Entry<?, ?> entrada : mapa.entrySet()) {
+                escribirElemento(escritor, entrada.getKey().toString(), entrada.getValue());
+            }
+
+        } else if (valor instanceof Iterable<?> iterable) {
+            for (Object elemento : iterable) {
+                escribirElemento(escritor, "registro", elemento);
+            }
+
+        } else if (valor != null) {
+            escritor.writeCharacters(valor.toString());
+        }
+
+        escritor.writeEndElement();
     }
 }
