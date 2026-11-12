@@ -18,6 +18,10 @@ public class MainFX extends Application {
 
         Scene scene = new Scene(loader.load(), 1200, 750);
 
+        scene.getStylesheets().add(
+                MainFX.class.getResource("/gui/styles.css").toExternalForm()
+        );
+
         stage.setTitle("Gestión de Suministros");
         stage.setMinWidth(1000);
         stage.setMinHeight(650);

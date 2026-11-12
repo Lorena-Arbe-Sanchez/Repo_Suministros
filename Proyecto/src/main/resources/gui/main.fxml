@@ -1,25 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/20"
-            xmlns:fx="http://javafx.com/fxml/1">
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gui.MainController"
+            styleClass="main-container">
 
-    <center>
-        <VBox alignment="CENTER" spacing="15">
-            <padding>
-                <Insets top="30" right="30" bottom="30" left="30"/>
-            </padding>
+    <left>
+        <VBox styleClass="sidebar" spacing="8">
 
             <Label text="GESTIÓN DE SUMINISTROS"
-                   style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
+                   styleClass="app-title"/>
 
-            <Label text="Bienvenido a la aplicación"
-                   style="-fx-font-size: 16px;"/>
+            <Label text="MENÚ PRINCIPAL"
+                   styleClass="menu-title"/>
+
+            <Button text="⌂   Inicio"
+                    onAction="#mostrarInicio"
+                    styleClass="menu-button"/>
+
+            <Button text="♙   Proveedores"
+                    onAction="#mostrarProveedores"
+                    styleClass="menu-button"/>
+
+            <Button text="▣   Piezas"
+                    onAction="#mostrarPiezas"
+                    styleClass="menu-button"/>
+
+            <Button text="▦   Proyectos"
+                    onAction="#mostrarProyectos"
+                    styleClass="menu-button"/>
+
+            <Button text="⇄   Suministros"
+                    onAction="#mostrarSuministros"
+                    styleClass="menu-button"/>
+
+            <Label text="OTRAS OPCIONES"
+                   styleClass="menu-title"/>
+
+            <Button text="▥   Análisis y estadísticas"
+                    onAction="#mostrarAnalisis"
+                    styleClass="menu-button"/>
+
+            <Button text="⇩   Exportaciones"
+                    onAction="#mostrarExportaciones"
+                    styleClass="menu-button"/>
+
+            <Button text="▤   Metadatos"
+                    onAction="#mostrarMetadatos"
+                    styleClass="menu-button"/>
+
+            <Button text="?   Ayuda"
+                    onAction="#mostrarAyuda"
+                    styleClass="menu-button"/>
+
         </VBox>
+    </left>
+
+    <center>
+        <VBox fx:id="contentArea"
+              styleClass="content-area"
+              spacing="20"/>
     </center>
 
 </BorderPane>
