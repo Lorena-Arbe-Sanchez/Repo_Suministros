@@ -8,6 +8,7 @@ import dao.SuministroDao;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -17,8 +18,10 @@ import models.Pieza;
 import models.Proveedor;
 import models.Proyecto;
 import models.Suministro;
+import utils.ExportarDatos;
 
 import java.time.LocalDate;
+import java.util.*;
 
 public class MainController {
 
@@ -1598,7 +1601,495 @@ public class MainController {
 
     @FXML
     private void mostrarAnalisis() {
-        mostrarPagina("Análisis y estadísticas", "Consultas e informes de la aplicación");
+
+        Label titulo = new Label("Análisis y estadísticas");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Consultas e informes de la aplicación");
+        descripcion.getStyleClass().add("page-description");
+
+        Button btnHistorico = new Button("Histórico de proveedor");
+        Button btnProyecto = new Button("Análisis de proyectos");
+        Button btnEstadisticas = new Button("Estadísticas globales");
+
+        btnHistorico.setOnAction(e -> historicoProveedor());
+        btnProyecto.setOnAction(e -> analisisProyecto());
+        btnEstadisticas.setOnAction(e -> estadisticasGlobales());
+
+        VBox opciones = new VBox(15,
+                btnHistorico,
+                btnProyecto,
+                btnEstadisticas
+        );
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                opciones
+        );
+    }
+
+    private void historicoProveedor() {
+
+        Label titulo = new Label("Histórico de proveedor");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Consulta los suministros realizados por un proveedor en un intervalo de fechas");
+        descripcion.getStyleClass().add("page-description");
+
+        ComboBox<Proveedor> cmbProveedor = new ComboBox<>(
+                FXCollections.observableArrayList(proveedorDao.findAll())
+        );
+        cmbProveedor.setPromptText("Selecciona un proveedor");
+        cmbProveedor.setPrefWidth(300);
+
+        cmbProveedor.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(Proveedor proveedor) {
+                if (proveedor == null) return "";
+                return proveedor.getCod() + " - " + proveedor.getNombre()
+                        + " " + proveedor.getApellido1();
+            }
+
+            @Override
+            public Proveedor fromString(String texto) {
+                return null;
+            }
+        });
+
+        DatePicker fechaDesde = new DatePicker();
+        fechaDesde.setPromptText("Fecha desde");
+
+        DatePicker fechaHasta = new DatePicker();
+        fechaHasta.setPromptText("Fecha hasta");
+
+        Button btnConsultar = new Button("Consultar");
+
+        TableView<Suministro> tabla = new TableView<>();
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        TableColumn<Suministro, String> colFecha = new TableColumn<>("Fecha");
+        colFecha.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(d.getValue().getFecha().toString()));
+
+        TableColumn<Suministro, String> colPieza = new TableColumn<>("Pieza");
+        colPieza.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(d.getValue().getPieza().getNombre()));
+
+        TableColumn<Suministro, String> colProyecto = new TableColumn<>("Proyecto");
+        colProyecto.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(d.getValue().getProyecto().getNombre()));
+
+        TableColumn<Suministro, String> colCantidad = new TableColumn<>("Cantidad");
+        colCantidad.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(String.valueOf(d.getValue().getCantidad())));
+
+        tabla.getColumns().addAll(colFecha, colPieza, colProyecto, colCantidad);
+
+        Label resumen = new Label();
+        resumen.getStyleClass().add("page-description");
+
+        btnConsultar.setOnAction(e -> {
+
+            Proveedor proveedor = cmbProveedor.getValue();
+            LocalDate desde = fechaDesde.getValue();
+            LocalDate hasta = fechaHasta.getValue();
+
+            if (proveedor == null || desde == null || hasta == null) {
+                mostrarError("Debes seleccionar un proveedor y las dos fechas");
+                return;
+            }
+
+            if (hasta.isBefore(desde)) {
+                mostrarError("La fecha hasta no puede ser anterior a la fecha desde");
+                return;
+            }
+
+            try {
+                List<Suministro> suministros = suministroDao.buscarHistoricoProveedor(
+                        proveedor.getCod(), desde, hasta
+                );
+
+                tabla.setItems(FXCollections.observableArrayList(suministros));
+
+                int cantidadTotal = 0;
+
+                for (Suministro suministro : suministros) {
+                    cantidadTotal += suministro.getCantidad();
+                }
+
+                resumen.setText(
+                        "Proveedor: " + proveedor.getNombre() + " " + proveedor.getApellido1()
+                                + "\nPeriodo: " + desde + " - " + hasta
+                                + "\nTotal de suministros: " + suministros.size()
+                                + "\nCantidad total: " + cantidadTotal
+                );
+
+                List<Map<String, Object>> registros = new ArrayList<>();
+
+                for (Suministro suministro : suministros) {
+                    Map<String, Object> registro = new LinkedHashMap<>();
+                    registro.put("fecha", suministro.getFecha().toString());
+                    registro.put("pieza", suministro.getPieza().getNombre());
+                    registro.put("proyecto", suministro.getProyecto().getNombre());
+                    registro.put("cantidad", suministro.getCantidad());
+                    registros.add(registro);
+                }
+
+                Map<String, Object> informe = new LinkedHashMap<>();
+                informe.put("codigoProveedor", proveedor.getCod());
+                informe.put("proveedor", proveedor.getNombre() + " " + proveedor.getApellido1());
+                informe.put("fechaDesde", desde.toString());
+                informe.put("fechaHasta", hasta.toString());
+                informe.put("suministros", registros);
+                informe.put("totalSuministros", suministros.size());
+                informe.put("cantidadTotal", cantidadTotal);
+
+                ExportarDatos.exportarInformeXML("HistoricoProveedor.xml", informe);
+                ExportarDatos.exportarInformeJSON("HistoricoProveedor.json", informe);
+
+                mostrarInformacion("Histórico consultado y exportado correctamente");
+
+            } catch (Exception ex) {
+                mostrarError("Error al consultar el histórico: " + ex.getMessage());
+            }
+        });
+
+        HBox filtros = new HBox(10,
+                new Label("Proveedor:"), cmbProveedor,
+                new Label("Desde:"), fechaDesde,
+                new Label("Hasta:"), fechaHasta,
+                btnConsultar
+        );
+        filtros.setAlignment(Pos.CENTER_LEFT);
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                filtros,
+                tabla,
+                resumen
+        );
+    }
+
+    private void analisisProyecto() {
+
+        Label titulo = new Label("Análisis de proyectos");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Consulta los suministros y costes asociados a un proyecto");
+        descripcion.getStyleClass().add("page-description");
+
+        ComboBox<Proyecto> cmbProyecto = new ComboBox<>(
+                FXCollections.observableArrayList(proyectoDao.findAll())
+        );
+        cmbProyecto.setPromptText("Selecciona un proyecto");
+        cmbProyecto.setPrefWidth(300);
+
+        cmbProyecto.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(Proyecto proyecto) {
+                if (proyecto == null) return "";
+                return proyecto.getCod() + " - " + proyecto.getNombre();
+            }
+
+            @Override
+            public Proyecto fromString(String texto) {
+                return null;
+            }
+        });
+
+        Button btnConsultar = new Button("Consultar");
+
+        TableView<Suministro> tabla = new TableView<>();
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        TableColumn<Suministro, String> colFecha = new TableColumn<>("Fecha");
+        colFecha.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(d.getValue().getFecha().toString()));
+
+        TableColumn<Suministro, String> colPieza = new TableColumn<>("Pieza");
+        colPieza.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(d.getValue().getPieza().getNombre()));
+
+        TableColumn<Suministro, String> colProveedor = new TableColumn<>("Proveedor");
+        colProveedor.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(d.getValue().getProveedor().getNombre()));
+
+        TableColumn<Suministro, String> colCantidad = new TableColumn<>("Cantidad");
+        colCantidad.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(String.valueOf(d.getValue().getCantidad())));
+
+        TableColumn<Suministro, String> colCoste = new TableColumn<>("Coste (€)");
+        colCoste.setCellValueFactory(d -> {
+            double coste = d.getValue().getPieza().getPrecio()
+                    * d.getValue().getCantidad();
+            return new ReadOnlyStringWrapper(String.format("%.2f €", coste));
+        });
+
+        tabla.getColumns().addAll(
+                colFecha, colPieza, colProveedor, colCantidad, colCoste
+        );
+
+        Label resumen = new Label();
+        resumen.getStyleClass().add("page-description");
+
+        btnConsultar.setOnAction(e -> {
+
+            Proyecto proyecto = cmbProyecto.getValue();
+
+            if (proyecto == null) {
+                mostrarError("Debes seleccionar un proyecto");
+                return;
+            }
+
+            try {
+                List<Suministro> suministros =
+                        suministroDao.buscarAnalisisProyecto(proyecto.getCod());
+
+                tabla.setItems(FXCollections.observableArrayList(suministros));
+
+                Set<String> proveedores = new HashSet<>();
+                Set<String> piezas = new HashSet<>();
+
+                int cantidadTotal = 0;
+                double costeTotal = 0;
+
+                List<Map<String, Object>> registros = new ArrayList<>();
+
+                for (Suministro suministro : suministros) {
+
+                    double precioUnitario = suministro.getPieza().getPrecio();
+                    double coste = precioUnitario * suministro.getCantidad();
+
+                    proveedores.add(suministro.getProveedor().getCod());
+                    piezas.add(suministro.getPieza().getCod());
+
+                    cantidadTotal += suministro.getCantidad();
+                    costeTotal += coste;
+
+                    Map<String, Object> registro = new LinkedHashMap<>();
+                    registro.put("fecha", suministro.getFecha().toString());
+                    registro.put("pieza", suministro.getPieza().getNombre());
+                    registro.put("proveedor", suministro.getProveedor().getNombre());
+                    registro.put("cantidad", suministro.getCantidad());
+                    registro.put("precioUnitario", precioUnitario);
+                    registro.put("coste", coste);
+
+                    registros.add(registro);
+                }
+
+                resumen.setText(
+                        "Proyecto: " + proyecto.getNombre()
+                                + "\nCiudad: " + proyecto.getCiudad()
+                                + "\nNúmero de proveedores: " + proveedores.size()
+                                + "\nNúmero de piezas: " + piezas.size()
+                                + "\nTotal de suministros: " + suministros.size()
+                                + "\nCantidad total: " + cantidadTotal
+                                + "\nCoste total: " + String.format("%.2f €", costeTotal)
+                );
+
+                Map<String, Object> informe = new LinkedHashMap<>();
+                informe.put("codigoProyecto", proyecto.getCod());
+                informe.put("proyecto", proyecto.getNombre());
+                informe.put("ciudad", proyecto.getCiudad());
+                informe.put("suministros", registros);
+                informe.put("numeroProveedores", proveedores.size());
+                informe.put("numeroPiezas", piezas.size());
+                informe.put("totalSuministros", suministros.size());
+                informe.put("cantidadTotal", cantidadTotal);
+                informe.put("costeTotal", costeTotal);
+
+                ExportarDatos.exportarInformeXML("AnalisisProyecto.xml", informe);
+                ExportarDatos.exportarInformeJSON("AnalisisProyecto.json", informe);
+
+                mostrarInformacion("Análisis consultado y exportado correctamente");
+
+            } catch (Exception ex) {
+                mostrarError("Error al consultar el análisis: " + ex.getMessage());
+            }
+        });
+
+        HBox filtros = new HBox(10,
+                new Label("Proyecto:"), cmbProyecto,
+                btnConsultar
+        );
+        filtros.setAlignment(Pos.CENTER_LEFT);
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                filtros,
+                tabla,
+                resumen
+        );
+    }
+
+    private void estadisticasGlobales() {
+
+        Label titulo = new Label("Estadísticas globales");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Resumen general de la actividad de la base de datos");
+        descripcion.getStyleClass().add("page-description");
+
+        TextArea resultado = new TextArea();
+        resultado.setEditable(false);
+        resultado.setWrapText(true);
+        resultado.setPrefRowCount(25);
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                resultado
+        );
+
+        try {
+            List<Proveedor> proveedores = proveedorDao.findAll();
+            List<Pieza> piezas = piezaDao.findAll();
+            List<Proyecto> proyectos = proyectoDao.findAll();
+            List<Suministro> suministros =
+                    suministroDao.buscarTodosParaEstadisticas();
+
+            Map<String, Integer> suministrosProveedor = new HashMap<>();
+            Map<String, Integer> unidadesPieza = new HashMap<>();
+            Map<String, Integer> suministrosProyecto = new HashMap<>();
+
+            int cantidadTotal = 0;
+
+            for (Suministro suministro : suministros) {
+
+                String codProveedor = suministro.getProveedor().getCod();
+                String codPieza = suministro.getPieza().getCod();
+                String codProyecto = suministro.getProyecto().getCod();
+
+                suministrosProveedor.put(
+                        codProveedor,
+                        suministrosProveedor.getOrDefault(codProveedor, 0) + 1
+                );
+
+                unidadesPieza.put(
+                        codPieza,
+                        unidadesPieza.getOrDefault(codPieza, 0)
+                                + suministro.getCantidad()
+                );
+
+                suministrosProyecto.put(
+                        codProyecto,
+                        suministrosProyecto.getOrDefault(codProyecto, 0) + 1
+                );
+
+                cantidadTotal += suministro.getCantidad();
+            }
+
+            Map<String, Object> informe = new LinkedHashMap<>();
+            informe.put("totalProveedores", proveedores.size());
+            informe.put("totalPiezas", piezas.size());
+            informe.put("totalProyectos", proyectos.size());
+            informe.put("totalSuministros", suministros.size());
+            informe.put("cantidadTotal", cantidadTotal);
+
+            StringBuilder texto = new StringBuilder();
+
+            texto.append("===== RESUMEN GENERAL =====\n\n");
+            texto.append("Total de proveedores: ").append(proveedores.size()).append("\n");
+            texto.append("Total de piezas: ").append(piezas.size()).append("\n");
+            texto.append("Total de proyectos: ").append(proyectos.size()).append("\n");
+            texto.append("Total de suministros: ").append(suministros.size()).append("\n");
+            texto.append("Cantidad total suministrada: ").append(cantidadTotal).append("\n");
+
+            if (suministros.isEmpty()) {
+
+                texto.append("\nNo hay suministros registrados para realizar estadísticas");
+
+                informe.put("proveedoresMasActivos", new ArrayList<>());
+                informe.put("piezasMasUtilizadas", new ArrayList<>());
+                informe.put("proyectosConMasSuministros", new ArrayList<>());
+
+            } else {
+
+                int maxProveedor = suministrosProveedor.values()
+                        .stream().max(Integer::compareTo).orElse(0);
+
+                int maxPieza = unidadesPieza.values()
+                        .stream().max(Integer::compareTo).orElse(0);
+
+                int maxProyecto = suministrosProyecto.values()
+                        .stream().max(Integer::compareTo).orElse(0);
+
+                List<Map<String, Object>> proveedoresDestacados = new ArrayList<>();
+                List<Map<String, Object>> piezasDestacadas = new ArrayList<>();
+                List<Map<String, Object>> proyectosDestacados = new ArrayList<>();
+
+                texto.append("\n===== PROVEEDORES MÁS ACTIVOS =====\n");
+
+                for (Proveedor proveedor : proveedores) {
+                    int total = suministrosProveedor.getOrDefault(proveedor.getCod(), 0);
+
+                    if (total == maxProveedor) {
+                        texto.append(proveedor.getCod()).append(" - ")
+                                .append(proveedor.getNombre()).append(" ")
+                                .append(proveedor.getApellido1())
+                                .append(": ").append(total).append(" suministros\n");
+
+                        Map<String, Object> registro = new LinkedHashMap<>();
+                        registro.put("codigo", proveedor.getCod());
+                        registro.put("nombre", proveedor.getNombre());
+                        registro.put("apellido", proveedor.getApellido1());
+                        registro.put("numeroSuministros", total);
+                        proveedoresDestacados.add(registro);
+                    }
+                }
+
+                texto.append("\n===== PIEZAS MÁS UTILIZADAS =====\n");
+
+                for (Pieza pieza : piezas) {
+                    int total = unidadesPieza.getOrDefault(pieza.getCod(), 0);
+
+                    if (total == maxPieza) {
+                        texto.append(pieza.getCod()).append(" - ")
+                                .append(pieza.getNombre())
+                                .append(": ").append(total).append(" unidades\n");
+
+                        Map<String, Object> registro = new LinkedHashMap<>();
+                        registro.put("codigo", pieza.getCod());
+                        registro.put("nombre", pieza.getNombre());
+                        registro.put("unidades", total);
+                        piezasDestacadas.add(registro);
+                    }
+                }
+
+                texto.append("\n===== PROYECTOS CON MÁS SUMINISTROS =====\n");
+
+                for (Proyecto proyecto : proyectos) {
+                    int total = suministrosProyecto.getOrDefault(proyecto.getCod(), 0);
+
+                    if (total == maxProyecto) {
+                        texto.append(proyecto.getCod()).append(" - ")
+                                .append(proyecto.getNombre())
+                                .append(": ").append(total).append(" suministros\n");
+
+                        Map<String, Object> registro = new LinkedHashMap<>();
+                        registro.put("codigo", proyecto.getCod());
+                        registro.put("nombre", proyecto.getNombre());
+                        registro.put("numeroSuministros", total);
+                        proyectosDestacados.add(registro);
+                    }
+                }
+
+                informe.put("proveedoresMasActivos", proveedoresDestacados);
+                informe.put("piezasMasUtilizadas", piezasDestacadas);
+                informe.put("proyectosConMasSuministros", proyectosDestacados);
+            }
+
+            resultado.setText(texto.toString());
+
+            ExportarDatos.exportarInformeXML("EstadisticasGlobales.xml", informe);
+            ExportarDatos.exportarInformeJSON("EstadisticasGlobales.json", informe);
+
+        } catch (Exception ex) {
+            mostrarError("Error al generar las estadísticas: " + ex.getMessage());
+        }
     }
 
     @FXML
