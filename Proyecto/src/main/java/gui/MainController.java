@@ -19,6 +19,7 @@ import models.Proveedor;
 import models.Proyecto;
 import models.Suministro;
 import utils.ExportarDatos;
+import utils.MetadatosBD;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -2210,7 +2211,50 @@ public class MainController {
 
     @FXML
     private void mostrarMetadatos() {
-        mostrarPagina("Metadatos", "Información sobre la estructura de la base de datos");
+
+        Label titulo = new Label("Metadatos de la base de datos");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Consulta información sobre las tablas, columnas y relaciones de la base de datos");
+        descripcion.getStyleClass().add("page-description");
+
+        TextArea areaMetadatos = new TextArea();
+        areaMetadatos.setEditable(false);
+        areaMetadatos.setWrapText(false);
+        areaMetadatos.setPromptText("Pulsa «Consultar metadatos» para mostrar la información");
+        areaMetadatos.setPrefHeight(450);
+
+        Button btnConsultar = new Button("Consultar metadatos");
+        Button btnExportar = new Button("Exportar a TXT");
+
+        btnConsultar.setOnAction(e -> {
+            try {
+                String metadatos = MetadatosBD.obtenerMetadatos();
+                areaMetadatos.setText(metadatos);
+            } catch (Exception ex) {
+                mostrarError("Error al consultar los metadatos: " + ex.getMessage());
+            }
+        });
+
+        btnExportar.setOnAction(e -> {
+            try {
+                MetadatosBD.exportarMetadatos();
+                mostrarInformacion("Metadatos exportados correctamente en datos/metadatos/metadatos_bbdd.txt");
+            } catch (Exception ex) {
+                mostrarError("Error al exportar los metadatos: " + ex.getMessage());
+            }
+        });
+
+        HBox botones = new HBox(10, btnConsultar, btnExportar);
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                botones,
+                areaMetadatos
+        );
+
+        VBox.setVgrow(areaMetadatos, Priority.ALWAYS);
     }
 
     @FXML

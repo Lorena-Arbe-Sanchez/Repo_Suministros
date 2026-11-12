@@ -37,7 +37,7 @@ public class MetadatosBD {
     }
 
     // Obtener todos los metadatos de la base de datos
-    private static String obtenerMetadatos() throws SQLException {
+    public static String obtenerMetadatos() throws SQLException {
 
         StringBuilder texto = new StringBuilder();
 
