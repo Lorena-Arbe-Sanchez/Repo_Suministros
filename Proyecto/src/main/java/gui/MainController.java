@@ -25,6 +25,7 @@ import javafx.scene.layout.GridPane;
 
 import models.Pieza;
 import models.Proveedor;
+import models.Proyecto;
 
 public class MainController {
 
@@ -38,6 +39,7 @@ public class MainController {
 
     private TableView<Proveedor> tablaProveedores;
     private TableView<Pieza> tablaPiezas;
+    private TableView<Proyecto> tablaProyectos;
 
     @FXML
     public void initialize() {
@@ -829,7 +831,297 @@ public class MainController {
 
     @FXML
     private void mostrarProyectos() {
-        mostrarPagina("Proyectos", "Gestión de proyectos");
+
+        Label titulo = new Label("Proyectos");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Listado de proyectos registrados");
+        descripcion.getStyleClass().add("page-description");
+
+        tablaProyectos = new TableView<>();
+
+        TableColumn<Proyecto, String> colCod = new TableColumn<>("Código");
+        colCod.setCellValueFactory(new PropertyValueFactory<>("cod"));
+
+        TableColumn<Proyecto, String> colNombre = new TableColumn<>("Nombre");
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+
+        TableColumn<Proyecto, String> colCiudad = new TableColumn<>("Ciudad");
+        colCiudad.setCellValueFactory(new PropertyValueFactory<>("ciudad"));
+
+        tablaProyectos.getColumns().addAll(
+                colCod,
+                colNombre,
+                colCiudad
+        );
+
+        tablaProyectos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        try {
+            tablaProyectos.getItems().setAll(proyectoDao.findAll());
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+
+            Label error = new Label("No se han podido cargar los proyectos");
+            error.getStyleClass().add("info-text");
+
+            contentArea.getChildren().setAll(titulo, descripcion, error);
+            return;
+        }
+
+        Button btnNuevo = new Button("Nuevo proyecto");
+        btnNuevo.setOnAction(e -> nuevoProyecto());
+
+        Button btnModificar = new Button("Modificar");
+        btnModificar.setOnAction(e -> modificarProyecto());
+
+        Button btnEliminar = new Button("Eliminar");
+        btnEliminar.setOnAction(e -> eliminarProyecto());
+
+        HBox botones = new HBox(10, btnNuevo, btnModificar, btnEliminar);
+
+        TextField txtBuscar = new TextField();
+        txtBuscar.setPromptText("Introduce un texto para buscar...");
+
+        Button btnBuscar = new Button("Buscar");
+        Button btnMostrarTodos = new Button("Mostrar todos");
+
+        HBox busqueda = new HBox(10, txtBuscar, btnBuscar, btnMostrarTodos);
+
+        btnBuscar.setOnAction(e -> {
+
+            String texto = txtBuscar.getText().trim();
+
+            if (texto.isEmpty()) {
+                mostrarError("Introduce un texto para buscar");
+                return;
+            }
+
+            try {
+                tablaProyectos.getItems().setAll(proyectoDao.buscar(texto));
+
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                mostrarError("No se ha podido realizar la búsqueda");
+            }
+        });
+
+        btnMostrarTodos.setOnAction(e -> {
+
+            txtBuscar.clear();
+
+            try {
+                tablaProyectos.getItems().setAll(proyectoDao.findAll());
+
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                mostrarError("No se han podido cargar los proyectos");
+            }
+        });
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                botones,
+                busqueda,
+                tablaProyectos
+        );
+    }
+
+    private void nuevoProyecto() {
+
+        Dialog<Boolean> dialog = new Dialog<>();
+
+        dialog.setTitle("Nuevo proyecto");
+        dialog.setHeaderText("Introduce los datos del proyecto");
+
+        ButtonType guardar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        dialog.getDialogPane().getButtonTypes().addAll(guardar, cancelar);
+
+        TextField txtCod = new TextField();
+        TextField txtNombre = new TextField();
+        TextField txtCiudad = new TextField();
+
+        GridPane formulario = new GridPane();
+        formulario.setHgap(10);
+        formulario.setVgap(10);
+        formulario.setPadding(new Insets(20));
+
+        formulario.add(new Label("Código:"), 0, 0);
+        formulario.add(txtCod, 1, 0);
+
+        formulario.add(new Label("Nombre:"), 0, 1);
+        formulario.add(txtNombre, 1, 1);
+
+        formulario.add(new Label("Ciudad:"), 0, 2);
+        formulario.add(txtCiudad, 1, 2);
+
+        dialog.getDialogPane().setContent(formulario);
+
+        dialog.setResultConverter(boton -> {
+            if (boton == guardar) {
+                return true;
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(resultado -> {
+
+            String cod = txtCod.getText().trim();
+            String nombre = txtNombre.getText().trim();
+            String ciudad = txtCiudad.getText().trim();
+
+            if (cod.isEmpty() || nombre.isEmpty() || ciudad.isEmpty()) {
+                mostrarError("Todos los campos son obligatorios");
+                return;
+            }
+
+            if (proyectoDao.find(cod) != null) {
+                mostrarError("Ya existe un proyecto con ese código");
+                return;
+            }
+
+            Proyecto proyecto = new Proyecto(
+                    cod,
+                    nombre,
+                    ciudad,
+                    null
+            );
+
+            try {
+                proyectoDao.create(proyecto);
+
+                tablaProyectos.getItems().setAll(proyectoDao.findAll());
+
+                mostrarInformacion("Proyecto creado correctamente");
+
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                mostrarError("No se ha podido crear el proyecto");
+            }
+        });
+    }
+
+    private void modificarProyecto() {
+
+        Proyecto seleccionado = tablaProyectos.getSelectionModel().getSelectedItem();
+
+        if (seleccionado == null) {
+            mostrarError("Selecciona un proyecto de la tabla");
+            return;
+        }
+
+        Dialog<Boolean> dialog = new Dialog<>();
+
+        dialog.setTitle("Modificar proyecto");
+        dialog.setHeaderText("Modifica los datos del proyecto");
+
+        ButtonType guardar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        dialog.getDialogPane().getButtonTypes().addAll(guardar, cancelar);
+
+        TextField txtCod = new TextField(seleccionado.getCod());
+        TextField txtNombre = new TextField(seleccionado.getNombre());
+        TextField txtCiudad = new TextField(seleccionado.getCiudad());
+
+        // El código identifica al proyecto y no se puede modificar
+        txtCod.setEditable(false);
+
+        GridPane formulario = new GridPane();
+        formulario.setHgap(10);
+        formulario.setVgap(10);
+        formulario.setPadding(new Insets(20));
+
+        formulario.add(new Label("Código:"), 0, 0);
+        formulario.add(txtCod, 1, 0);
+
+        formulario.add(new Label("Nombre:"), 0, 1);
+        formulario.add(txtNombre, 1, 1);
+
+        formulario.add(new Label("Ciudad:"), 0, 2);
+        formulario.add(txtCiudad, 1, 2);
+
+        dialog.getDialogPane().setContent(formulario);
+
+        dialog.setResultConverter(boton -> {
+            if (boton == guardar) {
+                return true;
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(resultado -> {
+
+            String nombre = txtNombre.getText().trim();
+            String ciudad = txtCiudad.getText().trim();
+
+            if (nombre.isEmpty() || ciudad.isEmpty()) {
+                mostrarError("Todos los campos son obligatorios");
+                return;
+            }
+
+            // Modificar el proyecto únicamente después de validar los campos
+            seleccionado.setNombre(nombre);
+            seleccionado.setCiudad(ciudad);
+
+            try {
+                proyectoDao.update(seleccionado);
+
+                tablaProyectos.getItems().setAll(proyectoDao.findAll());
+
+                mostrarInformacion("Proyecto actualizado correctamente");
+
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                mostrarError("No se ha podido modificar el proyecto");
+            }
+        });
+    }
+
+    private void eliminarProyecto() {
+
+        Proyecto seleccionado = tablaProyectos.getSelectionModel().getSelectedItem();
+
+        if (seleccionado == null) {
+            mostrarError("Selecciona un proyecto de la tabla");
+            return;
+        }
+
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+
+        confirmacion.setTitle("Eliminar proyecto");
+        confirmacion.setHeaderText("¿Quieres eliminar este proyecto?");
+        confirmacion.setContentText(
+                "Código: " + seleccionado.getCod() +
+                        "\nNombre: " + seleccionado.getNombre()
+        );
+
+        confirmacion.showAndWait().ifPresent(respuesta -> {
+
+            if (respuesta == ButtonType.OK) {
+
+                try {
+                    boolean eliminado = proyectoDao.delete(seleccionado);
+
+                    if (eliminado) {
+                        tablaProyectos.getItems().setAll(proyectoDao.findAll());
+                        mostrarInformacion("Proyecto eliminado correctamente");
+                    } else {
+                        mostrarError(
+                                "No se puede eliminar el proyecto porque tiene suministros asociados"
+                        );
+                    }
+
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    mostrarError("No se ha podido eliminar el proyecto");
+                }
+            }
+        });
     }
 
     @FXML
