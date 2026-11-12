@@ -1,5 +1,11 @@
 package gui;
 
+import dao.ProveedorDao;
+import dao.PiezaDao;
+import dao.ProyectoDao;
+import dao.SuministroDao;
+import dao.Dao;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -10,13 +16,37 @@ public class MainController {
     @FXML
     private VBox contentArea;
 
-    @FXML
-    public void initialize() {
-        mostrarInicio();
-    }
+    private ProveedorDao proveedorDao;
+    private PiezaDao piezaDao;
+    private ProyectoDao proyectoDao;
+    private SuministroDao suministroDao;
 
     @FXML
+    public void initialize() {
+
+        try {
+            // Crear los DAO
+            proveedorDao = new ProveedorDao();
+            piezaDao = new PiezaDao();
+            proyectoDao = new ProyectoDao();
+            suministroDao = new SuministroDao();
+
+            mostrarInicio();
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            mostrarInicioError();
+        }
+    }
+
+    // Mostrar la pantalla de inicio
+    @FXML
     private void mostrarInicio() {
+
+        String numProveedores = String.valueOf(proveedorDao.findAll().size());
+        String numPiezas = String.valueOf(piezaDao.findAll().size());
+        String numProyectos = String.valueOf(proyectoDao.findAll().size());
+        String numSuministros = String.valueOf(suministroDao.findAll().size());
 
         Label titulo = new Label("Inicio");
         titulo.getStyleClass().add("page-title");
@@ -28,13 +58,13 @@ public class MainController {
         tarjetas.setHgap(20);
         tarjetas.setVgap(20);
 
-        tarjetas.add(crearTarjeta("Proveedores", "—"), 0, 0);
-        tarjetas.add(crearTarjeta("Piezas", "—"), 1, 0);
-        tarjetas.add(crearTarjeta("Proyectos", "—"), 0, 1);
-        tarjetas.add(crearTarjeta("Suministros", "—"), 1, 1);
+        tarjetas.add(crearTarjeta("Proveedores", numProveedores), 0, 0);
+        tarjetas.add(crearTarjeta("Piezas", numPiezas), 1, 0);
+        tarjetas.add(crearTarjeta("Proyectos", numProyectos), 0, 1);
+        tarjetas.add(crearTarjeta("Suministros", numSuministros), 1, 1);
 
         Label informacion = new Label(
-                "Los datos se cargarán desde la base de datos"
+                "Datos obtenidos de la base de datos"
         );
         informacion.getStyleClass().add("info-text");
 
@@ -44,6 +74,20 @@ public class MainController {
                 tarjetas,
                 informacion
         );
+    }
+
+    // Mostrar un mensaje si no se pueden cargar los datos
+    private void mostrarInicioError() {
+
+        Label titulo = new Label("Inicio");
+        titulo.getStyleClass().add("page-title");
+
+        Label error = new Label(
+                "No se han podido cargar los datos de la base de datos"
+        );
+        error.getStyleClass().add("info-text");
+
+        contentArea.getChildren().setAll(titulo, error);
     }
 
     private VBox crearTarjeta(String nombre, String valor) {
@@ -112,5 +156,14 @@ public class MainController {
     @FXML
     private void mostrarAyuda() {
         mostrarPagina("Ayuda", "Información y funcionamiento de la aplicación");
+    }
+
+    // Cerrar los EntityManager de los DAO
+    public void cerrar() {
+
+        if (proveedorDao != null) proveedorDao.cerrar();
+        if (piezaDao != null) piezaDao.cerrar();
+        if (proyectoDao != null) proyectoDao.cerrar();
+        if (suministroDao != null) suministroDao.cerrar();
     }
 }
