@@ -5,27 +5,20 @@ import dao.PiezaDao;
 import dao.ProyectoDao;
 import dao.SuministroDao;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 
 import models.Pieza;
 import models.Proveedor;
 import models.Proyecto;
+import models.Suministro;
+
+import java.time.LocalDate;
 
 public class MainController {
 
@@ -40,6 +33,7 @@ public class MainController {
     private TableView<Proveedor> tablaProveedores;
     private TableView<Pieza> tablaPiezas;
     private TableView<Proyecto> tablaProyectos;
+    private TableView<Suministro> tablaSuministros;
 
     @FXML
     public void initialize() {
@@ -1126,7 +1120,480 @@ public class MainController {
 
     @FXML
     private void mostrarSuministros() {
-        mostrarPagina("Suministros", "Gestión de suministros");
+
+        Label titulo = new Label("Suministros");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Listado de suministros registrados");
+        descripcion.getStyleClass().add("page-description");
+
+        tablaSuministros = new TableView<>();
+
+        TableColumn<Suministro, String> colId = new TableColumn<>("ID");
+        colId.setCellValueFactory(data ->
+                new ReadOnlyStringWrapper(String.valueOf(data.getValue().getId())));
+
+        TableColumn<Suministro, String> colFecha = new TableColumn<>("Fecha");
+        colFecha.setCellValueFactory(data ->
+                new ReadOnlyStringWrapper(data.getValue().getFecha().toString()));
+
+        TableColumn<Suministro, String> colCantidad = new TableColumn<>("Cantidad");
+        colCantidad.setCellValueFactory(data ->
+                new ReadOnlyStringWrapper(String.valueOf(data.getValue().getCantidad())));
+
+        TableColumn<Suministro, String> colProveedor = new TableColumn<>("Proveedor");
+        colProveedor.setCellValueFactory(data ->
+                new ReadOnlyStringWrapper(
+                        data.getValue().getProveedor().getCod() + " - " +
+                                data.getValue().getProveedor().getNombre()));
+
+        TableColumn<Suministro, String> colPieza = new TableColumn<>("Pieza");
+        colPieza.setCellValueFactory(data ->
+                new ReadOnlyStringWrapper(
+                        data.getValue().getPieza().getCod() + " - " +
+                                data.getValue().getPieza().getNombre()));
+
+        TableColumn<Suministro, String> colProyecto = new TableColumn<>("Proyecto");
+        colProyecto.setCellValueFactory(data ->
+                new ReadOnlyStringWrapper(
+                        data.getValue().getProyecto().getCod() + " - " +
+                                data.getValue().getProyecto().getNombre()));
+
+        tablaSuministros.getColumns().addAll(
+                colId,
+                colFecha,
+                colCantidad,
+                colProveedor,
+                colPieza,
+                colProyecto
+        );
+
+        tablaSuministros.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        try {
+            tablaSuministros.getItems().setAll(suministroDao.findAll());
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+
+            Label error = new Label("No se han podido cargar los suministros");
+            error.getStyleClass().add("info-text");
+
+            contentArea.getChildren().setAll(titulo, descripcion, error);
+            return;
+        }
+
+        Button btnNuevo = new Button("Nuevo suministro");
+        btnNuevo.setOnAction(e -> nuevoSuministro());
+
+        Button btnModificar = new Button("Modificar");
+        btnModificar.setOnAction(e -> modificarSuministro());
+
+        Button btnEliminar = new Button("Eliminar");
+        btnEliminar.setOnAction(e -> eliminarSuministro());
+
+        HBox botones = new HBox(10, btnNuevo, btnModificar, btnEliminar);
+
+        TextField txtBuscar = new TextField();
+        txtBuscar.setPromptText("Introduce un texto para buscar...");
+
+        Button btnBuscar = new Button("Buscar");
+        Button btnMostrarTodos = new Button("Mostrar todos");
+
+        HBox busqueda = new HBox(10, txtBuscar, btnBuscar, btnMostrarTodos);
+
+        btnBuscar.setOnAction(e -> {
+
+            String texto = txtBuscar.getText().trim();
+
+            if (texto.isEmpty()) {
+                mostrarError("Introduce un texto para buscar");
+                return;
+            }
+
+            try {
+                tablaSuministros.getItems().setAll(suministroDao.buscar(texto));
+
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                mostrarError("No se ha podido realizar la búsqueda");
+            }
+        });
+
+        btnMostrarTodos.setOnAction(e -> {
+
+            txtBuscar.clear();
+
+            try {
+                tablaSuministros.getItems().setAll(suministroDao.findAll());
+
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                mostrarError("No se han podido cargar los suministros");
+            }
+        });
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                botones,
+                busqueda,
+                tablaSuministros
+        );
+    }
+
+    private void nuevoSuministro() {
+
+        Dialog<Boolean> dialog = new Dialog<>();
+
+        dialog.setTitle("Nuevo suministro");
+        dialog.setHeaderText("Introduce los datos del suministro");
+
+        ButtonType guardar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        dialog.getDialogPane().getButtonTypes().addAll(guardar, cancelar);
+
+        DatePicker fecha = new DatePicker(LocalDate.now());
+        TextField txtCantidad = new TextField();
+
+        ComboBox<Proveedor> cmbProveedor = new ComboBox<>(
+                FXCollections.observableArrayList(proveedorDao.findAll())
+        );
+
+        ComboBox<Pieza> cmbPieza = new ComboBox<>(
+                FXCollections.observableArrayList(piezaDao.findAll())
+        );
+
+        ComboBox<Proyecto> cmbProyecto = new ComboBox<>(
+                FXCollections.observableArrayList(proyectoDao.findAll())
+        );
+
+        cmbProveedor.setPromptText("Selecciona un proveedor");
+        cmbPieza.setPromptText("Selecciona una pieza");
+        cmbProyecto.setPromptText("Selecciona un proyecto");
+
+        cmbProveedor.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(Proveedor proveedor) {
+                return proveedor == null ? "" :
+                        proveedor.getCod() + " - " + proveedor.getNombre();
+            }
+
+            @Override
+            public Proveedor fromString(String texto) {
+                return null;
+            }
+        });
+
+        cmbPieza.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(Pieza pieza) {
+                return pieza == null ? "" :
+                        pieza.getCod() + " - " + pieza.getNombre();
+            }
+
+            @Override
+            public Pieza fromString(String texto) {
+                return null;
+            }
+        });
+
+        cmbProyecto.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(Proyecto proyecto) {
+                return proyecto == null ? "" :
+                        proyecto.getCod() + " - " + proyecto.getNombre();
+            }
+
+            @Override
+            public Proyecto fromString(String texto) {
+                return null;
+            }
+        });
+
+        GridPane formulario = new GridPane();
+        formulario.setHgap(10);
+        formulario.setVgap(10);
+        formulario.setPadding(new Insets(20));
+
+        formulario.add(new Label("Fecha:"), 0, 0);
+        formulario.add(fecha, 1, 0);
+
+        formulario.add(new Label("Cantidad:"), 0, 1);
+        formulario.add(txtCantidad, 1, 1);
+
+        formulario.add(new Label("Proveedor:"), 0, 2);
+        formulario.add(cmbProveedor, 1, 2);
+
+        formulario.add(new Label("Pieza:"), 0, 3);
+        formulario.add(cmbPieza, 1, 3);
+
+        formulario.add(new Label("Proyecto:"), 0, 4);
+        formulario.add(cmbProyecto, 1, 4);
+
+        dialog.getDialogPane().setContent(formulario);
+
+        dialog.setResultConverter(boton -> {
+            if (boton == guardar) {
+                return true;
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(resultado -> {
+
+            LocalDate fechaSeleccionada = fecha.getValue();
+            String cantidadTexto = txtCantidad.getText().trim();
+
+            Proveedor proveedor = cmbProveedor.getValue();
+            Pieza pieza = cmbPieza.getValue();
+            Proyecto proyecto = cmbProyecto.getValue();
+
+            if (fechaSeleccionada == null || cantidadTexto.isEmpty() ||
+                    proveedor == null || pieza == null || proyecto == null) {
+
+                mostrarError("Todos los campos son obligatorios");
+                return;
+            }
+
+            int cantidad;
+
+            try {
+                cantidad = Integer.parseInt(cantidadTexto);
+
+                if (cantidad <= 0) {
+                    mostrarError("La cantidad debe ser un número mayor que cero");
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                mostrarError("La cantidad debe ser un número entero válido");
+                return;
+            }
+
+            Suministro suministro = new Suministro(
+                    0,
+                    fechaSeleccionada,
+                    cantidad,
+                    proveedor,
+                    pieza,
+                    proyecto
+            );
+
+            try {
+                suministroDao.create(suministro);
+
+                tablaSuministros.getItems().setAll(suministroDao.findAll());
+
+                mostrarInformacion("Suministro creado correctamente");
+
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                mostrarError("No se ha podido crear el suministro");
+            }
+        });
+    }
+
+    private void modificarSuministro() {
+
+        Suministro seleccionado = tablaSuministros.getSelectionModel().getSelectedItem();
+
+        if (seleccionado == null) {
+            mostrarError("Selecciona un suministro para modificar");
+            return;
+        }
+
+        Dialog<Boolean> dialog = new Dialog<>();
+
+        dialog.setTitle("Modificar suministro");
+        dialog.setHeaderText("Modificar suministro ID: " + seleccionado.getId());
+
+        ButtonType guardar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        dialog.getDialogPane().getButtonTypes().addAll(guardar, cancelar);
+
+        DatePicker fecha = new DatePicker(seleccionado.getFecha());
+        TextField txtCantidad = new TextField(String.valueOf(seleccionado.getCantidad()));
+
+        ComboBox<Proveedor> cmbProveedor = new ComboBox<>(
+                FXCollections.observableArrayList(proveedorDao.findAll())
+        );
+
+        ComboBox<Pieza> cmbPieza = new ComboBox<>(
+                FXCollections.observableArrayList(piezaDao.findAll())
+        );
+
+        ComboBox<Proyecto> cmbProyecto = new ComboBox<>(
+                FXCollections.observableArrayList(proyectoDao.findAll())
+        );
+
+        cmbProveedor.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(Proveedor proveedor) {
+                return proveedor == null ? "" :
+                        proveedor.getCod() + " - " + proveedor.getNombre();
+            }
+
+            @Override
+            public Proveedor fromString(String texto) {
+                return null;
+            }
+        });
+
+        cmbPieza.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(Pieza pieza) {
+                return pieza == null ? "" :
+                        pieza.getCod() + " - " + pieza.getNombre();
+            }
+
+            @Override
+            public Pieza fromString(String texto) {
+                return null;
+            }
+        });
+
+        cmbProyecto.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(Proyecto proyecto) {
+                return proyecto == null ? "" :
+                        proyecto.getCod() + " - " + proyecto.getNombre();
+            }
+
+            @Override
+            public Proyecto fromString(String texto) {
+                return null;
+            }
+        });
+
+        cmbProveedor.setValue(seleccionado.getProveedor());
+        cmbPieza.setValue(seleccionado.getPieza());
+        cmbProyecto.setValue(seleccionado.getProyecto());
+
+        GridPane formulario = new GridPane();
+        formulario.setHgap(10);
+        formulario.setVgap(10);
+        formulario.setPadding(new Insets(20));
+
+        formulario.add(new Label("Fecha:"), 0, 0);
+        formulario.add(fecha, 1, 0);
+
+        formulario.add(new Label("Cantidad:"), 0, 1);
+        formulario.add(txtCantidad, 1, 1);
+
+        formulario.add(new Label("Proveedor:"), 0, 2);
+        formulario.add(cmbProveedor, 1, 2);
+
+        formulario.add(new Label("Pieza:"), 0, 3);
+        formulario.add(cmbPieza, 1, 3);
+
+        formulario.add(new Label("Proyecto:"), 0, 4);
+        formulario.add(cmbProyecto, 1, 4);
+
+        dialog.getDialogPane().setContent(formulario);
+
+        dialog.setResultConverter(boton -> {
+            if (boton == guardar) {
+                return true;
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(resultado -> {
+
+            LocalDate fechaSeleccionada = fecha.getValue();
+            String cantidadTexto = txtCantidad.getText().trim();
+
+            Proveedor proveedor = cmbProveedor.getValue();
+            Pieza pieza = cmbPieza.getValue();
+            Proyecto proyecto = cmbProyecto.getValue();
+
+            if (fechaSeleccionada == null || cantidadTexto.isEmpty() ||
+                    proveedor == null || pieza == null || proyecto == null) {
+
+                mostrarError("Todos los campos son obligatorios");
+                return;
+            }
+
+            int cantidad;
+
+            try {
+                cantidad = Integer.parseInt(cantidadTexto);
+
+                if (cantidad <= 0) {
+                    mostrarError("La cantidad debe ser un número mayor que cero");
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                mostrarError("La cantidad debe ser un número entero válido");
+                return;
+            }
+
+            seleccionado.setFecha(fechaSeleccionada);
+            seleccionado.setCantidad(cantidad);
+            seleccionado.setProveedor(proveedor);
+            seleccionado.setPieza(pieza);
+            seleccionado.setProyecto(proyecto);
+
+            try {
+                suministroDao.update(seleccionado);
+
+                tablaSuministros.getItems().setAll(suministroDao.findAll());
+
+                mostrarInformacion("Suministro modificado correctamente");
+
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                mostrarError("No se ha podido modificar el suministro");
+            }
+        });
+    }
+
+    private void eliminarSuministro() {
+
+        Suministro seleccionado = tablaSuministros.getSelectionModel().getSelectedItem();
+
+        if (seleccionado == null) {
+            mostrarError("Selecciona un suministro para eliminar");
+            return;
+        }
+
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+
+        confirmacion.setTitle("Eliminar suministro");
+        confirmacion.setHeaderText("¿Quieres eliminar el suministro ID: " + seleccionado.getId() + "?");
+
+        confirmacion.setContentText(
+                "Fecha: " + seleccionado.getFecha() +
+                        "\nCantidad: " + seleccionado.getCantidad() +
+                        "\nProveedor: " + seleccionado.getProveedor().getCod() +
+                        "\nPieza: " + seleccionado.getPieza().getCod() +
+                        "\nProyecto: " + seleccionado.getProyecto().getCod()
+        );
+
+        confirmacion.showAndWait().ifPresent(respuesta -> {
+
+            if (respuesta == ButtonType.OK) {
+
+                try {
+                    boolean eliminado = suministroDao.delete(seleccionado);
+
+                    if (eliminado) {
+                        tablaSuministros.getItems().setAll(suministroDao.findAll());
+                        mostrarInformacion("Suministro eliminado correctamente");
+                    } else {
+                        mostrarError("No se ha podido eliminar el suministro");
+                    }
+
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    mostrarError("Ha ocurrido un error al eliminar el suministro");
+                }
+            }
+        });
     }
 
     @FXML

@@ -565,3 +565,117 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: (conn=279) Cannot 
 	at org.mariadb.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:322)
 	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
 	... 69 common frames omitted
+2026-11-12 22:32:40 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-12 22:32:40 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-12 22:32:40 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-12 22:32:41 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-12 22:32:41 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-12 22:32:41 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3307/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-12 22:32:43 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-12 22:32:45 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-12 22:32:45 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@380f3376] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-12 22:36:08 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-12 22:36:09 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-12 22:36:09 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-12 22:36:10 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-12 22:36:10 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-12 22:36:10 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3307/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-12 22:36:12 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-12 22:36:14 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-12 22:36:14 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@380f3376] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-12 22:37:23 INFO  dao.SuministroDao - Buscando suministros con el texto: 1
+2026-11-12 22:37:28 INFO  dao.SuministroDao - Buscando suministros con el texto: 1
+2026-11-12 22:37:33 INFO  dao.SuministroDao - Buscando suministros con el texto: 3
+2026-11-12 22:37:36 INFO  dao.SuministroDao - Buscando suministros con el texto: 2
+2026-11-12 22:37:36 INFO  dao.SuministroDao - Buscando suministros con el texto: 20
+2026-11-12 22:37:37 INFO  dao.SuministroDao - Buscando suministros con el texto: 2
+2026-11-12 22:37:40 INFO  dao.SuministroDao - Buscando suministros con el texto: 1
+2026-11-12 22:37:40 INFO  dao.SuministroDao - Buscando suministros con el texto: 10
+2026-11-12 22:37:41 INFO  dao.SuministroDao - Buscando suministros con el texto: 1
+2026-11-12 22:37:41 INFO  dao.SuministroDao - Buscando suministros con el texto: 1
+2026-11-12 22:37:42 INFO  dao.SuministroDao - Buscando suministros con el texto: 2
+2026-11-12 22:37:43 INFO  dao.SuministroDao - Buscando suministros con el texto: 3
+2026-11-12 22:37:44 INFO  dao.SuministroDao - Buscando suministros con el texto: 4
+2026-11-12 22:37:44 INFO  dao.SuministroDao - Buscando suministros con el texto: 5
+2026-11-12 22:37:45 INFO  dao.SuministroDao - Buscando suministros con el texto: 6
+2026-11-12 22:37:47 INFO  dao.SuministroDao - Buscando suministros con el texto: P
+2026-11-12 22:37:48 INFO  dao.SuministroDao - Buscando suministros con el texto: PR
+2026-11-12 22:37:50 INFO  dao.SuministroDao - Buscando suministros con el texto: PR0
+2026-11-12 22:37:51 INFO  dao.SuministroDao - Buscando suministros con el texto: PR00
+2026-11-12 22:37:51 INFO  dao.SuministroDao - Buscando suministros con el texto: PR001
+2026-11-12 22:37:55 INFO  dao.SuministroDao - Buscando suministros con el texto: PR00
+2026-11-12 22:37:55 INFO  dao.SuministroDao - Buscando suministros con el texto: PR0
+2026-11-12 22:37:55 INFO  dao.SuministroDao - Buscando suministros con el texto: PR
+2026-11-12 22:37:55 INFO  dao.SuministroDao - Buscando suministros con el texto: P
+2026-11-12 22:41:45 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-12 22:41:46 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-12 22:41:46 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-12 22:41:46 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-12 22:41:47 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-12 22:41:48 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3307/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-12 22:41:49 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-12 22:41:51 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-12 22:41:51 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@1cbcbc69] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-12 22:42:42 INFO  dao.SuministroDao - Buscando suministros con el texto: 1
+2026-11-12 22:42:49 INFO  dao.SuministroDao - Buscando suministros con el texto: PR001
+2026-11-12 22:43:04 INFO  dao.SuministroDao - Buscando suministros con el texto: tornillo
+2026-11-12 22:43:16 INFO  dao.SuministroDao - Buscando suministros con el texto: sistema
+2026-11-12 22:43:21 INFO  dao.SuministroDao - Buscando suministros con el texto: textoquenoexiste
+2026-11-12 22:47:45 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-12 22:47:45 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-12 22:47:45 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-12 22:47:46 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-12 22:47:47 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-12 22:47:47 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3307/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-12 22:47:48 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-12 22:47:50 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-12 22:47:50 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@44419453] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-12 23:31:42 INFO  dao.Dao - Registro creado correctamente: Suministro
+2026-11-12 23:36:10 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-12 23:36:10 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-12 23:36:11 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-12 23:36:12 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-12 23:36:13 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-12 23:36:13 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3307/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-12 23:36:15 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-12 23:36:18 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-12 23:36:18 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@33b8d68f] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-12 23:41:38 INFO  dao.SuministroDao - Buscando suministros con el texto: a
+2026-11-12 23:42:01 INFO  dao.Dao - Registro actualizado correctamente: Suministro
+2026-11-12 23:42:43 INFO  dao.Dao - Registro actualizado correctamente: Suministro
+2026-11-12 23:43:50 INFO  dao.Dao - Registro eliminado correctamente: Suministro
