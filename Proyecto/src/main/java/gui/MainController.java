@@ -23,6 +23,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
+import models.Pieza;
 import models.Proveedor;
 
 public class MainController {
@@ -36,6 +37,7 @@ public class MainController {
     private SuministroDao suministroDao;
 
     private TableView<Proveedor> tablaProveedores;
+    private TableView<Pieza> tablaPiezas;
 
     @FXML
     public void initialize() {
@@ -484,7 +486,345 @@ public class MainController {
 
     @FXML
     private void mostrarPiezas() {
-        mostrarPagina("Piezas", "Gestión de piezas");
+
+        Label titulo = new Label("Piezas");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Listado de piezas registradas");
+        descripcion.getStyleClass().add("page-description");
+
+        tablaPiezas = new TableView<>();
+
+        TableColumn<Pieza, String> colCod = new TableColumn<>("Código");
+        colCod.setCellValueFactory(new PropertyValueFactory<>("cod"));
+
+        TableColumn<Pieza, String> colNombre = new TableColumn<>("Nombre");
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+
+        TableColumn<Pieza, Double> colPrecio = new TableColumn<>("Precio (€)");
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+
+        TableColumn<Pieza, String> colDescripcion = new TableColumn<>("Descripción");
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+
+        tablaPiezas.getColumns().addAll(
+                colCod,
+                colNombre,
+                colPrecio,
+                colDescripcion
+        );
+
+        tablaPiezas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        try {
+            tablaPiezas.getItems().setAll(piezaDao.findAll());
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+
+            Label error = new Label("No se han podido cargar las piezas");
+            error.getStyleClass().add("info-text");
+
+            contentArea.getChildren().setAll(titulo, descripcion, error);
+            return;
+        }
+
+        Button btnNuevo = new Button("Nueva pieza");
+        btnNuevo.setOnAction(e -> nuevaPieza());
+
+        Button btnModificar = new Button("Modificar");
+        btnModificar.setOnAction(e -> modificarPieza());
+
+        Button btnEliminar = new Button("Eliminar");
+        btnEliminar.setOnAction(e -> eliminarPieza());
+
+        HBox botones = new HBox(10, btnNuevo, btnModificar, btnEliminar);
+
+        TextField txtBuscar = new TextField();
+        txtBuscar.setPromptText("Introduce un texto para buscar...");
+
+        Button btnBuscar = new Button("Buscar");
+        Button btnMostrarTodos = new Button("Mostrar todos");
+
+        HBox busqueda = new HBox(10, txtBuscar, btnBuscar, btnMostrarTodos);
+
+        btnBuscar.setOnAction(e -> {
+
+            String texto = txtBuscar.getText().trim();
+
+            if (texto.isEmpty()) {
+                mostrarError("Introduce un texto para buscar");
+                return;
+            }
+
+            try {
+                tablaPiezas.getItems().setAll(piezaDao.buscar(texto));
+
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                mostrarError("No se ha podido realizar la búsqueda");
+            }
+        });
+
+        btnMostrarTodos.setOnAction(e -> {
+
+            txtBuscar.clear();
+
+            try {
+                tablaPiezas.getItems().setAll(piezaDao.findAll());
+
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                mostrarError("No se han podido cargar las piezas");
+            }
+        });
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                botones,
+                busqueda,
+                tablaPiezas
+        );
+    }
+
+    private void nuevaPieza() {
+
+        Dialog<Boolean> dialog = new Dialog<>();
+
+        dialog.setTitle("Nueva pieza");
+        dialog.setHeaderText("Introduce los datos de la pieza");
+
+        ButtonType guardar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        dialog.getDialogPane().getButtonTypes().addAll(guardar, cancelar);
+
+        TextField txtCod = new TextField();
+        TextField txtNombre = new TextField();
+        TextField txtPrecio = new TextField();
+        TextField txtDescripcion = new TextField();
+
+        GridPane formulario = new GridPane();
+        formulario.setHgap(10);
+        formulario.setVgap(10);
+        formulario.setPadding(new Insets(20));
+
+        formulario.add(new Label("Código:"), 0, 0);
+        formulario.add(txtCod, 1, 0);
+
+        formulario.add(new Label("Nombre:"), 0, 1);
+        formulario.add(txtNombre, 1, 1);
+
+        formulario.add(new Label("Precio (€):"), 0, 2);
+        formulario.add(txtPrecio, 1, 2);
+
+        formulario.add(new Label("Descripción:"), 0, 3);
+        formulario.add(txtDescripcion, 1, 3);
+
+        dialog.getDialogPane().setContent(formulario);
+
+        dialog.setResultConverter(boton -> {
+            if (boton == guardar) {
+                return true;
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(resultado -> {
+
+            String cod = txtCod.getText().trim();
+            String nombre = txtNombre.getText().trim();
+            String precioTexto = txtPrecio.getText().trim().replace(",", ".");
+            String descripcion = txtDescripcion.getText().trim();
+
+            if (cod.isEmpty() || nombre.isEmpty() ||
+                    precioTexto.isEmpty() || descripcion.isEmpty()) {
+
+                mostrarError("Todos los campos son obligatorios");
+                return;
+            }
+
+            double precio;
+
+            try {
+                precio = Double.parseDouble(precioTexto);
+
+                if (!Double.isFinite(precio) || precio <= 0) {
+                    mostrarError("El precio debe ser un número mayor que cero");
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                mostrarError("El precio debe ser un número válido");
+                return;
+            }
+
+            if (piezaDao.find(cod) != null) {
+                mostrarError("Ya existe una pieza con ese código");
+                return;
+            }
+
+            Pieza pieza = new Pieza(
+                    cod,
+                    nombre,
+                    precio,
+                    descripcion,
+                    null
+            );
+
+            try {
+                piezaDao.create(pieza);
+
+                tablaPiezas.getItems().setAll(piezaDao.findAll());
+
+                mostrarInformacion("Pieza creada correctamente");
+
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                mostrarError("No se ha podido crear la pieza");
+            }
+        });
+    }
+
+    private void modificarPieza() {
+
+        Pieza seleccionado = tablaPiezas.getSelectionModel().getSelectedItem();
+
+        if (seleccionado == null) {
+            mostrarError("Selecciona una pieza de la tabla");
+            return;
+        }
+
+        Dialog<Boolean> dialog = new Dialog<>();
+
+        dialog.setTitle("Modificar pieza");
+        dialog.setHeaderText("Modifica los datos de la pieza");
+
+        ButtonType guardar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        dialog.getDialogPane().getButtonTypes().addAll(guardar, cancelar);
+
+        TextField txtCod = new TextField(seleccionado.getCod());
+        TextField txtNombre = new TextField(seleccionado.getNombre());
+        TextField txtPrecio = new TextField(String.valueOf(seleccionado.getPrecio()));
+        TextField txtDescripcion = new TextField(seleccionado.getDescripcion());
+
+        // El código identifica a la pieza y no se puede modificar
+        txtCod.setEditable(false);
+
+        GridPane formulario = new GridPane();
+        formulario.setHgap(10);
+        formulario.setVgap(10);
+        formulario.setPadding(new Insets(20));
+
+        formulario.add(new Label("Código:"), 0, 0);
+        formulario.add(txtCod, 1, 0);
+
+        formulario.add(new Label("Nombre:"), 0, 1);
+        formulario.add(txtNombre, 1, 1);
+
+        formulario.add(new Label("Precio (€):"), 0, 2);
+        formulario.add(txtPrecio, 1, 2);
+
+        formulario.add(new Label("Descripción:"), 0, 3);
+        formulario.add(txtDescripcion, 1, 3);
+
+        dialog.getDialogPane().setContent(formulario);
+
+        dialog.setResultConverter(boton -> {
+            if (boton == guardar) {
+                return true;
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(resultado -> {
+
+            String nombre = txtNombre.getText().trim();
+            String precioTexto = txtPrecio.getText().trim().replace(",", ".");
+            String descripcion = txtDescripcion.getText().trim();
+
+            if (nombre.isEmpty() || precioTexto.isEmpty() || descripcion.isEmpty()) {
+                mostrarError("Todos los campos son obligatorios");
+                return;
+            }
+
+            double precio;
+
+            try {
+                precio = Double.parseDouble(precioTexto);
+
+                if (!Double.isFinite(precio) || precio <= 0) {
+                    mostrarError("El precio debe ser un número mayor que cero");
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                mostrarError("El precio debe ser un número válido");
+                return;
+            }
+
+            // Modificar la pieza únicamente después de validar los campos
+            seleccionado.setNombre(nombre);
+            seleccionado.setPrecio(precio);
+            seleccionado.setDescripcion(descripcion);
+
+            try {
+                piezaDao.update(seleccionado);
+
+                tablaPiezas.getItems().setAll(piezaDao.findAll());
+
+                mostrarInformacion("Pieza actualizada correctamente");
+
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                mostrarError("No se ha podido modificar la pieza");
+            }
+        });
+    }
+
+    private void eliminarPieza() {
+
+        Pieza seleccionado = tablaPiezas.getSelectionModel().getSelectedItem();
+
+        if (seleccionado == null) {
+            mostrarError("Selecciona una pieza de la tabla");
+            return;
+        }
+
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+
+        confirmacion.setTitle("Eliminar pieza");
+        confirmacion.setHeaderText("¿Quieres eliminar esta pieza?");
+        confirmacion.setContentText(
+                "Código: " + seleccionado.getCod() +
+                        "\nNombre: " + seleccionado.getNombre()
+        );
+
+        confirmacion.showAndWait().ifPresent(respuesta -> {
+
+            if (respuesta == ButtonType.OK) {
+
+                try {
+                    boolean eliminado = piezaDao.delete(seleccionado);
+
+                    if (eliminado) {
+                        tablaPiezas.getItems().setAll(piezaDao.findAll());
+                        mostrarInformacion("Pieza eliminada correctamente");
+                    } else {
+                        mostrarError(
+                                "No se puede eliminar la pieza porque tiene suministros asociados"
+                        );
+                    }
+
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    mostrarError("No se ha podido eliminar la pieza");
+                }
+            }
+        });
     }
 
     @FXML
