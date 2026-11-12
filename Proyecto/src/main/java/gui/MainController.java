@@ -336,7 +336,7 @@ public class MainController {
             return;
         }
 
-        Dialog<Proveedor> dialog = new Dialog<>();
+        Dialog<Boolean> dialog = new Dialog<>();
 
         dialog.setTitle("Modificar proveedor");
         dialog.setHeaderText("Modifica los datos del proveedor");
@@ -380,30 +380,36 @@ public class MainController {
         dialog.setResultConverter(boton -> {
 
             if (boton == guardar) {
-                seleccionado.setNombre(txtNombre.getText().trim());
-                seleccionado.setApellido1(txtApellido1.getText().trim());
-                seleccionado.setApellido2(txtApellido2.getText().trim());
-                seleccionado.setDireccion(txtDireccion.getText().trim());
-
-                return seleccionado;
+                return true;
             }
 
             return null;
         });
 
-        dialog.showAndWait().ifPresent(proveedor -> {
+        dialog.showAndWait().ifPresent(resultado -> {
 
-            if (proveedor.getNombre().isEmpty() ||
-                    proveedor.getApellido1().isEmpty() ||
-                    proveedor.getApellido2().isEmpty() ||
-                    proveedor.getDireccion().isEmpty()) {
+            String nombre = txtNombre.getText().trim();
+            String apellido1 = txtApellido1.getText().trim();
+            String apellido2 = txtApellido2.getText().trim();
+            String direccion = txtDireccion.getText().trim();
+
+            if (nombre.isEmpty() ||
+                    apellido1.isEmpty() ||
+                    apellido2.isEmpty() ||
+                    direccion.isEmpty()) {
 
                 mostrarError("Todos los campos son obligatorios");
                 return;
             }
 
+            // Modificar el proveedor únicamente después de validar los campos
+            seleccionado.setNombre(nombre);
+            seleccionado.setApellido1(apellido1);
+            seleccionado.setApellido2(apellido2);
+            seleccionado.setDireccion(direccion);
+
             try {
-                proveedorDao.update(proveedor);
+                proveedorDao.update(seleccionado);
 
                 tablaProveedores.getItems().setAll(proveedorDao.findAll());
 

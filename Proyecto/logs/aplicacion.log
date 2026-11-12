@@ -295,3 +295,21 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: (conn=196) Cannot 
 2026-11-12 17:31:49 INFO  dao.ProveedorDao - Buscando proveedores con el texto: López
 2026-11-12 17:32:52 INFO  dao.Dao - Registro creado correctamente: Proveedor
 2026-11-12 17:35:23 INFO  dao.Dao - Registro actualizado correctamente: Proveedor
+2026-11-12 18:06:03 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-12 18:06:04 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-12 18:06:04 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-12 18:06:05 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-12 18:06:05 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-12 18:06:05 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3307/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-12 18:06:08 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-12 18:06:10 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-12 18:06:10 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@78312dc7] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-12 18:09:10 INFO  dao.Dao - Registro actualizado correctamente: Proveedor
+2026-11-12 18:10:28 INFO  dao.Dao - Registro eliminado correctamente: Proveedor
