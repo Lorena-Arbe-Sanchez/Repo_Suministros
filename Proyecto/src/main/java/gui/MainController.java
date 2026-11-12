@@ -2259,7 +2259,80 @@ public class MainController {
 
     @FXML
     private void mostrarAyuda() {
-        mostrarPagina("Ayuda", "Información y funcionamiento de la aplicación");
+
+        Label titulo = new Label("Ayuda");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Información sobre el funcionamiento de la aplicación");
+        descripcion.getStyleClass().add("page-description");
+
+        TextArea areaAyuda = new TextArea("""
+                GESTIÓN DE SUMINISTROS
+                ======================
+                
+                INICIO
+                Desde esta pantalla puedes consultar un resumen de los registros
+                almacenados en la base de datos.
+                
+                PROVEEDORES
+                Permite consultar, buscar, añadir, modificar y eliminar proveedores.
+                Los proveedores que tengan suministros asociados no se pueden eliminar.
+                
+                PIEZAS
+                Permite consultar, buscar, añadir, modificar y eliminar piezas.
+                Las piezas que tengan suministros asociados no se pueden eliminar.
+                
+                PROYECTOS
+                Permite consultar, buscar, añadir, modificar y eliminar proyectos.
+                Los proyectos que tengan suministros asociados no se pueden eliminar.
+                
+                SUMINISTROS
+                Permite consultar, buscar, añadir, modificar y eliminar suministros.
+                Para crear un suministro es necesario seleccionar un proveedor,
+                una pieza y un proyecto existentes.
+                El identificador se genera automáticamente.
+                
+                ANÁLISIS Y ESTADÍSTICAS
+                Permite consultar el histórico de un proveedor, analizar los
+                suministros de un proyecto y obtener estadísticas globales.
+                Los informes se exportan automáticamente en XML y JSON.
+                
+                EXPORTACIONES
+                Permite exportar los datos de proveedores, piezas, proyectos
+                y suministros en formato XML, JSON o ambos formatos.
+                También permite exportar todas las entidades conjuntamente.
+                
+                METADATOS
+                Permite consultar la estructura de la base de datos, incluyendo
+                tablas, columnas, claves primarias y claves foráneas.
+                También permite exportar esta información a un fichero TXT.
+                
+                BÚSQUEDAS EN LAS 4 ENTIDADES
+                Introduce el texto o los valores que quieras buscar y pulsa
+                el botón 'Buscar'. Para volver a mostrar todos los registros,
+                utiliza el botón 'Mostrar todos'.
+                
+                VALIDACIONES
+                Los campos obligatorios deben completarse correctamente.
+                Los códigos de las entidades deben ser únicos.
+                No se permiten cantidades ni precios inferiores o iguales a cero.
+                
+                IMPORTANTE
+                Los datos se almacenan en la base de datos.
+                Las exportaciones se guardan dentro de la carpeta 'datos'.
+                """);
+
+        areaAyuda.setEditable(false);
+        areaAyuda.setWrapText(true);
+        areaAyuda.setPrefHeight(500);
+
+        contentArea.getChildren().setAll(
+                titulo,
+                descripcion,
+                areaAyuda
+        );
+
+        VBox.setVgrow(areaAyuda, Priority.ALWAYS);
     }
 
     // Cerrar los EntityManager de los DAO
