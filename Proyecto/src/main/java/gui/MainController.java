@@ -2094,7 +2094,118 @@ public class MainController {
 
     @FXML
     private void mostrarExportaciones() {
-        mostrarPagina("Exportaciones", "Exportación de información a XML y JSON");
+
+        Label titulo = new Label("Exportaciones");
+        titulo.getStyleClass().add("page-title");
+
+        Label descripcion = new Label("Exporta los datos de la aplicación en formato XML o JSON");
+        descripcion.getStyleClass().add("page-description");
+
+        Label lblEntidad = new Label("Selecciona qué datos quieres exportar:");
+
+        ComboBox<String> comboEntidad = new ComboBox<>();
+        comboEntidad.getItems().addAll(
+                "Proveedores",
+                "Piezas",
+                "Proyectos",
+                "Suministros",
+                "Todas las entidades"
+        );
+        comboEntidad.setPromptText("Selecciona una entidad");
+        comboEntidad.setPrefWidth(250);
+
+        Label lblFormato = new Label("Selecciona el formato:");
+
+        ComboBox<String> comboFormato = new ComboBox<>();
+        comboFormato.getItems().addAll(
+                "XML",
+                "JSON",
+                "XML y JSON"
+        );
+        comboFormato.setPromptText("Selecciona un formato");
+        comboFormato.setPrefWidth(250);
+
+        Button btnExportar = new Button("Exportar");
+
+        btnExportar.setOnAction(e -> {
+
+            String entidad = comboEntidad.getValue();
+            String formato = comboFormato.getValue();
+
+            if (entidad == null || formato == null) {
+                mostrarError("Selecciona una entidad y un formato");
+                return;
+            }
+
+            try {
+
+                switch (entidad) {
+
+                    case "Proveedores":
+                        if (formato.equals("XML") || formato.equals("XML y JSON")) {
+                            ExportarDatos.exportarProveedoresXML();
+                        }
+                        if (formato.equals("JSON") || formato.equals("XML y JSON")) {
+                            ExportarDatos.exportarProveedoresJSON();
+                        }
+                        break;
+
+                    case "Piezas":
+                        if (formato.equals("XML") || formato.equals("XML y JSON")) {
+                            ExportarDatos.exportarPiezasXML();
+                        }
+                        if (formato.equals("JSON") || formato.equals("XML y JSON")) {
+                            ExportarDatos.exportarPiezasJSON();
+                        }
+                        break;
+
+                    case "Proyectos":
+                        if (formato.equals("XML") || formato.equals("XML y JSON")) {
+                            ExportarDatos.exportarProyectosXML();
+                        }
+                        if (formato.equals("JSON") || formato.equals("XML y JSON")) {
+                            ExportarDatos.exportarProyectosJSON();
+                        }
+                        break;
+
+                    case "Suministros":
+                        if (formato.equals("XML") || formato.equals("XML y JSON")) {
+                            ExportarDatos.exportarSuministrosXML();
+                        }
+                        if (formato.equals("JSON") || formato.equals("XML y JSON")) {
+                            ExportarDatos.exportarSuministrosJSON();
+                        }
+                        break;
+
+                    case "Todas las entidades":
+                        if (formato.equals("XML")) {
+                            ExportarDatos.exportarTodoXML();
+                        } else if (formato.equals("JSON")) {
+                            ExportarDatos.exportarTodoJSON();
+                        } else {
+                            ExportarDatos.exportarTodoXMLyJSON();
+                        }
+                        break;
+                }
+
+                mostrarInformacion("Proceso de exportación finalizado. Revisa las carpetas datos/xml y datos/json");
+
+            } catch (Exception ex) {
+                mostrarError("Error al realizar la exportación: " + ex.getMessage());
+            }
+        });
+
+        VBox opciones = new VBox(10,
+                lblEntidad,
+                comboEntidad,
+                lblFormato,
+                comboFormato,
+                btnExportar
+        );
+
+        opciones.setPadding(new Insets(15));
+
+        contentArea.getChildren().setAll(titulo, descripcion, opciones);
     }
 
     @FXML
