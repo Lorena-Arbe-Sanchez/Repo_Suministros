@@ -72,3 +72,366 @@
 2026-11-13 00:51:24 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
 2026-11-13 00:51:26 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
 2026-11-13 00:51:26 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@2e083e73] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-13 11:17:12 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-13 11:17:12 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-13 11:17:12 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-13 11:17:13 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-13 11:17:13 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-13 11:17:13 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3307/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-13 11:17:15 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-13 11:17:18 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-13 11:17:18 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@2e083e73] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-13 11:20:45 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-13 11:20:45 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.55.Final
+2026-11-13 11:20:45 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-11-13 11:20:47 WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-11-13 11:20:47 WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-13 11:20:47 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mariadb://localhost:3307/ad_suministros]
+	Database driver: org.mariadb.jdbc.Driver
+	Database version: 10.4.32
+	Autocommit mode: false
+	Isolation level: undefined/unknown
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-11-13 11:20:53 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-11-13 11:20:56 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-13 11:20:57 INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@6ab51f9] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2026-11-13 11:22:34 INFO  dao.ProveedorDao - Buscando proveedores con el texto: PR001
+2026-11-13 11:23:08 INFO  dao.ProveedorDao - Buscando proveedores con el texto: distribuciones
+2026-11-13 11:23:15 INFO  dao.ProveedorDao - Buscando proveedores con el texto: lopez
+2026-11-13 11:23:23 INFO  dao.ProveedorDao - Buscando proveedores con el texto: ruiz
+2026-11-13 11:23:29 INFO  dao.ProveedorDao - Buscando proveedores con el texto: vitoria
+2026-11-13 11:23:35 INFO  dao.ProveedorDao - Buscando proveedores con el texto: asdfgh
+2026-11-13 11:29:24 INFO  dao.Dao - Registro creado correctamente: Proveedor
+2026-11-13 11:30:53 INFO  dao.Dao - Registro actualizado correctamente: Proveedor
+2026-11-13 11:31:16 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1451, SQLState: 23000
+2026-11-13 11:31:16 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - (conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKm8d7b043fwcullsrj75tn2mig` FOREIGN KEY (`proveedor_cod`) REFERENCES `proveedor` (`cod`))
+2026-11-13 11:31:16 WARN  dao.Dao - No se ha podido eliminar el registro: Proveedor
+jakarta.persistence.RollbackException: Error while committing the transaction
+	at org.hibernate.internal.ExceptionConverterImpl.convertCommitException(ExceptionConverterImpl.java:67)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:104)
+	at dao.Dao.delete(Dao.java:68)
+	at gui.MainController.lambda$eliminarProveedor$9(MainController.java:450)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at gui.MainController.eliminarProveedor(MainController.java:445)
+	at gui.MainController.lambda$mostrarProveedores$2(MainController.java:185)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.base@20.0.2/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics@20.0.2/javafx.scene.Node.fireEvent(Node.java:8944)
+	at javafx.controls@20.0.2/javafx.scene.control.Button.fire(Button.java:203)
+	at javafx.controls@20.0.2/com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207)
+	at javafx.controls@20.0.2/com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base@20.0.2/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics@20.0.2/javafx.scene.Scene$MouseHandler.process(Scene.java:3980)
+	at javafx.graphics@20.0.2/javafx.scene.Scene.processMouseEvent(Scene.java:1890)
+	at javafx.graphics@20.0.2/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2704)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.View.handleMouseEvent(View.java:551)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1589)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [(conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKm8d7b043fwcullsrj75tn2mig` FOREIGN KEY (`proveedor_cod`) REFERENCES `proveedor` (`cod`))] [delete from Proveedor where cod=?]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:62)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:280)
+	at org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	... 50 common frames omitted
+Caused by: java.sql.SQLIntegrityConstraintViolationException: (conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKm8d7b043fwcullsrj75tn2mig` FOREIGN KEY (`proveedor_cod`) REFERENCES `proveedor` (`cod`))
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:317)
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:402)
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:310)
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:1549)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:1488)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:1407)
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:1331)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:91)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:345)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:322)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 69 common frames omitted
+2026-11-13 11:31:27 INFO  dao.Dao - Registro eliminado correctamente: Proveedor
+2026-11-13 11:40:26 INFO  dao.PiezaDao - Buscando piezas con el texto: P003
+2026-11-13 11:40:45 INFO  dao.PiezaDao - Buscando piezas con el texto: acero
+2026-11-13 11:40:51 INFO  dao.PiezaDao - Buscando piezas con el texto: tubo
+2026-11-13 11:41:02 INFO  dao.PiezaDao - Buscando piezas con el texto: industrial
+2026-11-13 11:41:23 INFO  dao.PiezaDao - Buscando piezas con el texto: r4t5y67
+2026-11-13 11:55:17 INFO  dao.Dao - Registro creado correctamente: Pieza
+2026-11-13 11:55:28 INFO  dao.Dao - Registro creado correctamente: Pieza
+2026-11-13 11:56:53 INFO  dao.Dao - Registro actualizado correctamente: Pieza
+2026-11-13 11:57:15 INFO  dao.Dao - Registro eliminado correctamente: Pieza
+2026-11-13 11:57:18 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1451, SQLState: 23000
+2026-11-13 11:57:18 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - (conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKs3iooa5ifvlxtc0d9u8nhfwvf` FOREIGN KEY (`pieza_cod`) REFERENCES `pieza` (`cod`))
+2026-11-13 11:57:18 WARN  dao.Dao - No se ha podido eliminar el registro: Pieza
+jakarta.persistence.RollbackException: Error while committing the transaction
+	at org.hibernate.internal.ExceptionConverterImpl.convertCommitException(ExceptionConverterImpl.java:67)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:104)
+	at dao.Dao.delete(Dao.java:68)
+	at gui.MainController.lambda$eliminarPieza$19(MainController.java:811)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at gui.MainController.eliminarPieza(MainController.java:806)
+	at gui.MainController.lambda$mostrarPiezas$12(MainController.java:539)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.base@20.0.2/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics@20.0.2/javafx.scene.Node.fireEvent(Node.java:8944)
+	at javafx.controls@20.0.2/javafx.scene.control.Button.fire(Button.java:203)
+	at javafx.controls@20.0.2/com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207)
+	at javafx.controls@20.0.2/com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base@20.0.2/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics@20.0.2/javafx.scene.Scene$MouseHandler.process(Scene.java:3980)
+	at javafx.graphics@20.0.2/javafx.scene.Scene.processMouseEvent(Scene.java:1890)
+	at javafx.graphics@20.0.2/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2704)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.View.handleMouseEvent(View.java:551)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1589)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [(conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKs3iooa5ifvlxtc0d9u8nhfwvf` FOREIGN KEY (`pieza_cod`) REFERENCES `pieza` (`cod`))] [delete from Pieza where cod=?]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:62)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:280)
+	at org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	... 50 common frames omitted
+Caused by: java.sql.SQLIntegrityConstraintViolationException: (conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKs3iooa5ifvlxtc0d9u8nhfwvf` FOREIGN KEY (`pieza_cod`) REFERENCES `pieza` (`cod`))
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:317)
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:402)
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:310)
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:1549)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:1488)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:1407)
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:1331)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:91)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:345)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:322)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 69 common frames omitted
+2026-11-13 11:57:22 INFO  dao.Dao - Registro eliminado correctamente: Pieza
+2026-11-13 11:57:28 INFO  dao.PiezaDao - Buscando piezas con el texto: barra
+2026-11-13 11:57:58 INFO  dao.ProyectoDao - Buscando proyectos con el texto: PRY003
+2026-11-13 11:58:14 INFO  dao.ProyectoDao - Buscando proyectos con el texto: edificio
+2026-11-13 11:58:20 INFO  dao.ProyectoDao - Buscando proyectos con el texto: donosti
+2026-11-13 11:59:23 INFO  dao.Dao - Registro creado correctamente: Proyecto
+2026-11-13 11:59:52 INFO  dao.Dao - Registro actualizado correctamente: Proyecto
+2026-11-13 12:00:05 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1451, SQLState: 23000
+2026-11-13 12:00:05 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - (conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKdsti8dkydpbdi3evcrfwxx4ji` FOREIGN KEY (`proyecto_cod`) REFERENCES `proyecto` (`cod`))
+2026-11-13 12:00:05 WARN  dao.Dao - No se ha podido eliminar el registro: Proyecto
+jakarta.persistence.RollbackException: Error while committing the transaction
+	at org.hibernate.internal.ExceptionConverterImpl.convertCommitException(ExceptionConverterImpl.java:67)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:104)
+	at dao.Dao.delete(Dao.java:68)
+	at gui.MainController.lambda$eliminarProyecto$29(MainController.java:1106)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at gui.MainController.eliminarProyecto(MainController.java:1101)
+	at gui.MainController.lambda$mostrarProyectos$22(MainController.java:878)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.base@20.0.2/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics@20.0.2/javafx.scene.Node.fireEvent(Node.java:8944)
+	at javafx.controls@20.0.2/javafx.scene.control.Button.fire(Button.java:203)
+	at javafx.controls@20.0.2/com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207)
+	at javafx.controls@20.0.2/com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at javafx.base@20.0.2/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base@20.0.2/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base@20.0.2/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics@20.0.2/javafx.scene.Scene$MouseHandler.process(Scene.java:3980)
+	at javafx.graphics@20.0.2/javafx.scene.Scene.processMouseEvent(Scene.java:1890)
+	at javafx.graphics@20.0.2/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2704)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics@20.0.2/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.View.handleMouseEvent(View.java:551)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics@20.0.2/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1589)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [(conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKdsti8dkydpbdi3evcrfwxx4ji` FOREIGN KEY (`proyecto_cod`) REFERENCES `proyecto` (`cod`))] [delete from Proyecto where cod=?]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:62)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197)
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.performNonBatchedMutation(AbstractMutationExecutor.java:134)
+	at org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:55)
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55)
+	at org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.doStaticDelete(AbstractDeleteCoordinator.java:280)
+	at org.hibernate.persister.entity.mutation.AbstractDeleteCoordinator.delete(AbstractDeleteCoordinator.java:87)
+	at org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:131)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:644)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:511)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:414)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:41)
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1429)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:491)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2354)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1978)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:169)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:267)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:101)
+	... 50 common frames omitted
+Caused by: java.sql.SQLIntegrityConstraintViolationException: (conn=75) Cannot delete or update a parent row: a foreign key constraint fails (`ad_suministros`.`suministro`, CONSTRAINT `FKdsti8dkydpbdi3evcrfwxx4ji` FOREIGN KEY (`proyecto_cod`) REFERENCES `proyecto` (`cod`))
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:317)
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:402)
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:310)
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:1549)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:1488)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:1407)
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:1331)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:91)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:345)
+	at org.mariadb.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:322)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
+	... 69 common frames omitted
+2026-11-13 12:00:09 INFO  dao.Dao - Registro eliminado correctamente: Proyecto
+2026-11-13 12:00:41 INFO  dao.SuministroDao - Buscando suministros con el texto: 12
+2026-11-13 12:00:46 INFO  dao.SuministroDao - Buscando suministros con el texto: 15
+2026-11-13 12:01:22 INFO  dao.SuministroDao - Buscando suministros con el texto: 2026-01-15
+2026-11-13 12:01:46 INFO  dao.SuministroDao - Buscando suministros con el texto: comercial
+2026-11-13 12:01:51 INFO  dao.SuministroDao - Buscando suministros con el texto: PR005
+2026-11-13 12:01:56 INFO  dao.SuministroDao - Buscando suministros con el texto: P009
+2026-11-13 12:02:03 INFO  dao.SuministroDao - Buscando suministros con el texto: PRY003
+2026-11-13 12:02:30 INFO  dao.SuministroDao - Buscando suministros con el texto: dfrty
+2026-11-13 12:04:05 INFO  dao.Dao - Registro creado correctamente: Suministro
+2026-11-13 12:04:45 INFO  dao.Dao - Registro actualizado correctamente: Suministro
+2026-11-13 12:05:13 INFO  dao.Dao - Registro actualizado correctamente: Suministro
+2026-11-13 12:05:43 INFO  dao.Dao - Registro eliminado correctamente: Suministro
+2026-11-13 12:07:10 INFO  dao.SuministroDao - Consultando histórico del proveedor PR001 entre 2026-01-01 y 2026-01-01
+2026-11-13 12:07:18 INFO  dao.SuministroDao - Consultando histórico del proveedor PR001 entre 2026-01-01 y 2026-01-01
+2026-11-13 12:08:21 INFO  dao.SuministroDao - Consultando histórico del proveedor PR001 entre 2026-01-01 y 2026-12-31
+2026-11-13 12:11:14 INFO  dao.SuministroDao - Consultando análisis del proyecto PRY001
+2026-11-13 12:12:31 INFO  dao.SuministroDao - Consultando todos los suministros para las estadísticas
+2026-11-13 12:13:21 INFO  dao.Dao - Registro creado correctamente: Proyecto
+2026-11-13 12:13:27 INFO  dao.SuministroDao - Consultando análisis del proyecto PRY007
+2026-11-13 12:13:33 INFO  dao.SuministroDao - Consultando análisis del proyecto PRY001
+2026-11-13 12:13:54 INFO  dao.SuministroDao - Consultando todos los suministros para las estadísticas
+2026-11-13 12:14:01 INFO  dao.Dao - Registro eliminado correctamente: Proyecto
+2026-11-13 12:14:12 INFO  dao.SuministroDao - Consultando todos los suministros para las estadísticas
