@@ -1,3 +1,4 @@
+import com.google.gson.JsonParser;
 import dao.*;
 import jakarta.persistence.EntityManager;
 import models.Pieza;
@@ -7,9 +8,16 @@ import models.Suministro;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.ExportarDatos;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -909,5 +917,129 @@ public class AppTest {
         for (int i = 1; i < resultados.size(); i++) {
             assertTrue(resultados.get(i - 1).getId() < resultados.get(i).getId());
         }
+    }
+
+    @Test
+    public void testExportacionesXML() throws Exception {
+
+        Path carpeta = Paths.get("datos", "xml");
+
+        String[] archivos = {
+                "Proveedores.xml",
+                "Piezas.xml",
+                "Proyectos.xml",
+                "Suministros.xml"
+        };
+
+        // Evitar que archivos antiguos hagan pasar la prueba
+        for (String nombre : archivos) {
+            Files.deleteIfExists(carpeta.resolve(nombre));
+        }
+
+        // Exportar todas las entidades
+        ExportarDatos.exportarTodoXML();
+
+        // Comprobar que los cuatro XML se han generado correctamente
+        for (String nombre : archivos) {
+
+            Path archivo = carpeta.resolve(nombre);
+
+            assertTrue(Files.exists(archivo), "No se ha generado " + nombre);
+            assertTrue(Files.size(archivo) > 0, nombre + " está vacío");
+
+            var documento = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(archivo.toFile());
+
+            assertEquals("registros", documento.getDocumentElement().getTagName());
+
+            assertTrue(
+                    documento.getElementsByTagName("registro").getLength() > 0,
+                    nombre + " no contiene registros"
+            );
+        }
+
+        // Comprobar también la exportación de un informe XML
+        Map<String, Object> datos = new LinkedHashMap<>();
+        datos.put("codigoPrueba", "TEST_EXPORT");
+        datos.put("totalPrueba", 3);
+
+        Path informe = carpeta.resolve("InformeJUnit.xml");
+        Files.deleteIfExists(informe);
+
+        ExportarDatos.exportarInformeXML("InformeJUnit.xml", datos);
+
+        assertTrue(Files.exists(informe));
+        assertTrue(Files.size(informe) > 0);
+
+        var documento = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder()
+                .parse(informe.toFile());
+
+        assertEquals("informe", documento.getDocumentElement().getTagName());
+        assertEquals(
+                "TEST_EXPORT",
+                documento.getElementsByTagName("codigoPrueba").item(0).getTextContent()
+        );
+
+        Files.deleteIfExists(informe);
+    }
+
+    @Test
+    public void testExportacionesJSON() throws Exception {
+
+        Path carpeta = Paths.get("datos", "json");
+
+        String[] archivos = {
+                "Proveedores.json",
+                "Piezas.json",
+                "Proyectos.json",
+                "Suministros.json"
+        };
+
+        // Evitar que archivos antiguos hagan pasar la prueba
+        for (String nombre : archivos) {
+            Files.deleteIfExists(carpeta.resolve(nombre));
+        }
+
+        // Exportar todas las entidades
+        ExportarDatos.exportarTodoJSON();
+
+        // Comprobar que los cuatro JSON se han generado correctamente
+        for (String nombre : archivos) {
+
+            Path archivo = carpeta.resolve(nombre);
+
+            assertTrue(Files.exists(archivo), "No se ha generado " + nombre);
+            assertTrue(Files.size(archivo) > 0, nombre + " está vacío");
+
+            var contenido = JsonParser.parseString(Files.readString(archivo));
+
+            assertTrue(contenido.isJsonArray());
+            assertFalse(contenido.getAsJsonArray().isEmpty(), nombre + " no contiene registros");
+        }
+
+        // Comprobar también la exportación de un informe JSON
+        Map<String, Object> datos = new LinkedHashMap<>();
+        datos.put("codigoPrueba", "TEST_EXPORT");
+        datos.put("totalPrueba", 3);
+
+        Path informe = carpeta.resolve("InformeJUnit.json");
+        Files.deleteIfExists(informe);
+
+        ExportarDatos.exportarInformeJSON("InformeJUnit.json", datos);
+
+        assertTrue(Files.exists(informe));
+        assertTrue(Files.size(informe) > 0);
+
+        var contenido = JsonParser.parseString(Files.readString(informe));
+
+        assertTrue(contenido.isJsonObject());
+        assertEquals(
+                "TEST_EXPORT",
+                contenido.getAsJsonObject().get("codigoPrueba").getAsString()
+        );
+
+        Files.deleteIfExists(informe);
     }
 }
