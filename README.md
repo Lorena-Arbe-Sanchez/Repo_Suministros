@@ -2,160 +2,78 @@
 
 ## Descripción
 
-Aplicación desarrollada en Java para gestionar proyectos, proveedores, piezas y suministros mediante Hibernate ORM y
-JPQL, utilizando una base de datos MariaDB.
+Aplicación desarrollada en Java para gestionar proveedores, piezas, proyectos y suministros mediante Hibernate ORM, JPQL
+y una base de datos MariaDB.
 
-El proyecto dispone de dos modalidades de ejecución:
+Dispone de dos modalidades de uso:
 
-- **Modo consola:** permite gestionar los datos mediante menús de texto y ofrece algunas funcionalidades adicionales,
-  como búsquedas avanzadas de entidades mediante diferentes parámetros.
-- **Modo interfaz gráfica:** permite utilizar las funcionalidades principales de la aplicación mediante una interfaz
-  desarrollada con JavaFX.
+- **Consola:** gestión mediante menús de texto y búsquedas avanzadas por diferentes parámetros.
+- **Interfaz gráfica:** gestión mediante JavaFX.
 
 ## Funcionalidades
 
-### Gestión de datos
-
-- Gestión de proveedores (CRUD).
-- Gestión de piezas (CRUD).
-- Gestión de proyectos (CRUD).
-- Gestión de suministros (CRUD).
-- Validación de datos introducidos.
-- Control de relaciones entre entidades e integridad referencial.
-
-### Búsquedas y consultas
-
-- Búsqueda de proveedores por distintos campos.
-- Búsqueda de piezas por distintos campos.
-- Búsqueda de proyectos.
-- Búsquedas avanzadas de entidades mediante diferentes parámetros, especialmente en el modo consola.
-- Consultas mediante JPQL.
-
-### Análisis y estadísticas
-
-- Consulta del histórico de suministros de un proveedor.
-- Análisis de suministros asociados a un proyecto.
-- Cálculo del coste total de los suministros de un proyecto.
-- Estadísticas globales de proveedores, piezas, proyectos y suministros.
-- Identificación de proveedores, piezas y proyectos con mayor actividad.
-
-### Otras funcionalidades
-
-- Exportación de datos a XML y JSON.
-- Exportación de informes de análisis y estadísticas.
+- Operaciones CRUD de proveedores, piezas, proyectos y suministros.
+- Búsquedas y consultas mediante JPQL.
+- Validación de datos e integridad referencial.
+- Histórico de proveedores, análisis de proyectos y estadísticas globales.
+- Exportación de entidades e informes a XML y JSON.
 - Consulta de metadatos de la base de datos.
-- Sistema de logging para registrar operaciones y errores.
-- Apartado de ayuda integrado en la aplicación.
+- Sistema de logging y apartado de ayuda.
+- Pruebas automatizadas con JUnit 5.
 
-## Tecnologías utilizadas
+## Tecnologías
 
-- **Java 19:** lenguaje de programación.
-- **JavaFX:** desarrollo de la interfaz gráfica.
-- **Maven:** gestión del proyecto y sus dependencias.
-- **Hibernate ORM 6:** mapeo objeto-relacional.
-- **Jakarta Persistence (JPA):** persistencia de datos.
-- **JPQL:** consultas a la base de datos.
-- **MariaDB:** sistema gestor de base de datos.
-- **JUnit 5:** pruebas automatizadas.
-- **Gson:** generación de archivos JSON.
-- **XMLStreamWriter:** generación de archivos XML.
-- **SLF4J:** registro de eventos mediante logging.
+Java 19, JavaFX, Maven, Hibernate ORM 6, Jakarta Persistence (JPA), JPQL, MariaDB, JUnit 5, Gson, XMLStreamWriter y
+SLF4J.
 
 ## Estructura del repositorio
 
-El repositorio contiene los siguientes elementos:
-
-- **Proyecto/**: aplicación Java, incluyendo el código fuente, las pruebas y los recursos necesarios para su ejecución.
-- **ad_suministros-todo.sql**: exportación completa de la base de datos, incluyendo su estructura y sus datos.
-- **ad_suministros-inserts.sql**: archivo SQL que contiene únicamente las sentencias INSERT para introducir los datos.
-- **LICENSE**: archivo con la licencia del proyecto.
-- **README.md**: documentación e instrucciones de uso.
-- **Imágenes del MER**: diagramas del Modelo Entidad-Relación de la base de datos.
-- **Planificación.xlsx**: planificación y seguimiento del desarrollo del proyecto, organizada por fechas y con
-  información detallada de las tareas, prioridades y otros datos.
+- **Proyecto/**: aplicación Java, código fuente, pruebas y recursos.
+- **ad_suministros-todo.sql**: exportación completa de la base de datos (estructura y datos).
+- **ad_suministros-inserts.sql**: sentencias INSERT para cargar los datos.
+- **LICENSE**: licencia del proyecto.
+- **Imágenes del MER**: diagramas del Modelo Entidad-Relación.
+- **Planificación.xlsx**: seguimiento del desarrollo por fechas, tareas y prioridades.
+- **README.md**: documentación del proyecto.
 
 ## Base de datos
 
-El proyecto utiliza una base de datos MariaDB llamada `ad_suministros`.
+Se utiliza MariaDB, con una base de datos llamada `ad_suministros`. Los datos de conexión se configuran en
+`persistence.xml`.
 
-La configuración de conexión se encuentra en el archivo `persistence.xml`, dentro de los recursos del proyecto.
+Hibernate crea automáticamente las tablas necesarias al ejecutar la aplicación en modo consola si todavía no existen.
+También se incluyen dos archivos SQL con la estructura y los datos de la base de datos.
 
-Se incluyen dos archivos SQL:
+## Ejecución
 
-- **ad_suministros-todo.sql:** contiene la estructura completa de la base de datos y sus datos.
-- **ad_suministros-inserts.sql:** contiene únicamente los datos mediante sentencias INSERT, para incorporarlos a una
-  base de datos cuya estructura ya exista.
+Requisitos: JDK 19 y MariaDB.
 
-Al ejecutar la aplicación en modo consola, Hibernate crea automáticamente las tablas necesarias en la base de datos si
-todavía no existen, según la configuración de persistencia.
+Antes de ejecutar la aplicación, configurar la conexión en `persistence.xml`.
 
-## Requisitos
+**Modo consola:** ejecutar la clase principal `App.java` desde IntelliJ IDEA.
 
-- JDK 19.
-- MariaDB.
-- IntelliJ IDEA (recomendado).
+**Modo interfaz gráfica (JavaFX):**
 
-## Ejecución de la aplicación
-
-La aplicación se puede ejecutar de dos formas:
-
-### 1. Modo consola
-
-Permite utilizar la aplicación mediante menús de texto y acceder a algunas funcionalidades adicionales, como las
-búsquedas avanzadas de entidades por diferentes parámetros.
-
-Para ejecutarla, iniciar la clase principal de la aplicación desde IntelliJ IDEA.
-
-### 2. Modo interfaz gráfica (JavaFX)
-
-Permite gestionar la aplicación mediante una interfaz gráfica.
-
-Existen dos formas de iniciarla:
-
-- **Desde la terminal:** ejecutar el siguiente comando desde la carpeta del proyecto:
+- Desde la terminal, en la carpeta del proyecto:
 
 ```bash
 .\mvnw.cmd javafx:run
 ```
 
-- **Desde IntelliJ IDEA:** abrir el panel Maven, desplegar `Plugins` → `javafx` y ejecutar la opción `javafx:run`.
+- Desde IntelliJ IDEA: panel Maven → Plugins → javafx → Clicar en `javafx:run`.
 
-### Configuración previa
+## Archivos generados
 
-Antes de ejecutar cualquiera de las modalidades:
+Dentro de `Proyecto/datos/`, al mismo nivel que `src/`, se almacenan las exportaciones:
 
-1. Disponer de una instancia de MariaDB.
-2. Configurar los datos de conexión en `persistence.xml`.
-3. Comprobar que Maven dispone de las dependencias necesarias.
+- **json/**: archivos JSON.
+- **xml/**: archivos XML.
+- **metadatos/**: información de la base de datos.
 
-## Exportaciones y archivos generados
-
-Dentro de la carpeta `Proyecto/datos/`, situada al mismo nivel que `src/`, se almacenan los archivos generados por la
-aplicación.
-
-Esta carpeta contiene tres subcarpetas:
-
-- **json/**: exportaciones de entidades e informes en formato JSON.
-- **xml/**: exportaciones de entidades e informes en formato XML.
-- **metadatos/**: información sobre la estructura y los metadatos de la base de datos.
-
-## Sistema de logging
-
-Los registros de actividad y errores de la aplicación se almacenan en la carpeta `Proyecto/logs/`, situada al mismo
-nivel que `src/`.
-
-Los logs se organizan en diferentes archivos, generándose un archivo por cada día de actividad.
-
-El archivo `aplicacion.log` corresponde al registro actual o más reciente de la aplicación.
+Los logs se guardan en `Proyecto/logs/`, también al nivel de `src/`, organizados en archivos diarios. `aplicacion.log`
+corresponde al registro actual o más reciente.
 
 ## Pruebas
 
-El proyecto incluye pruebas automatizadas desarrolladas con JUnit 5 para comprobar el funcionamiento de las operaciones
-CRUD, las búsquedas, la integridad referencial y las exportaciones XML y JSON.
-
-Para ejecutar las pruebas:
-
-1. Abrir el proyecto en IntelliJ IDEA.
-2. Localizar la carpeta `test`, situada al mismo nivel que `main` dentro de `src`.
-3. Abrir el archivo `AppTest`.
-4. Ejecutar las pruebas desde IntelliJ IDEA utilizando la opción de ejecución del propio archivo.
+Las pruebas JUnit 5 se encuentran en `src/test`, en el archivo `AppTest.java`. Para ejecutarlas, abrir el archivo en
+IntelliJ IDEA y pulsar el icono verde ▶️ (Run).
