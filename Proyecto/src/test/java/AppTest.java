@@ -919,6 +919,10 @@ public class AppTest {
         }
     }
 
+    // --------------------------------------------------
+    // PRUEBAS DE EXPORTACIONES
+    // --------------------------------------------------
+
     @Test
     public void testExportacionesXML() throws Exception {
 
