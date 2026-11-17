@@ -42,8 +42,8 @@ public class MainController {
     @FXML
     public void initialize() {
 
+        // Inicializar los DAO y cargar la pantalla principal
         try {
-            // Crear los DAO
             proveedorDao = new ProveedorDao();
             piezaDao = new PiezaDao();
             proyectoDao = new ProyectoDao();
@@ -108,6 +108,7 @@ public class MainController {
         contentArea.getChildren().setAll(titulo, error);
     }
 
+    // Crear una tarjeta con el nombre de la entidad y su número de registros
     private VBox crearTarjeta(String nombre, String valor) {
 
         Label etiqueta = new Label(nombre);
@@ -125,6 +126,7 @@ public class MainController {
         return tarjeta;
     }
 
+    // Preparar el título y la descripción de una pantalla
     private void mostrarPagina(String titulo, String descripcion) {
 
         Label encabezado = new Label(titulo);
@@ -145,6 +147,7 @@ public class MainController {
         Label descripcion = new Label("Listado de proveedores registrados");
         descripcion.getStyleClass().add("page-description");
 
+        // Crear la tabla y cargar los proveedores registrados
         tablaProveedores = new TableView<>();
 
         TableColumn<Proveedor, String> colCod = crearColumna("Código", "cod");
@@ -236,6 +239,7 @@ public class MainController {
 
     private TableColumn<Proveedor, String> crearColumna(String titulo, String propiedad) {
 
+        // Asociar una columna de la tabla con una propiedad de la entidad
         TableColumn<Proveedor, String> columna = new TableColumn<>(titulo);
         columna.setCellValueFactory(new PropertyValueFactory<>(propiedad));
 
@@ -244,6 +248,7 @@ public class MainController {
 
     private void nuevoProveedor() {
 
+        // Mostrar un formulario para introducir los datos del nuevo proveedor
         Dialog<Proveedor> dialog = new Dialog<>();
 
         dialog.setTitle("Nuevo proveedor");
@@ -331,6 +336,7 @@ public class MainController {
 
     private void modificarProveedor() {
 
+        // Obtener el proveedor seleccionado para modificar sus datos
         Proveedor seleccionado = tablaProveedores.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
@@ -426,6 +432,7 @@ public class MainController {
 
     private void eliminarProveedor() {
 
+        // Comprobar que existe un proveedor seleccionado antes de eliminarlo
         Proveedor seleccionado = tablaProveedores.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
@@ -466,6 +473,7 @@ public class MainController {
         });
     }
 
+    // Mostrar una ventana emergente con un mensaje de error
     private void mostrarError(String mensaje) {
 
         Alert alerta = new Alert(Alert.AlertType.ERROR);
@@ -475,6 +483,7 @@ public class MainController {
         alerta.showAndWait();
     }
 
+    // Mostrar una ventana emergente con un mensaje informativo
     private void mostrarInformacion(String mensaje) {
 
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
@@ -1133,6 +1142,7 @@ public class MainController {
 
         tablaSuministros = new TableView<>();
 
+        // Crear las columnas mostrando también los datos de las entidades relacionadas
         TableColumn<Suministro, String> colId = new TableColumn<>("ID");
         colId.setCellValueFactory(data ->
                 new ReadOnlyStringWrapper(String.valueOf(data.getValue().getId())));
@@ -1261,6 +1271,7 @@ public class MainController {
         DatePicker fecha = new DatePicker(LocalDate.now());
         TextField txtCantidad = new TextField();
 
+        // Cargar las entidades existentes para seleccionar las relaciones del suministro
         ComboBox<Proveedor> cmbProveedor = new ComboBox<>(
                 FXCollections.observableArrayList(proveedorDao.findAll())
         );
@@ -1277,6 +1288,7 @@ public class MainController {
         cmbPieza.setPromptText("Selecciona una pieza");
         cmbProyecto.setPromptText("Selecciona un proyecto");
 
+        // Mostrar el código y el nombre de cada entidad en los desplegables
         cmbProveedor.setConverter(new javafx.util.StringConverter<>() {
             @Override
             public String toString(Proveedor proveedor) {
@@ -1472,6 +1484,7 @@ public class MainController {
             }
         });
 
+        // Seleccionar las relaciones que ya tiene asociadas el suministro
         cmbProveedor.setValue(seleccionado.getProveedor());
         cmbPieza.setValue(seleccionado.getPieza());
         cmbProyecto.setValue(seleccionado.getProyecto());
@@ -1565,6 +1578,7 @@ public class MainController {
             return;
         }
 
+        // Solicitar confirmación antes de eliminar el suministro seleccionado
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
 
         confirmacion.setTitle("Eliminar suministro");
@@ -1609,6 +1623,7 @@ public class MainController {
         Label descripcion = new Label("Consultas e informes de la aplicación");
         descripcion.getStyleClass().add("page-description");
 
+        // Mostrar las tres opciones disponibles de análisis y estadísticas
         Button btnHistorico = new Button("Histórico de proveedor");
         Button btnProyecto = new Button("Análisis de proyectos");
         Button btnEstadisticas = new Button("Estadísticas globales");
@@ -1690,6 +1705,7 @@ public class MainController {
         Label resumen = new Label();
         resumen.getStyleClass().add("page-description");
 
+        // Consultar los suministros del proveedor dentro del intervalo de fechas seleccionado
         btnConsultar.setOnAction(e -> {
 
             Proveedor proveedor = cmbProveedor.getValue();
@@ -1715,6 +1731,7 @@ public class MainController {
 
                 int cantidadTotal = 0;
 
+                // Sumar las cantidades de todos los suministros encontrados
                 for (Suministro suministro : suministros) {
                     cantidadTotal += suministro.getCantidad();
                 }
@@ -1726,6 +1743,7 @@ public class MainController {
                                 + "\nCantidad total: " + cantidadTotal
                 );
 
+                // Preparar los datos del histórico para generar los informes XML y JSON
                 List<Map<String, Object>> registros = new ArrayList<>();
 
                 for (Suministro suministro : suministros) {
@@ -1835,6 +1853,7 @@ public class MainController {
         Label resumen = new Label();
         resumen.getStyleClass().add("page-description");
 
+        // Consultar los suministros asociados al proyecto seleccionado
         btnConsultar.setOnAction(e -> {
 
             Proyecto proyecto = cmbProyecto.getValue();
@@ -1850,6 +1869,7 @@ public class MainController {
 
                 tabla.setItems(FXCollections.observableArrayList(suministros));
 
+                // Utilizar conjuntos para contar proveedores y piezas diferentes sin repetirlos
                 Set<String> proveedores = new HashSet<>();
                 Set<String> piezas = new HashSet<>();
 
@@ -1858,6 +1878,7 @@ public class MainController {
 
                 List<Map<String, Object>> registros = new ArrayList<>();
 
+                // Calcular las cantidades y los costes de los suministros del proyecto
                 for (Suministro suministro : suministros) {
 
                     double precioUnitario = suministro.getPieza().getPrecio();
@@ -1952,12 +1973,14 @@ public class MainController {
             List<Suministro> suministros =
                     suministroDao.buscarTodosParaEstadisticas();
 
+            // Agrupar los suministros por proveedor, pieza y proyecto para calcular las estadísticas
             Map<String, Integer> suministrosProveedor = new HashMap<>();
             Map<String, Integer> unidadesPieza = new HashMap<>();
             Map<String, Integer> suministrosProyecto = new HashMap<>();
 
             int cantidadTotal = 0;
 
+            // Acumular los suministros y las unidades correspondientes a cada entidad
             for (Suministro suministro : suministros) {
 
                 String codProveedor = suministro.getProveedor().getCod();
@@ -2009,6 +2032,7 @@ public class MainController {
 
             } else {
 
+                // Obtener los valores máximos para identificar los registros más destacados
                 int maxProveedor = suministrosProveedor.values()
                         .stream().max(Integer::compareTo).orElse(0);
 
@@ -2024,6 +2048,7 @@ public class MainController {
 
                 texto.append("\n===== PROVEEDORES MÁS ACTIVOS =====\n");
 
+                // Recorrer las entidades para obtener todas las que comparten el valor máximo
                 for (Proveedor proveedor : proveedores) {
                     int total = suministrosProveedor.getOrDefault(proveedor.getCod(), 0);
 
@@ -2104,6 +2129,7 @@ public class MainController {
 
         Label lblEntidad = new Label("Selecciona qué datos quieres exportar:");
 
+        // Permitir seleccionar las entidades y el formato de exportación
         ComboBox<String> comboEntidad = new ComboBox<>();
         comboEntidad.getItems().addAll(
                 "Proveedores",
@@ -2140,6 +2166,7 @@ public class MainController {
 
             try {
 
+                // Ejecutar la exportación correspondiente según la entidad y el formato elegidos
                 switch (entidad) {
 
                     case "Proveedores":
@@ -2224,6 +2251,7 @@ public class MainController {
         areaMetadatos.setPromptText("Pulsa «Consultar metadatos» para mostrar la información");
         areaMetadatos.setPrefHeight(450);
 
+        // Permitir consultar y exportar la estructura de la base de datos
         Button btnConsultar = new Button("Consultar metadatos");
         Button btnExportar = new Button("Exportar a TXT");
 
@@ -2266,6 +2294,7 @@ public class MainController {
         Label descripcion = new Label("Información sobre el funcionamiento de la aplicación");
         descripcion.getStyleClass().add("page-description");
 
+        // Mostrar las instrucciones de uso de las distintas funcionalidades
         TextArea areaAyuda = new TextArea("""
                 GESTIÓN DE SUMINISTROS
                 ======================

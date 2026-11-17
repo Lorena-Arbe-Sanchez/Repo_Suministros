@@ -33,8 +33,10 @@ SLF4J.
 - **ad_suministros-inserts.sql**: sentencias INSERT para cargar los datos.
 - **LICENSE**: licencia del proyecto.
 - **Imágenes del MER**: diagramas del Modelo Entidad-Relación.
-- **Planificación.xlsx**: seguimiento del desarrollo por fechas, tareas y prioridades.
-- **README.md**: documentación del proyecto.
+- **Planificación.pdf**: seguimiento del desarrollo por fechas, tareas y prioridades.
+- **Memoria del proyecto**: documento que recoge la explicación completa del proyecto, diferentes aspectos sobre su
+  implementación y la puesta en marcha de la aplicación.
+- **README.md**: documentación general del proyecto.
 
 ## Base de datos
 

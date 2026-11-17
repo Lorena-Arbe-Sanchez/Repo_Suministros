@@ -5,11 +5,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
+<!-- Estructura principal de la ventana y controlador asociado -->
 <BorderPane xmlns="http://javafx.com/javafx/20"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="gui.MainController"
             styleClass="main-container">
 
+    <!-- Menú lateral de navegación -->
     <left>
         <VBox styleClass="sidebar" spacing="8">
 
@@ -19,6 +21,7 @@
             <Label text="MENÚ PRINCIPAL"
                    styleClass="menu-title"/>
 
+            <!-- Cada botón llama al method correspondiente del controlador -->
             <Button text="⌂   Inicio"
                     onAction="#mostrarInicio"
                     styleClass="menu-button"/>
@@ -61,6 +64,7 @@
         </VBox>
     </left>
 
+    <!-- Zona central donde se cargan las distintas vistas -->
     <center>
         <VBox fx:id="contentArea"
               styleClass="content-area"
